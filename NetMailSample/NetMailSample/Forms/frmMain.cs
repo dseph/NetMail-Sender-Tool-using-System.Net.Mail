@@ -262,16 +262,22 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnAddHeaders_Click(object sender, EventArgs e)
         {
-            NetMailSample.Forms.frmAddHeaders aHdrForm = new Forms.frmAddHeaders();
-            aHdrForm.Owner = this;
-            aHdrForm.ShowDialog(this);
-            if (hdrName != null && hdrValue != null)
+            try
             {
-                int n = dGridHeaders.Rows.Add();
-                dGridHeaders.Rows[n].Cells[0].Value = hdrName;
-                dGridHeaders.Rows[n].Cells[1].Value = hdrValue;
+                NetMailSample.Forms.frmAddHeaders aHdrForm = new Forms.frmAddHeaders();
+                aHdrForm.Owner = this;
+                aHdrForm.ShowDialog(this);
+                if (hdrName != null && hdrValue != null)
+                {
+                    int n = dGridHeaders.Rows.Add();
+                    dGridHeaders.Rows[n].Cells[0].Value = hdrName;
+                    dGridHeaders.Rows[n].Cells[1].Value = hdrValue;
+                }
             }
-            
+            catch (Exception ex)
+            {
+                txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+            }
         }
 
         /// <summary>

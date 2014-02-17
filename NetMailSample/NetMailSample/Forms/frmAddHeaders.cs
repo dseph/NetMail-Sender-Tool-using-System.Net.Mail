@@ -17,6 +17,8 @@ namespace NetMailSample.Forms
             InitializeComponent();
         }
 
+        // if the header and value both have data, then we can add that to the 
+        // data grid on the main form, otherwise just close out of the form
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (txtName.Text != "" && txtValue.Text != "")
