@@ -299,9 +299,9 @@
             this.chkBoxSpecificPickupFolder.Enabled = false;
             this.chkBoxSpecificPickupFolder.Location = new System.Drawing.Point(286, 117);
             this.chkBoxSpecificPickupFolder.Name = "chkBoxSpecificPickupFolder";
-            this.chkBoxSpecificPickupFolder.Size = new System.Drawing.Size(128, 17);
+            this.chkBoxSpecificPickupFolder.Size = new System.Drawing.Size(174, 17);
             this.chkBoxSpecificPickupFolder.TabIndex = 8;
-            this.chkBoxSpecificPickupFolder.Text = "Specify pickup folder:";
+            this.chkBoxSpecificPickupFolder.Text = "Specify a custom pickup folder:";
             this.chkBoxSpecificPickupFolder.UseVisualStyleBackColor = true;
             this.chkBoxSpecificPickupFolder.CheckedChanged += new System.EventHandler(this.chkBoxSpecificPickupFolder_CheckedChanged);
             // 
@@ -546,7 +546,7 @@
             this.groupBox4.Controls.Add(this.lblNumSeconds);
             this.groupBox4.Location = new System.Drawing.Point(12, 517);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(561, 43);
+            this.groupBox4.Size = new System.Drawing.Size(578, 43);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Sending Loop";

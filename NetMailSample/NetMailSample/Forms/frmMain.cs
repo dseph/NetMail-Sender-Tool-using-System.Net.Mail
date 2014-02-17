@@ -252,6 +252,10 @@ namespace NetMailSample
                 {
                     txtBoxErrorLog.Text = "Error: " + ioe.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ioe.StackTrace;
                 }
+                catch (Exception ex)
+                {
+                    txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+                }
             }
         }
 
