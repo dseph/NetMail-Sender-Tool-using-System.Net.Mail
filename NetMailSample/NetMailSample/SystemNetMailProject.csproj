@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>WindowsForm_817.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -132,6 +135,8 @@
   <ItemGroup>
     <Content Include="Resources\AddMark_10580.png" />
     <Content Include="Resources\Clearallrequests_8816.png" />
+    <Content Include="Resources\WindowsForm_817.ico" />
+    <Content Include="WindowsForm_817.ico" />
     <None Include="Resources\EditTitleString_357.png" />
     <None Include="Resources\OpenAttachment_13115.png" />
     <Content Include="Resources\SingleMessage_5727.ico" />

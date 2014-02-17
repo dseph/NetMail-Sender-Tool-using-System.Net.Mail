@@ -19,6 +19,10 @@ namespace NetMailSample.Forms
         public frmAlternateView()
         {
             InitializeComponent();
+
+            // set initial values for the html and plain textboxes
+            richTxtHtmlView.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
+            txtBoxPlainView.Text = NetMailSample.Properties.Settings.Default.AltViewPlain;
         }
 
         /// <summary>

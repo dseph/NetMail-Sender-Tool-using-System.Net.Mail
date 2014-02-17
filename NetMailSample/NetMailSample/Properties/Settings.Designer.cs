@@ -49,7 +49,7 @@ namespace NetMailSample.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ASCII")]
         public string BodyEncoding {
             get {
                 return ((string)(this["BodyEncoding"]));
@@ -61,7 +61,7 @@ namespace NetMailSample.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ASCII")]
         public string SubjectEncoding {
             get {
                 return ((string)(this["SubjectEncoding"]));
@@ -73,7 +73,7 @@ namespace NetMailSample.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ASCII")]
         public string HeaderEncoding {
             get {
                 return ((string)(this["HeaderEncoding"]));

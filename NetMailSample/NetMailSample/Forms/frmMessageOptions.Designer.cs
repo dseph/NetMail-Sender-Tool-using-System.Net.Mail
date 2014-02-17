@@ -61,7 +61,7 @@
             this.groupBox1.Size = new System.Drawing.Size(320, 122);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Message Encoding";
+            this.groupBox1.Text = "Encoding";
             // 
             // cboSubjectEncoding
             // 
@@ -164,7 +164,7 @@
             this.groupBox2.Size = new System.Drawing.Size(191, 49);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Message Options";
+            this.groupBox2.Text = "Options";
             // 
             // chkReadRcpt
             // 
@@ -194,7 +194,7 @@
             this.groupBox3.Size = new System.Drawing.Size(123, 49);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Message Priority";
+            this.groupBox3.Text = "Priority";
             // 
             // cboMsgPriority
             // 

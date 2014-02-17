@@ -9,13 +9,13 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="BodyEncoding" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">ASCII</Value>
     </Setting>
     <Setting Name="SubjectEncoding" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">ASCII</Value>
     </Setting>
     <Setting Name="HeaderEncoding" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">ASCII</Value>
     </Setting>
     <Setting Name="MsgPriority" Type="System.String" Scope="User">
       <Value Profile="(Default)">Normal</Value>

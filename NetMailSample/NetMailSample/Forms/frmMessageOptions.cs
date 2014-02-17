@@ -16,6 +16,33 @@ namespace NetMailSample.Forms
         public frmMessageOptions()
         {
             InitializeComponent();
+            try
+            {
+                // set the message options for the form
+                if (NetMailSample.Properties.Settings.Default.BodyHtml == true) { chkBodyHtml.Checked = true; }
+                if (NetMailSample.Properties.Settings.Default.ReadRcpt == true) { chkReadRcpt.Checked = true; }
+
+                switch (NetMailSample.Properties.Settings.Default.MsgPriority)
+                {
+                    case "High":
+                        cboMsgPriority.Text = "High";
+                        break;
+                    case "Low":
+                        cboMsgPriority.Text = "Low";
+                        break;
+                    default:
+                        cboMsgPriority.Text = "Normal";
+                        break;
+                }
+
+                cboBodyEncoding.Text = NetMailSample.Properties.Settings.Default.BodyEncoding;
+                cboHeaderEncoding.Text = NetMailSample.Properties.Settings.Default.HeaderEncoding;
+                cboSubjectEncoding.Text = NetMailSample.Properties.Settings.Default.SubjectEncoding;
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         /// <summary>
@@ -31,6 +58,7 @@ namespace NetMailSample.Forms
             NetMailSample.Properties.Settings.Default.SubjectEncoding = cboSubjectEncoding.Text;
             NetMailSample.Properties.Settings.Default.BodyHtml = chkBodyHtml.Checked;
             NetMailSample.Properties.Settings.Default.ReadRcpt = chkReadRcpt.Checked;
+            NetMailSample.Properties.Settings.Default.MsgPriority = cboMsgPriority.Text;
             this.Close();
         }
 
