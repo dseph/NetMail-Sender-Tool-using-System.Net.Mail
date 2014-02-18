@@ -18,7 +18,7 @@ namespace NetMailSample.Forms
             InitializeComponent();
             try
             {
-                // set the message options for the form
+                // set the individual options for the form based on the app settings
                 if (NetMailSample.Properties.Settings.Default.BodyHtml == true) { chkBodyHtml.Checked = true; }
                 if (NetMailSample.Properties.Settings.Default.ReadRcpt == true) { chkReadRcpt.Checked = true; }
 

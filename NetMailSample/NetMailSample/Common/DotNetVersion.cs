@@ -14,10 +14,10 @@ namespace NetMailSample.Common
     {
         /// <summary>
         /// find the installed .NET Framework versions by querying the registry (versions 4.5 and later)
-        /// Release key versions (378389 = 4.5; 378675 = 4.5.1 on Win8.1; 378758 = 4.5.1 on Win8/Win7SP1/VistaSP2)
+        /// Release key versions: (378389 = 4.5; 378675 = 4.5.1 on Win8.1; 378758 = 4.5.1 on Win8/Win7SP1/VistaSP2)
         /// mainly this will be for any logging that may get added later
         /// </summary>
-        public static string Get45or451FromRegistry()
+        public static string GetDotNetVerFromRegistry()
         {
             string dotNET45;
 
@@ -47,7 +47,8 @@ namespace NetMailSample.Common
                 }
                 catch (NullReferenceException)
                 {
-                    /// with Version 4 on Win7, there is no Release key so just pulling the Version key and displaying that number
+                    // added this small .NET V4 check for Win7
+                    // there is no Release key so just pulling the Version key and displaying that number
                     RegistryKey ndpv4Key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
                         RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client\");
                     dotNET45 = ".NET Framework version " + ndpv4Key.GetValue("Version").ToString();
@@ -60,16 +61,16 @@ namespace NetMailSample.Common
         /// <summary>
         ///  return the current runtime version by querying the Environment class in code
         /// </summary>
-        public static string GetVersionFromEnvironment()
+        public static string GetRuntimeVersionFromEnvironment()
         {
             return Environment.Version.ToString();
         }
 
         /// <summary>
         /// find the installed .NET Framework versions by querying the registry (versions 1-4)
-        /// currently not being used, more of a stub in case I need to include this later
+        /// Note: currently not being used, more of a stub in case I need to include this later
         /// </summary>
-        public static void GetVersionFromRegistry()
+        public static void GetPreV45FromRegistry()
         {
             Stream myFile = File.Create("Output.txt");
             TextWriterTraceListener myTextListener = new TextWriterTraceListener(myFile);

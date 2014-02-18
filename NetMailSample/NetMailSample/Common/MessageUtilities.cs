@@ -19,8 +19,7 @@ namespace NetMailSample.Common
         };
 
         /// <summary>
-        /// This function validates that the text in the From textbox is valid,
-        /// then returns the string.  
+        /// This function validates a single email address with a regular expression
         /// </summary>
         /// <param name="input">the email address that needs to be validated</param>
         /// <returns>A validated email address or an error noting which address is invalid</returns>
@@ -32,8 +31,8 @@ namespace NetMailSample.Common
         }
 
         /// <summary>
-        /// This function parses each address in the To, Cc and Bcc textboxes, validates them with a regular expression,
-        /// then adds the addresses indvidually to the mail message object
+        /// This function validates one or more email addresses passed into the function
+        /// if none fail, each address gets added indvidually to the mail message object
         /// </summary>
         /// <param name="input">the email address that needs to be validated</param>
         /// <param name="mail">the MailMessage object where the validated email address will be added based on addressType</param>

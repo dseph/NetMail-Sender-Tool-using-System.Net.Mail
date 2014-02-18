@@ -36,8 +36,8 @@ namespace NetMailSample
             try
             {
                 // check for the installed .NET versions
-                toolStripRuntime.Text = Common.DotNetVersion.GetVersionFromEnvironment();
-                toolStripNETVer.Text = Common.DotNetVersion.Get45or451FromRegistry();
+                toolStripRuntime.Text = DotNetVersion.GetRuntimeVersionFromEnvironment();
+                toolStripNETVer.Text = DotNetVersion.GetDotNetVerFromRegistry();
             }
             catch (Exception ex)
             {
@@ -46,11 +46,9 @@ namespace NetMailSample
         }
 
         /// <summary>
-        /// This button takes the input from the form, creates a mail message and sends it to the smtp server
+        /// This function takes the input from the form, creates a mail message and sends it to the smtp server
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnSendEmail_Click(object sender, EventArgs e)
+        private void SendEmail()
         {
             // make sure we have values in user, password and To
             if (ValidateForm() == false)
@@ -60,48 +58,45 @@ namespace NetMailSample
 
             try
             {
-                txtBoxErrorLog.Clear();
-                txtBoxErrorLog.Text = "Sending message...\r\n";
-                
                 // create the mail message
                 MailMessage mail = new MailMessage();
 
                 // set the sender email address
                 mail.From = new MailAddress(MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
-                
+
                 // check for To, Cc and Bcc
                 // Cc and Bcc can be empty so we only need to validate when the textbox contains a value
-                MessageUtilities.parseEmails(txtBoxTo.Text, mail, MessageUtilities.addressType.To); 
+                MessageUtilities.parseEmails(txtBoxTo.Text, mail, MessageUtilities.addressType.To);
 
-                if (txtBoxCC.Text.Trim() != "") 
-                { 
-                    MessageUtilities.parseEmails(txtBoxCC.Text, mail, MessageUtilities.addressType.Cc); 
-                } 
-                
-                if (txtBoxBCC.Text.Trim() != "") 
-                { 
-                    MessageUtilities.parseEmails(txtBoxBCC.Text, mail, MessageUtilities.addressType.Bcc); 
+                if (txtBoxCC.Text.Trim() != "")
+                {
+                    MessageUtilities.parseEmails(txtBoxCC.Text, mail, MessageUtilities.addressType.Cc);
+                }
+
+                if (txtBoxBCC.Text.Trim() != "")
+                {
+                    MessageUtilities.parseEmails(txtBoxBCC.Text, mail, MessageUtilities.addressType.Bcc);
                 }
 
                 // set the content
                 mail.Subject = txtBoxSubject.Text;
                 mail.Body = richTxtBody.Text;
                 mail.IsBodyHtml = NetMailSample.Properties.Settings.Default.BodyHtml;
-                
+
                 // set encoding for message
-                if (NetMailSample.Properties.Settings.Default.BodyEncoding != "") 
-                { 
-                    mail.BodyEncoding = Common.MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.BodyEncoding); 
+                if (NetMailSample.Properties.Settings.Default.BodyEncoding != "")
+                {
+                    mail.BodyEncoding = MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.BodyEncoding);
                 }
-                if (NetMailSample.Properties.Settings.Default.SubjectEncoding != "") 
-                { 
-                    mail.SubjectEncoding = Common.MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.SubjectEncoding); 
+                if (NetMailSample.Properties.Settings.Default.SubjectEncoding != "")
+                {
+                    mail.SubjectEncoding = MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.SubjectEncoding);
                 }
-                if (NetMailSample.Properties.Settings.Default.HeaderEncoding != "") 
-                { 
-                    mail.HeadersEncoding = Common.MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.HeaderEncoding); 
+                if (NetMailSample.Properties.Settings.Default.HeaderEncoding != "")
+                {
+                    mail.HeadersEncoding = MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.HeaderEncoding);
                 }
-                
+
                 // set priority for the message
                 switch (NetMailSample.Properties.Settings.Default.MsgPriority)
                 {
@@ -115,16 +110,16 @@ namespace NetMailSample
                         mail.Priority = MailPriority.Normal;
                         break;
                 }
-                                
+
                 // add alternate views
                 if (NetMailSample.Properties.Settings.Default.AltViewHtml != "" && NetMailSample.Properties.Settings.Default.AltViewPlain != "")
                 {
-                    System.Net.Mime.ContentType sPlainContentType = new System.Net.Mime.ContentType("text/plain");
-                    System.Net.Mime.ContentType sHtmlContentType = new System.Net.Mime.ContentType("text/html");
+                    ContentType sPlainContentType = new ContentType("text/plain");
+                    ContentType sHtmlContentType = new ContentType("text/html");
 
                     AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewHtml, sHtmlContentType);
-                    
+
                     // add inline attachments / linked resource
                     if (inlineAttachmentsTable.Rows.Count > 0)
                     {
@@ -139,8 +134,8 @@ namespace NetMailSample
 
                     mail.AlternateViews.Add(plainView);
                     mail.AlternateViews.Add(htmlView);
-                }               
-                
+                }
+
                 // add custom headers
                 foreach (DataGridViewRow rowHdr in dGridHeaders.Rows)
                 {
@@ -159,9 +154,9 @@ namespace NetMailSample
                         mail.Attachments.Add(data);
                     }
                 }
-                                
+
                 // add read receipt
-                if (NetMailSample.Properties.Settings.Default.ReadRcpt == true) 
+                if (NetMailSample.Properties.Settings.Default.ReadRcpt == true)
                 {
                     mail.Headers.Add("Disposition-Notification-To", MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
                 }
@@ -170,11 +165,11 @@ namespace NetMailSample
                 string sUser = txtBoxEmailAddress.Text.Trim();
                 string sPassword = mskPassword.Text.Trim();
                 string sDomain = txtBoxDomain.Text.Trim();
-                
+
                 SmtpClient smtp = new SmtpClient(cboServer.Text);
                 smtp.EnableSsl = chkEnableSSL.Checked;
                 smtp.Port = Int32.Parse(cboPort.Text.Trim());
-                
+
                 // check for credentials
                 if (sUser.Length != 0)
                 {
@@ -198,28 +193,39 @@ namespace NetMailSample
                         {
                             throw new DirectoryNotFoundException("The specified directory does not exist.");
                         }
-                            
+
                     }
                     else
                     {
                         smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
                     }
-                }                
+                }
 
                 // send email
                 smtp.Send(mail);
-                txtBoxErrorLog.AppendText("Message sent successfully." + "\r\n");
-                
+
                 // cleanup
                 mail.Dispose();
                 mail = null;
                 smtp.Dispose();
-                smtp = null;                  
+                smtp = null;
             }
             catch (Exception ex)
             {
                 txtBoxErrorLog.Text = ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
             }
+        }
+
+        /// <summary>
+        /// This button calls the sendemail function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSendEmail_Click(object sender, EventArgs e)
+        {
+            txtBoxErrorLog.Clear();
+            SendEmail();
+            txtBoxErrorLog.Text = "Message sent successfully." + "\r\n";
         }
 
         /// <summary>
@@ -341,12 +347,18 @@ namespace NetMailSample
             ContinueTimerRun = true;
 
             txtBoxErrorLog.AppendText(string.Format("Started time based send.\r\n"));
+            btnStopSendLoop.Focus();
+
+            if (ValidateForm() == false)
+            {
+                return;
+            }
 
             while (ContinueTimerRun == true)
             {
                 msgCount++;
                 txtBoxErrorLog.AppendText(string.Format("Sending Message {0}...\r\n", msgCount));
-                btnSendEmail.PerformClick();
+                SendEmail();
                 WaitLoop((int)numUpDnSeconds.Value);
             }
 
@@ -397,7 +409,6 @@ namespace NetMailSample
         private bool ValidateForm()
         {
             bool bRet = true;
-            txtBoxErrorLog.Clear();
 
             StringBuilder oSB = new System.Text.StringBuilder();
 
@@ -444,11 +455,11 @@ namespace NetMailSample
         }
 
         /// <summary>
-        /// display the encoding options form
+        /// display the message options form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnEncodingOptions_Click(object sender, EventArgs e)
+        private void btnMessageOptions_Click(object sender, EventArgs e)
         {
             NetMailSample.Forms.frmMessageOptions mEncoding = new Forms.frmMessageOptions();
             mEncoding.Owner = this;

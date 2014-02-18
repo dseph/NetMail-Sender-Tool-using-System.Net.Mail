@@ -86,7 +86,7 @@
             this.toolStripRuntime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripNETVer = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnEncodingOptions = new System.Windows.Forms.Button();
+            this.btnMessageOptions = new System.Windows.Forms.Button();
             this.grpMailMessage.SuspendLayout();
             this.grpSmtpSettings.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -154,9 +154,9 @@
             this.lblUserSmtp.AutoSize = true;
             this.lblUserSmtp.Location = new System.Drawing.Point(6, 23);
             this.lblUserSmtp.Name = "lblUserSmtp";
-            this.lblUserSmtp.Size = new System.Drawing.Size(32, 13);
+            this.lblUserSmtp.Size = new System.Drawing.Size(35, 13);
             this.lblUserSmtp.TabIndex = 0;
-            this.lblUserSmtp.Text = "User:";
+            this.lblUserSmtp.Text = "Email:";
             // 
             // grpMailMessage
             // 
@@ -310,9 +310,9 @@
             this.rdoSendByPickupFolder.AutoSize = true;
             this.rdoSendByPickupFolder.Location = new System.Drawing.Point(263, 94);
             this.rdoSendByPickupFolder.Name = "rdoSendByPickupFolder";
-            this.rdoSendByPickupFolder.Size = new System.Drawing.Size(133, 17);
+            this.rdoSendByPickupFolder.Size = new System.Drawing.Size(136, 17);
             this.rdoSendByPickupFolder.TabIndex = 7;
-            this.rdoSendByPickupFolder.Text = "Send By Pickup Folder";
+            this.rdoSendByPickupFolder.Text = "Send By Pickup Folder:";
             this.rdoSendByPickupFolder.UseVisualStyleBackColor = true;
             this.rdoSendByPickupFolder.CheckedChanged += new System.EventHandler(this.rdoSendByPickupFolder_CheckedChanged);
             // 
@@ -322,10 +322,10 @@
             this.rdoSendByPort.Checked = true;
             this.rdoSendByPort.Location = new System.Drawing.Point(263, 19);
             this.rdoSendByPort.Name = "rdoSendByPort";
-            this.rdoSendByPort.Size = new System.Drawing.Size(87, 17);
+            this.rdoSendByPort.Size = new System.Drawing.Size(90, 17);
             this.rdoSendByPort.TabIndex = 4;
             this.rdoSendByPort.TabStop = true;
-            this.rdoSendByPort.Text = "Send By Port";
+            this.rdoSendByPort.Text = "Send By Port:";
             this.rdoSendByPort.UseVisualStyleBackColor = true;
             // 
             // label2
@@ -654,22 +654,22 @@
             this.toolStripNETVer.Size = new System.Drawing.Size(18, 17);
             this.toolStripNETVer.Text = " - ";
             // 
-            // btnEncodingOptions
+            // btnMessageOptions
             // 
-            this.btnEncodingOptions.Location = new System.Drawing.Point(627, 530);
-            this.btnEncodingOptions.Name = "btnEncodingOptions";
-            this.btnEncodingOptions.Size = new System.Drawing.Size(116, 23);
-            this.btnEncodingOptions.TabIndex = 28;
-            this.btnEncodingOptions.Text = "Message Options";
-            this.btnEncodingOptions.UseVisualStyleBackColor = true;
-            this.btnEncodingOptions.Click += new System.EventHandler(this.btnEncodingOptions_Click);
+            this.btnMessageOptions.Location = new System.Drawing.Point(627, 530);
+            this.btnMessageOptions.Name = "btnMessageOptions";
+            this.btnMessageOptions.Size = new System.Drawing.Size(116, 23);
+            this.btnMessageOptions.TabIndex = 28;
+            this.btnMessageOptions.Text = "Message Options";
+            this.btnMessageOptions.UseVisualStyleBackColor = true;
+            this.btnMessageOptions.Click += new System.EventHandler(this.btnMessageOptions_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 593);
-            this.Controls.Add(this.btnEncodingOptions);
+            this.Controls.Add(this.btnMessageOptions);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnAltView);
             this.Controls.Add(this.groupBox4);
@@ -758,7 +758,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel toolStripNETVer;
         private System.Windows.Forms.CheckBox chkPasswordRequired;
-        private System.Windows.Forms.Button btnEncodingOptions;
+        private System.Windows.Forms.Button btnMessageOptions;
         private System.Windows.Forms.DataGridView dGridAttachments;
         private System.Windows.Forms.Button btnEditContentType;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFilePath;
