@@ -116,10 +116,10 @@ namespace NetMailSample
                 {
                     ContentType sPlainContentType = new ContentType("text/plain");
                     ContentType sHtmlContentType = new ContentType("text/html");
-
+                    
                     AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewHtml, sHtmlContentType);
-
+                    
                     // add inline attachments / linked resource
                     if (inlineAttachmentsTable.Rows.Count > 0)
                     {
@@ -131,6 +131,9 @@ namespace NetMailSample
                             htmlView.LinkedResources.Add(lr);
                         }
                     }
+
+                    // set transfer encoding
+                    htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.BodyTransferEncoding);
 
                     mail.AlternateViews.Add(plainView);
                     mail.AlternateViews.Add(htmlView);
@@ -144,13 +147,24 @@ namespace NetMailSample
                         mail.Headers.Add(rowHdr.Cells[0].Value.ToString(), rowHdr.Cells[1].Value.ToString());
                     }
                 }
-
+                
                 // add attachements
                 foreach (DataGridViewRow rowAtt in dGridAttachments.Rows)
                 {
                     if (rowAtt.Cells[0].Value != null)
                     {
                         Attachment data = new Attachment(rowAtt.Cells[0].Value.ToString(), rowAtt.Cells[1].Value.ToString());
+                        if (rowAtt.Cells[4].Value.ToString() == "True")
+                        {
+                            data.ContentDisposition.Inline = true;
+                            data.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+                            data.ContentId = rowAtt.Cells[3].Value.ToString();
+                        }
+                        else
+                        {
+                            data.ContentDisposition.Inline = false;
+                            data.ContentDisposition.DispositionType = DispositionTypeNames.Attachment;
+                        }
                         mail.Attachments.Add(data);
                     }
                 }
@@ -253,6 +267,7 @@ namespace NetMailSample
                     dGridAttachments.Rows[n].Cells[1].Value = MediaTypeNames.Application.Octet;
                     size = FileUtilities.ConvertFileSize(f);
                     dGridAttachments.Rows[n].Cells[2].Value = size;
+                    dGridAttachments.Rows[n].Cells[4].Value = "False";
                 }
                 catch (IOException ioe)
                 {
@@ -483,6 +498,17 @@ namespace NetMailSample
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
                     dGridAttachments.SelectedRows[0].Cells[1].Value = mEditContentType.attContentType;
+                    if (mEditContentType.isInline == true)
+                    {
+                        dGridAttachments.SelectedRows[0].Cells[3].Value = mEditContentType.cid;
+                        dGridAttachments.SelectedRows[0].Cells[4].Value = "True";
+                    }
+                    else
+                    {
+                        dGridAttachments.SelectedRows[0].Cells[3].Value = "";
+                        dGridAttachments.SelectedRows[0].Cells[4].Value = "False";
+                    }
+                    
                 }
             }
             catch (NullReferenceException)

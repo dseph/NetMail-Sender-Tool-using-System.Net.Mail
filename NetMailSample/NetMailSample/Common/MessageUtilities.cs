@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -100,6 +101,26 @@ namespace NetMailSample.Common
                     return Encoding.UTF7;
                 default:
                     return Encoding.ASCII;
+            }
+        }
+
+        /// <summary>
+        /// this function will convert the string value to the corresponding TransferEncoding type
+        /// </summary>
+        /// <param name="tEncoding">string value to be converted</param>
+        /// <returns></returns>
+        public static TransferEncoding GetTransferEncoding(string tEncoding)
+        {
+            switch (tEncoding)
+            {
+                case "QuotedPrintable":
+                    return TransferEncoding.QuotedPrintable;
+                case "SevenBit":
+                    return TransferEncoding.SevenBit;
+                case "Base64":
+                    return TransferEncoding.Base64;
+                default:
+                    return TransferEncoding.Unknown;
             }
         }
     }

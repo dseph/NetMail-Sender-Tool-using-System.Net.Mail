@@ -52,6 +52,8 @@
             this.colCid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colContentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cboTransferEncoding = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.tabHtml.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -59,6 +61,7 @@
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridInlineAttachments)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTxtHtmlView
@@ -107,7 +110,7 @@
             this.groupBox1.Controls.Add(this.btnLinkedResBrowse);
             this.groupBox1.Location = new System.Drawing.Point(12, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(644, 81);
+            this.groupBox1.Size = new System.Drawing.Size(503, 81);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add File To Message Attachments";
@@ -115,7 +118,7 @@
             // btnAddLR
             // 
             this.btnAddLR.Image = global::NetMailSample.Properties.Resources.AddMark_10580;
-            this.btnAddLR.Location = new System.Drawing.Point(589, 49);
+            this.btnAddLR.Location = new System.Drawing.Point(446, 49);
             this.btnAddLR.Name = "btnAddLR";
             this.btnAddLR.Size = new System.Drawing.Size(43, 23);
             this.btnAddLR.TabIndex = 9;
@@ -126,7 +129,7 @@
             // 
             this.txtCid.Location = new System.Drawing.Point(71, 50);
             this.txtCid.Name = "txtCid";
-            this.txtCid.Size = new System.Drawing.Size(512, 20);
+            this.txtCid.Size = new System.Drawing.Size(369, 20);
             this.txtCid.TabIndex = 8;
             // 
             // label4
@@ -151,13 +154,13 @@
             // 
             this.txtLinkedResPath.Location = new System.Drawing.Point(71, 20);
             this.txtLinkedResPath.Name = "txtLinkedResPath";
-            this.txtLinkedResPath.Size = new System.Drawing.Size(512, 20);
+            this.txtLinkedResPath.Size = new System.Drawing.Size(369, 20);
             this.txtLinkedResPath.TabIndex = 1;
             // 
             // btnLinkedResBrowse
             // 
             this.btnLinkedResBrowse.Image = global::NetMailSample.Properties.Resources.OpenAttachment_13115;
-            this.btnLinkedResBrowse.Location = new System.Drawing.Point(589, 18);
+            this.btnLinkedResBrowse.Location = new System.Drawing.Point(446, 20);
             this.btnLinkedResBrowse.Name = "btnLinkedResBrowse";
             this.btnLinkedResBrowse.Size = new System.Drawing.Size(43, 23);
             this.btnLinkedResBrowse.TabIndex = 0;
@@ -270,11 +273,35 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Alternate View";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.cboTransferEncoding);
+            this.groupBox4.Location = new System.Drawing.Point(521, 12);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(235, 73);
+            this.groupBox4.TabIndex = 10;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Transfer-Encoding";
+            // 
+            // cboTransferEncoding
+            // 
+            this.cboTransferEncoding.FormattingEnabled = true;
+            this.cboTransferEncoding.Items.AddRange(new object[] {
+            "SevenBit",
+            "Base64",
+            "QuotedPrintable"});
+            this.cboTransferEncoding.Location = new System.Drawing.Point(6, 19);
+            this.cboTransferEncoding.Name = "cboTransferEncoding";
+            this.cboTransferEncoding.Size = new System.Drawing.Size(223, 21);
+            this.cboTransferEncoding.TabIndex = 0;
+            this.cboTransferEncoding.Text = "QuotedPrintable";
+            // 
             // frmAlternateView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(774, 454);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -296,6 +323,7 @@
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGridInlineAttachments)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -325,5 +353,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colFilePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCid;
         private System.Windows.Forms.DataGridViewTextBoxColumn colContentType;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox cboTransferEncoding;
     }
 }

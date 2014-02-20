@@ -118,5 +118,17 @@ namespace NetMailSample.Properties {
                 this["AltViewPlain"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("QuotedPrintable")]
+        public string BodyTransferEncoding {
+            get {
+                return ((string)(this["BodyTransferEncoding"]));
+            }
+            set {
+                this["BodyTransferEncoding"] = value;
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace NetMailSample.Forms
             // set initial values for the html and plain textboxes
             richTxtHtmlView.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
             txtBoxPlainView.Text = NetMailSample.Properties.Settings.Default.AltViewPlain;
+            cboTransferEncoding.Text = NetMailSample.Properties.Settings.Default.BodyTransferEncoding;
         }
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace NetMailSample.Forms
             {
                 NetMailSample.Properties.Settings.Default.AltViewHtml = richTxtHtmlView.Text;
                 NetMailSample.Properties.Settings.Default.AltViewPlain = txtBoxPlainView.Text;
+                NetMailSample.Properties.Settings.Default.BodyTransferEncoding = cboTransferEncoding.Text;
             }
             else if(richTxtHtmlView.Text != "" && txtBoxPlainView.Text == "")
             {

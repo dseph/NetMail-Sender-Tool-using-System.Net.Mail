@@ -26,5 +26,8 @@
     <Setting Name="AltViewPlain" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="BodyTransferEncoding" Type="System.String" Scope="User">
+      <Value Profile="(Default)">QuotedPrintable</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

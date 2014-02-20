@@ -12,7 +12,8 @@ namespace NetMailSample.Forms
 {
     public partial class frmEditContentType : Form
     {
-        public string attContentType, origValue;
+        public string attContentType, origValue, cid;
+        public bool isInline;
 
         /// <summary>
         /// constructor for the form
@@ -27,6 +28,11 @@ namespace NetMailSample.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             attContentType = NetMailSample.Common.FileUtilities.GetContentType(cboContentType.Text);
+            if (cboInline.Checked)
+            {
+                isInline = true;
+                cid = txtCid.Text;
+            }
             this.Close();
         }
 
@@ -39,6 +45,18 @@ namespace NetMailSample.Forms
         {
             attContentType = NetMailSample.Common.FileUtilities.GetContentType(origValue);
             this.Close();
+        }
+
+        private void cboInline_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cboInline.Checked)
+            {
+                txtCid.Enabled = true;
+            }
+            else
+            {
+                txtCid.Enabled = false;
+            }
         }
     }
 }

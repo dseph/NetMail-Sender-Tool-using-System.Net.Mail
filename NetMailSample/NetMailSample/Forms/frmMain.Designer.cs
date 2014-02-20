@@ -62,9 +62,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnEditContentType = new System.Windows.Forms.Button();
             this.dGridAttachments = new System.Windows.Forms.DataGridView();
-            this.colFilePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colContentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnInsertAttachment = new System.Windows.Forms.Button();
             this.btnDeleteAttachment = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -87,6 +84,11 @@
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripNETVer = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnMessageOptions = new System.Windows.Forms.Button();
+            this.colFilePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colContentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colContentId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colInline = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grpMailMessage.SuspendLayout();
             this.grpSmtpSettings.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -433,27 +435,14 @@
             this.dGridAttachments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFilePath,
             this.colContentType,
-            this.colFileSize});
+            this.colFileSize,
+            this.colContentId,
+            this.colInline});
             this.dGridAttachments.Location = new System.Drawing.Point(7, 19);
             this.dGridAttachments.MultiSelect = false;
             this.dGridAttachments.Name = "dGridAttachments";
             this.dGridAttachments.Size = new System.Drawing.Size(349, 155);
             this.dGridAttachments.TabIndex = 25;
-            // 
-            // colFilePath
-            // 
-            this.colFilePath.HeaderText = "File Path";
-            this.colFilePath.Name = "colFilePath";
-            // 
-            // colContentType
-            // 
-            this.colContentType.HeaderText = "Content Type";
-            this.colContentType.Name = "colContentType";
-            // 
-            // colFileSize
-            // 
-            this.colFileSize.HeaderText = "Size";
-            this.colFileSize.Name = "colFileSize";
             // 
             // btnInsertAttachment
             // 
@@ -664,6 +653,31 @@
             this.btnMessageOptions.UseVisualStyleBackColor = true;
             this.btnMessageOptions.Click += new System.EventHandler(this.btnMessageOptions_Click);
             // 
+            // colFilePath
+            // 
+            this.colFilePath.HeaderText = "File Path";
+            this.colFilePath.Name = "colFilePath";
+            // 
+            // colContentType
+            // 
+            this.colContentType.HeaderText = "Content Type";
+            this.colContentType.Name = "colContentType";
+            // 
+            // colFileSize
+            // 
+            this.colFileSize.HeaderText = "Size";
+            this.colFileSize.Name = "colFileSize";
+            // 
+            // colContentId
+            // 
+            this.colContentId.HeaderText = "Content Id";
+            this.colContentId.Name = "colContentId";
+            // 
+            // colInline
+            // 
+            this.colInline.HeaderText = "Inline";
+            this.colInline.Name = "colInline";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -761,10 +775,12 @@
         private System.Windows.Forms.Button btnMessageOptions;
         private System.Windows.Forms.DataGridView dGridAttachments;
         private System.Windows.Forms.Button btnEditContentType;
+        private System.Windows.Forms.CheckBox chkTimeBasedSend;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFilePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn colContentType;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFileSize;
-        private System.Windows.Forms.CheckBox chkTimeBasedSend;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colContentId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colInline;
     }
 }
 
