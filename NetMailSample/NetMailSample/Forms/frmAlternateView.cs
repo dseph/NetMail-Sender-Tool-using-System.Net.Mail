@@ -34,21 +34,10 @@ namespace NetMailSample.Forms
         /// <param name="e"></param>
         private void btnAddAlternateViews_Click(object sender, EventArgs e)
         {
-            if (txtBoxPlainView.Text != "" && richTxtHtmlView.Text != "")
-            {
-                NetMailSample.Properties.Settings.Default.AltViewHtml = richTxtHtmlView.Text;
-                NetMailSample.Properties.Settings.Default.AltViewPlain = txtBoxPlainView.Text;
-                NetMailSample.Properties.Settings.Default.BodyTransferEncoding = cboTransferEncoding.Text;
-            }
-            else if(richTxtHtmlView.Text != "" && txtBoxPlainView.Text == "")
-            {
-                txtBoxPlainView.Text = richTxtHtmlView.Text;
-            }
-            else if(richTxtHtmlView.Text == "" && txtBoxPlainView.Text != "")
-            {
-                richTxtHtmlView.Text = txtBoxPlainView.Text;
-            }
-            
+            NetMailSample.Properties.Settings.Default.AltViewHtml = richTxtHtmlView.Text;
+            NetMailSample.Properties.Settings.Default.AltViewPlain = txtBoxPlainView.Text;
+            NetMailSample.Properties.Settings.Default.BodyTransferEncoding = cboTransferEncoding.Text;
+
             inlineTable.Columns.Add("Path", typeof(string));
             inlineTable.Columns.Add("Cid", typeof(string));
             inlineTable.Columns.Add("ContentType", typeof(string));
@@ -60,6 +49,7 @@ namespace NetMailSample.Forms
                     inlineTable.Rows.Add(rowAtt.Cells[0].Value, rowAtt.Cells[1].Value, rowAtt.Cells[2].Value);
                 }
             }
+            
             this.Close();
         }
 

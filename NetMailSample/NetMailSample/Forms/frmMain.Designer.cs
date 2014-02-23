@@ -62,6 +62,11 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnEditContentType = new System.Windows.Forms.Button();
             this.dGridAttachments = new System.Windows.Forms.DataGridView();
+            this.colFilePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colContentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colContentId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colInline = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnInsertAttachment = new System.Windows.Forms.Button();
             this.btnDeleteAttachment = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -84,11 +89,6 @@
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripNETVer = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnMessageOptions = new System.Windows.Forms.Button();
-            this.colFilePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colContentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colContentId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colInline = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grpMailMessage.SuspendLayout();
             this.grpSmtpSettings.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -444,6 +444,31 @@
             this.dGridAttachments.Size = new System.Drawing.Size(349, 155);
             this.dGridAttachments.TabIndex = 25;
             // 
+            // colFilePath
+            // 
+            this.colFilePath.HeaderText = "File Path";
+            this.colFilePath.Name = "colFilePath";
+            // 
+            // colContentType
+            // 
+            this.colContentType.HeaderText = "Content Type";
+            this.colContentType.Name = "colContentType";
+            // 
+            // colFileSize
+            // 
+            this.colFileSize.HeaderText = "Size";
+            this.colFileSize.Name = "colFileSize";
+            // 
+            // colContentId
+            // 
+            this.colContentId.HeaderText = "Content Id";
+            this.colContentId.Name = "colContentId";
+            // 
+            // colInline
+            // 
+            this.colInline.HeaderText = "Inline";
+            this.colInline.Name = "colInline";
+            // 
             // btnInsertAttachment
             // 
             this.btnInsertAttachment.Image = global::NetMailSample.Properties.Resources.AddMark_10580;
@@ -653,31 +678,6 @@
             this.btnMessageOptions.UseVisualStyleBackColor = true;
             this.btnMessageOptions.Click += new System.EventHandler(this.btnMessageOptions_Click);
             // 
-            // colFilePath
-            // 
-            this.colFilePath.HeaderText = "File Path";
-            this.colFilePath.Name = "colFilePath";
-            // 
-            // colContentType
-            // 
-            this.colContentType.HeaderText = "Content Type";
-            this.colContentType.Name = "colContentType";
-            // 
-            // colFileSize
-            // 
-            this.colFileSize.HeaderText = "Size";
-            this.colFileSize.Name = "colFileSize";
-            // 
-            // colContentId
-            // 
-            this.colContentId.HeaderText = "Content Id";
-            this.colContentId.Name = "colContentId";
-            // 
-            // colInline
-            // 
-            this.colInline.HeaderText = "Inline";
-            this.colInline.Name = "colInline";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -698,7 +698,7 @@
             this.MaximizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "System.Net.Mail API Sender";
+            this.Text = "NetMail Sender";
             this.grpMailMessage.ResumeLayout(false);
             this.grpMailMessage.PerformLayout();
             this.grpSmtpSettings.ResumeLayout(false);

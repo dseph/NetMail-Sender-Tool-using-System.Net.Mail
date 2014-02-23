@@ -34,9 +34,10 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.cboContentType = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cboInline = new System.Windows.Forms.CheckBox();
-            this.txtCid = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtCid = new System.Windows.Forms.TextBox();
+            this.cboInline = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(89, 124);
+            this.btnOK.Location = new System.Drawing.Point(107, 145);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(60, 23);
             this.btnOK.TabIndex = 1;
@@ -61,7 +62,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(155, 124);
+            this.btnCancel.Location = new System.Drawing.Point(173, 145);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(70, 23);
             this.btnCancel.TabIndex = 2;
@@ -87,12 +88,13 @@
             "Xml"});
             this.cboContentType.Location = new System.Drawing.Point(86, 22);
             this.cboContentType.Name = "cboContentType";
-            this.cboContentType.Size = new System.Drawing.Size(118, 21);
+            this.cboContentType.Size = new System.Drawing.Size(142, 21);
             this.cboContentType.TabIndex = 3;
             this.cboContentType.Text = "Octet";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtCid);
             this.groupBox1.Controls.Add(this.cboInline);
@@ -100,10 +102,27 @@
             this.groupBox1.Controls.Add(this.cboContentType);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(213, 106);
+            this.groupBox1.Size = new System.Drawing.Size(234, 127);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Attachment Options";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 78);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Content Id:";
+            // 
+            // txtCid
+            // 
+            this.txtCid.Enabled = false;
+            this.txtCid.Location = new System.Drawing.Point(71, 75);
+            this.txtCid.Name = "txtCid";
+            this.txtCid.Size = new System.Drawing.Size(157, 20);
+            this.txtCid.TabIndex = 5;
             // 
             // cboInline
             // 
@@ -116,28 +135,21 @@
             this.cboInline.UseVisualStyleBackColor = true;
             this.cboInline.CheckedChanged += new System.EventHandler(this.cboInline_CheckedChanged);
             // 
-            // txtCid
+            // label3
             // 
-            this.txtCid.Enabled = false;
-            this.txtCid.Location = new System.Drawing.Point(71, 75);
-            this.txtCid.Name = "txtCid";
-            this.txtCid.Size = new System.Drawing.Size(133, 20);
-            this.txtCid.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 78);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Content Id:";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 111);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(225, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Note: inline attachment sets BodyHTML = true";
             // 
             // frmEditContentType
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(238, 157);
+            this.ClientSize = new System.Drawing.Size(255, 177);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
@@ -164,5 +176,6 @@
         private System.Windows.Forms.TextBox txtCid;
         private System.Windows.Forms.CheckBox cboInline;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

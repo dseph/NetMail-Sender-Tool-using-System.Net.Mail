@@ -16,7 +16,7 @@ namespace NetMailSample.Forms
         public bool isInline;
 
         /// <summary>
-        /// constructor for the form
+        /// form constructor
         /// </summary>
         /// <param name="origVal">this is the original value of the attachment content type</param>
         public frmEditContentType(string origVal)
@@ -24,7 +24,7 @@ namespace NetMailSample.Forms
             InitializeComponent();
             origValue = origVal;
         }
-
+        
         private void btnOK_Click(object sender, EventArgs e)
         {
             attContentType = NetMailSample.Common.FileUtilities.GetContentType(cboContentType.Text);

@@ -119,7 +119,7 @@ namespace NetMailSample
                     
                     AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewHtml, sHtmlContentType);
-                    
+
                     // add inline attachments / linked resource
                     if (inlineAttachmentsTable.Rows.Count > 0)
                     {
@@ -134,7 +134,7 @@ namespace NetMailSample
 
                     // set transfer encoding
                     htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.BodyTransferEncoding);
-
+                    
                     mail.AlternateViews.Add(plainView);
                     mail.AlternateViews.Add(htmlView);
                 }
@@ -306,7 +306,7 @@ namespace NetMailSample
         }
 
         /// <summary>
-        /// delete the selected item in the datagridview
+        /// delete the currently selected attachment in the datagridview
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -327,7 +327,7 @@ namespace NetMailSample
         }
 
         /// <summary>
-        /// delete any row that is currently selected
+        /// delete the currently selected row for the header datagrid
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -461,12 +461,8 @@ namespace NetMailSample
             NetMailSample.Forms.frmAlternateView aAltViewForm = new Forms.frmAlternateView();
             aAltViewForm.Owner = this;
             aAltViewForm.ShowDialog(this);
-            if (NetMailSample.Properties.Settings.Default.AltViewHtml != "" && NetMailSample.Properties.Settings.Default.AltViewPlain != "")
-            {
-                richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
-                inlineAttachmentsTable = aAltViewForm.inlineTable;
-            }
-            
+            richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
+            inlineAttachmentsTable = aAltViewForm.inlineTable;
         }
 
         /// <summary>
@@ -502,6 +498,7 @@ namespace NetMailSample
                     {
                         dGridAttachments.SelectedRows[0].Cells[3].Value = mEditContentType.cid;
                         dGridAttachments.SelectedRows[0].Cells[4].Value = "True";
+                        NetMailSample.Properties.Settings.Default.BodyHtml = true;
                     }
                     else
                     {
