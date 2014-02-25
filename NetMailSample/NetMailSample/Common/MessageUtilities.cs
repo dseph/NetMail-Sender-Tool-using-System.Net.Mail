@@ -27,8 +27,14 @@ namespace NetMailSample.Common
         public static string parseEmail(string input)
         {
             Regex r = new Regex(@"^((?:(?:(?:[a-zA-Z0-9][\.\-\+_]?)*)[a-zA-Z0-9])+)\@((?:(?:(?:[a-zA-Z0-9][\.\-_]?){0,62})[a-zA-Z0-9])+)\.([a-zA-Z0-9]{2,6})$");
-            if (r.Match(input.Trim()).Success) { return input; }
-            else { throw new ArgumentException("Not an email address - " + input); }
+            if (r.Match(input.Trim()).Success)
+            { 
+                return input; 
+            }
+            else
+            { 
+                throw new ArgumentException("Not an email address - " + input); 
+            }
         }
 
         /// <summary>
@@ -49,8 +55,14 @@ namespace NetMailSample.Common
             foreach (string s in emails)
             {
                 string temp = s.Trim();
-                if (r.Match(temp).Success) { al.Add(temp); }
-                else { failCount++; }
+                if (r.Match(temp).Success) 
+                { 
+                    al.Add(temp); 
+                }
+                else 
+                { 
+                    failCount++; 
+                }
             }
 
             // if we didn't fail validation for an email address,

@@ -32,8 +32,10 @@ namespace NetMailSample.Common
             decimal ConvertedValue = 0;
 
             //First check to see if they entered the same value for the ConvertFrom and ConvertTo parameters
-            if (ConvertFrom == ConvertTo) 
+            if (ConvertFrom == ConvertTo)
+            {
                 return Value; 
+            }             
             else
             {
                 try

@@ -188,9 +188,13 @@ namespace NetMailSample
                 if (sUser.Length != 0)
                 {
                     if (sDomain.Length != 0)
+                    {
                         smtp.Credentials = new NetworkCredential(sUser, sPassword);
+                    }                    
                     else
+                    {
                         smtp.Credentials = new NetworkCredential(sUser, sPassword, sDomain);
+                    }
                 }
 
                 // send by pickup folder?
