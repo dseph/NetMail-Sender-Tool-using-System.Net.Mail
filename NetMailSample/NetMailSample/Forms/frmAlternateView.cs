@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +16,11 @@ namespace NetMailSample.Forms
     {
         public string cid, cidPath;
         public DataTable inlineTable = new DataTable();
+        public AlternateView avCal;
 
         public frmAlternateView()
         {
             InitializeComponent();
-
-            // set initial values for the html and plain textboxes
-            richTxtHtmlView.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
-            txtBoxPlainView.Text = NetMailSample.Properties.Settings.Default.AltViewPlain;
             cboTransferEncoding.Text = NetMailSample.Properties.Settings.Default.BodyTransferEncoding;
         }
 
@@ -34,10 +32,33 @@ namespace NetMailSample.Forms
         /// <param name="e"></param>
         private void btnAddAlternateViews_Click(object sender, EventArgs e)
         {
-            NetMailSample.Properties.Settings.Default.AltViewHtml = richTxtHtmlView.Text;
-            NetMailSample.Properties.Settings.Default.AltViewPlain = txtBoxPlainView.Text;
-            NetMailSample.Properties.Settings.Default.BodyTransferEncoding = cboTransferEncoding.Text;
+            switch (cboAltViewContentType.Text)
+            {
+                case "vCalendar":
+                    StringBuilder sb = new StringBuilder();
+                    string[] lines = txtAltViewBody.Lines;
 
+                    for(int i = 0; i < lines.GetUpperBound(0); i++)
+                    {
+                        sb.AppendLine((lines[i]));
+                    }
+                    NetMailSample.Properties.Settings.Default.AltViewCal = sb.ToString();
+                    break;
+                case "PlainText":
+                    NetMailSample.Properties.Settings.Default.AltViewPlain = txtAltViewBody.Text;
+                    break;
+                default:
+                    NetMailSample.Properties.Settings.Default.AltViewHtml = txtAltViewBody.Text;
+                    AddInlineTableForAttachments();
+                    break;
+            }
+
+            NetMailSample.Properties.Settings.Default.BodyTransferEncoding = cboTransferEncoding.Text;
+            this.Close();
+        }
+
+        private void AddInlineTableForAttachments()
+        {
             inlineTable.Columns.Add("Path", typeof(string));
             inlineTable.Columns.Add("Cid", typeof(string));
             inlineTable.Columns.Add("ContentType", typeof(string));
@@ -49,8 +70,6 @@ namespace NetMailSample.Forms
                     inlineTable.Rows.Add(rowAtt.Cells[0].Value, rowAtt.Cells[1].Value, rowAtt.Cells[2].Value);
                 }
             }
-            
-            this.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -106,6 +125,43 @@ namespace NetMailSample.Forms
             {
                 return;
             }
+        }
+
+        // this button will display a vCalendar sample in the textbox
+        private void btnCalSample_Click(object sender, EventArgs e)
+        {
+            cboAltViewContentType.Text = "vCalendar";
+
+            DateTime dtStart = DateTime.Now.AddHours(1);
+            DateTime dtEnd = DateTime.Now.AddHours(2);
+            string msgBody = "Test Message Body";
+            string msgSubject = "Test Subject";
+            string msgTo = "brandon.desjarlais@hotmail.com";
+            string msgFrom = "brandondesjarlais@outlook.com";
+            string msgDispName = "BD";
+
+            StringBuilder sbCal = new StringBuilder();
+            sbCal.AppendLine("BEGIN:VCALENDAR");
+            sbCal.AppendLine("METHOD:REQUEST");
+            sbCal.AppendLine("STATUS:CONFIRMED");
+            sbCal.AppendLine("BEGIN:VEVENT");
+
+            sbCal.AppendLine(string.Format("TZID:{0}", "US-Eastern"));
+            sbCal.AppendLine(string.Format("DTSTART:{0:yyyyMMddTHHmmss}", dtStart));
+            sbCal.AppendLine(string.Format("DTEND:{0:yyyyMMddTHHmmss}", dtEnd));
+            sbCal.AppendLine(string.Format("DTSTAMP:{0:yyyyMMddTHHmmss}", DateTime.Now));
+
+            sbCal.AppendLine(string.Format("UID:{0}", Guid.NewGuid()));
+            sbCal.AppendLine(string.Format("DESCRIPTION:{0}", msgBody));
+            sbCal.AppendLine(string.Format("X-ALT-DESC;FMTTYPE=text/html:{0}", msgBody));
+            sbCal.AppendLine(string.Format("SUMMARY:{0}", msgSubject));
+            sbCal.AppendLine(string.Format("ORGANIZER:MAILTO:{0}", msgFrom));
+
+            sbCal.AppendLine(string.Format("ATTENDEE;CN=\"{0}\";RSVP=TRUE:mailto:{1}", msgDispName, msgTo));
+            sbCal.AppendLine("END:VEVENT");
+            sbCal.AppendLine("END:VCALENDAR");
+            
+            txtAltViewBody.Text = sbCal.ToString();
         }
     }
 }

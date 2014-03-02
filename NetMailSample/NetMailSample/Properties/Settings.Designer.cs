@@ -130,5 +130,17 @@ namespace NetMailSample.Properties {
                 this["BodyTransferEncoding"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AltViewCal {
+            get {
+                return ((string)(this["AltViewCal"]));
+            }
+            set {
+                this["AltViewCal"] = value;
+            }
+        }
     }
 }

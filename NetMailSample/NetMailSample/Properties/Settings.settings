@@ -29,5 +29,8 @@
     <Setting Name="BodyTransferEncoding" Type="System.String" Scope="User">
       <Value Profile="(Default)">QuotedPrintable</Value>
     </Setting>
+    <Setting Name="AltViewCal" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

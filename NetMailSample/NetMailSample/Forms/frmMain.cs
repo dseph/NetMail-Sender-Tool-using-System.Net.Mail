@@ -111,13 +111,10 @@ namespace NetMailSample
                         break;
                 }
 
-                // add alternate views
-                if (NetMailSample.Properties.Settings.Default.AltViewHtml != "" && NetMailSample.Properties.Settings.Default.AltViewPlain != "")
+                // add HTML AltView
+                if (NetMailSample.Properties.Settings.Default.AltViewHtml != "")
                 {
-                    ContentType sPlainContentType = new ContentType("text/plain");
                     ContentType sHtmlContentType = new ContentType("text/html");
-                    
-                    AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewHtml, sHtmlContentType);
 
                     // add inline attachments / linked resource
@@ -134,9 +131,25 @@ namespace NetMailSample
 
                     // set transfer encoding
                     htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.BodyTransferEncoding);
-                    
-                    mail.AlternateViews.Add(plainView);
                     mail.AlternateViews.Add(htmlView);
+                }
+                
+                // add Plain Text AltView
+                if (NetMailSample.Properties.Settings.Default.AltViewPlain != "")
+                {
+                    ContentType sPlainContentType = new ContentType("text/plain");
+                    AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
+                    mail.AlternateViews.Add(plainView);
+                }
+
+                // add vCal AltView
+                if (NetMailSample.Properties.Settings.Default.AltViewCal != "")
+                {
+                    ContentType ct = new ContentType("text/calendar");
+                    ct.Parameters.Add("method", "REQUEST");
+                    ct.Parameters.Add("name", "meeting.ics");
+                    AlternateView calView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewCal, ct);
+                    mail.AlternateViews.Add(calView);
                 }
 
                 // add custom headers
@@ -318,7 +331,10 @@ namespace NetMailSample
         {
             try
             { 
-                if (dGridAttachments.SelectedRows.Count > 0) { dGridAttachments.Rows.RemoveAt(dGridAttachments.SelectedRows[0].Index); }
+                if (dGridAttachments.SelectedRows.Count > 0) 
+                { 
+                    dGridAttachments.Rows.RemoveAt(dGridAttachments.SelectedRows[0].Index); 
+                }
             }
             catch (InvalidOperationException)
             {
@@ -339,7 +355,10 @@ namespace NetMailSample
         {
             try
             {
-                if (dGridHeaders.SelectedRows.Count > 0) { dGridHeaders.Rows.RemoveAt(dGridHeaders.SelectedRows[0].Index); }
+                if (dGridHeaders.SelectedRows.Count > 0) 
+                { 
+                    dGridHeaders.Rows.RemoveAt(dGridHeaders.SelectedRows[0].Index); 
+                }
             }
             catch (InvalidOperationException)
             {
@@ -465,8 +484,16 @@ namespace NetMailSample
             NetMailSample.Forms.frmAlternateView aAltViewForm = new Forms.frmAlternateView();
             aAltViewForm.Owner = this;
             aAltViewForm.ShowDialog(this);
-            richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
-            inlineAttachmentsTable = aAltViewForm.inlineTable;
+            if (NetMailSample.Properties.Settings.Default.AltViewCal != "")
+            {
+                richTxtBody.Text = "";
+            }
+            else
+            {
+                richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
+                inlineAttachmentsTable = aAltViewForm.inlineTable;
+            }
+            
         }
 
         /// <summary>

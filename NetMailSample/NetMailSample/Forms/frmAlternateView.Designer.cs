@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAlternateView));
-            this.richTxtHtmlView = new System.Windows.Forms.RichTextBox();
-            this.txtBoxPlainView = new System.Windows.Forms.TextBox();
             this.btnAddAlternateViews = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -41,9 +39,6 @@
             this.txtLinkedResPath = new System.Windows.Forms.TextBox();
             this.btnLinkedResBrowse = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.tabHtml = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnModifyContentType = new System.Windows.Forms.Button();
             this.btnDeleteAttachment = new System.Windows.Forms.Button();
@@ -51,34 +46,20 @@
             this.colFilePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colContentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cboTransferEncoding = new System.Windows.Forms.ComboBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cboAltViewContentType = new System.Windows.Forms.ComboBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.txtAltViewBody = new System.Windows.Forms.TextBox();
+            this.btnCalSample = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            this.tabHtml.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridInlineAttachments)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // richTxtHtmlView
-            // 
-            this.richTxtHtmlView.Location = new System.Drawing.Point(6, 6);
-            this.richTxtHtmlView.Name = "richTxtHtmlView";
-            this.richTxtHtmlView.Size = new System.Drawing.Size(350, 264);
-            this.richTxtHtmlView.TabIndex = 2;
-            this.richTxtHtmlView.Text = "";
-            // 
-            // txtBoxPlainView
-            // 
-            this.txtBoxPlainView.Location = new System.Drawing.Point(6, 6);
-            this.txtBoxPlainView.Multiline = true;
-            this.txtBoxPlainView.Name = "txtBoxPlainView";
-            this.txtBoxPlainView.Size = new System.Drawing.Size(350, 264);
-            this.txtBoxPlainView.TabIndex = 3;
             // 
             // btnAddAlternateViews
             // 
@@ -108,9 +89,9 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtLinkedResPath);
             this.groupBox1.Controls.Add(this.btnLinkedResBrowse);
-            this.groupBox1.Location = new System.Drawing.Point(12, 4);
+            this.groupBox1.Location = new System.Drawing.Point(331, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(503, 81);
+            this.groupBox1.Size = new System.Drawing.Size(431, 81);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add File To Message Attachments";
@@ -118,7 +99,7 @@
             // btnAddLR
             // 
             this.btnAddLR.Image = global::NetMailSample.Properties.Resources.AddMark_10580;
-            this.btnAddLR.Location = new System.Drawing.Point(446, 49);
+            this.btnAddLR.Location = new System.Drawing.Point(382, 48);
             this.btnAddLR.Name = "btnAddLR";
             this.btnAddLR.Size = new System.Drawing.Size(43, 23);
             this.btnAddLR.TabIndex = 9;
@@ -129,7 +110,7 @@
             // 
             this.txtCid.Location = new System.Drawing.Point(71, 50);
             this.txtCid.Name = "txtCid";
-            this.txtCid.Size = new System.Drawing.Size(369, 20);
+            this.txtCid.Size = new System.Drawing.Size(305, 20);
             this.txtCid.TabIndex = 8;
             // 
             // label4
@@ -154,13 +135,13 @@
             // 
             this.txtLinkedResPath.Location = new System.Drawing.Point(71, 20);
             this.txtLinkedResPath.Name = "txtLinkedResPath";
-            this.txtLinkedResPath.Size = new System.Drawing.Size(369, 20);
+            this.txtLinkedResPath.Size = new System.Drawing.Size(305, 20);
             this.txtLinkedResPath.TabIndex = 1;
             // 
             // btnLinkedResBrowse
             // 
             this.btnLinkedResBrowse.Image = global::NetMailSample.Properties.Resources.OpenAttachment_13115;
-            this.btnLinkedResBrowse.Location = new System.Drawing.Point(446, 20);
+            this.btnLinkedResBrowse.Location = new System.Drawing.Point(382, 18);
             this.btnLinkedResBrowse.Name = "btnLinkedResBrowse";
             this.btnLinkedResBrowse.Size = new System.Drawing.Size(43, 23);
             this.btnLinkedResBrowse.TabIndex = 0;
@@ -170,38 +151,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.Title = "Open Linked Resource";
-            // 
-            // tabHtml
-            // 
-            this.tabHtml.Controls.Add(this.tabPage1);
-            this.tabHtml.Controls.Add(this.tabPage2);
-            this.tabHtml.Location = new System.Drawing.Point(9, 16);
-            this.tabHtml.Name = "tabHtml";
-            this.tabHtml.SelectedIndex = 0;
-            this.tabHtml.Size = new System.Drawing.Size(370, 302);
-            this.tabHtml.TabIndex = 7;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.richTxtHtmlView);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(362, 276);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Html";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.txtBoxPlainView);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(362, 276);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Plain Text";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -263,22 +212,12 @@
             this.colContentType.HeaderText = "Content Type";
             this.colContentType.Name = "colContentType";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.tabHtml);
-            this.groupBox3.Location = new System.Drawing.Point(12, 91);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(385, 324);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Alternate View";
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cboTransferEncoding);
-            this.groupBox4.Location = new System.Drawing.Point(521, 12);
+            this.groupBox4.Location = new System.Drawing.Point(155, 4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(235, 73);
+            this.groupBox4.Size = new System.Drawing.Size(170, 81);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Transfer-Encoding";
@@ -292,17 +231,70 @@
             "QuotedPrintable"});
             this.cboTransferEncoding.Location = new System.Drawing.Point(6, 19);
             this.cboTransferEncoding.Name = "cboTransferEncoding";
-            this.cboTransferEncoding.Size = new System.Drawing.Size(223, 21);
+            this.cboTransferEncoding.Size = new System.Drawing.Size(152, 21);
             this.cboTransferEncoding.TabIndex = 0;
             this.cboTransferEncoding.Text = "QuotedPrintable";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnCalSample);
+            this.groupBox3.Controls.Add(this.cboAltViewContentType);
+            this.groupBox3.Location = new System.Drawing.Point(12, 4);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(137, 81);
+            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Content-Type";
+            // 
+            // cboAltViewContentType
+            // 
+            this.cboAltViewContentType.FormattingEnabled = true;
+            this.cboAltViewContentType.Items.AddRange(new object[] {
+            "HTML",
+            "PlainText",
+            "vCalendar"});
+            this.cboAltViewContentType.Location = new System.Drawing.Point(6, 19);
+            this.cboAltViewContentType.Name = "cboAltViewContentType";
+            this.cboAltViewContentType.Size = new System.Drawing.Size(114, 21);
+            this.cboAltViewContentType.TabIndex = 0;
+            this.cboAltViewContentType.Text = "HTML";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.txtAltViewBody);
+            this.groupBox5.Location = new System.Drawing.Point(12, 91);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(385, 351);
+            this.groupBox5.TabIndex = 1;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Alt View Body";
+            // 
+            // txtAltViewBody
+            // 
+            this.txtAltViewBody.Location = new System.Drawing.Point(3, 16);
+            this.txtAltViewBody.Multiline = true;
+            this.txtAltViewBody.Name = "txtAltViewBody";
+            this.txtAltViewBody.Size = new System.Drawing.Size(376, 274);
+            this.txtAltViewBody.TabIndex = 0;
+            // 
+            // btnCalSample
+            // 
+            this.btnCalSample.Location = new System.Drawing.Point(6, 47);
+            this.btnCalSample.Name = "btnCalSample";
+            this.btnCalSample.Size = new System.Drawing.Size(114, 23);
+            this.btnCalSample.TabIndex = 12;
+            this.btnCalSample.Text = "Insert vCal Sample";
+            this.btnCalSample.UseVisualStyleBackColor = true;
+            this.btnCalSample.Click += new System.EventHandler(this.btnCalSample_Click);
             // 
             // frmAlternateView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(774, 454);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -316,22 +308,18 @@
             this.Text = "Alternate Views";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabHtml.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGridInlineAttachments)).EndInit();
-            this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTxtHtmlView;
-        private System.Windows.Forms.TextBox txtBoxPlainView;
         private System.Windows.Forms.Button btnAddAlternateViews;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -341,19 +329,20 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TextBox txtCid;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TabControl tabHtml;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnAddLR;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnModifyContentType;
         private System.Windows.Forms.Button btnDeleteAttachment;
         private System.Windows.Forms.DataGridView dGridInlineAttachments;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFilePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCid;
         private System.Windows.Forms.DataGridViewTextBoxColumn colContentType;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ComboBox cboTransferEncoding;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ComboBox cboAltViewContentType;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox txtAltViewBody;
+        private System.Windows.Forms.Button btnCalSample;
     }
 }
