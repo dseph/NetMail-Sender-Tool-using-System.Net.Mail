@@ -490,8 +490,15 @@ namespace NetMailSample
             }
             else
             {
-                richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
-                inlineAttachmentsTable = aAltViewForm.inlineTable;
+                if (NetMailSample.Properties.Settings.Default.AltViewHtml != "")
+                {
+                    richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
+                    inlineAttachmentsTable = aAltViewForm.inlineTable;
+                }
+                else
+                {
+                    richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewPlain;
+                }
             }
             
         }

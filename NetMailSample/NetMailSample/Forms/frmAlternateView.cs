@@ -136,30 +136,30 @@ namespace NetMailSample.Forms
             DateTime dtEnd = DateTime.Now.AddHours(2);
             string msgBody = "Test Message Body";
             string msgSubject = "Test Subject";
-            string msgTo = "ToEmail@@email.com";
+            string msgTo = "ToEmail@email.com";
             string msgFrom = "FromEmail@email.com";
             string msgDispName = "FNLN";
 
             StringBuilder sbCal = new StringBuilder();
-            sbCal.AppendLine("BEGIN:VCALENDAR");
-            sbCal.AppendLine("METHOD:REQUEST");
-            sbCal.AppendLine("STATUS:CONFIRMED");
-            sbCal.AppendLine("BEGIN:VEVENT");
+            sbCal.Append("BEGIN:VCALENDAR\r\n");
+            sbCal.Append("METHOD:REQUEST\r\n");
+            sbCal.Append("STATUS:CONFIRMED\r\n");
+            sbCal.Append("BEGIN:VEVENT\r\n");
 
-            sbCal.AppendLine(string.Format("TZID:{0}", "US-Eastern"));
-            sbCal.AppendLine(string.Format("DTSTART:{0:yyyyMMddTHHmmss}", dtStart));
-            sbCal.AppendLine(string.Format("DTEND:{0:yyyyMMddTHHmmss}", dtEnd));
-            sbCal.AppendLine(string.Format("DTSTAMP:{0:yyyyMMddTHHmmss}", DateTime.Now));
+            sbCal.Append(string.Format("TZID:{0}", "US-Eastern\r\n"));
+            sbCal.Append(string.Format("DTSTART:{0:yyyyMMddTHHmmss\r\n}", dtStart));
+            sbCal.Append(string.Format("DTEND:{0:yyyyMMddTHHmmss\r\n}", dtEnd));
+            sbCal.Append(string.Format("DTSTAMP:{0:yyyyMMddTHHmmss\r\n}", DateTime.Now));
 
-            sbCal.AppendLine(string.Format("UID:{0}", Guid.NewGuid()));
-            sbCal.AppendLine(string.Format("DESCRIPTION:{0}", msgBody));
-            sbCal.AppendLine(string.Format("X-ALT-DESC;FMTTYPE=text/html:{0}", msgBody));
-            sbCal.AppendLine(string.Format("SUMMARY:{0}", msgSubject));
-            sbCal.AppendLine(string.Format("ORGANIZER:MAILTO:{0}", msgFrom));
+            sbCal.Append(string.Format("UID:{0}\r\n", Guid.NewGuid()));
+            sbCal.Append(string.Format("DESCRIPTION:{0}\r\n", msgBody));
+            sbCal.Append(string.Format("X-ALT-DESC;FMTTYPE=text/html:{0}\r\n", msgBody));
+            sbCal.Append(string.Format("SUMMARY:{0}\r\n", msgSubject));
+            sbCal.Append(string.Format("ORGANIZER:MAILTO:{0}\r\n", msgFrom));
 
-            sbCal.AppendLine(string.Format("ATTENDEE;CN=\"{0}\";RSVP=TRUE:mailto:{1}", msgDispName, msgTo));
-            sbCal.AppendLine("END:VEVENT");
-            sbCal.AppendLine("END:VCALENDAR");
+            sbCal.Append(string.Format("ATTENDEE;CN=\"{0}\";RSVP=TRUE:mailto:{1}\r\n", msgDispName, msgTo));
+            sbCal.Append("END:VEVENT\r\n");
+            sbCal.Append("END:VCALENDAR\r\n");
             
             txtAltViewBody.Text = sbCal.ToString();
         }
