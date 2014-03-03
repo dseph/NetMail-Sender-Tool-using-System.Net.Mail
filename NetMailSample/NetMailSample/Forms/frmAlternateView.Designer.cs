@@ -49,10 +49,10 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cboTransferEncoding = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnCalSample = new System.Windows.Forms.Button();
             this.cboAltViewContentType = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.txtAltViewBody = new System.Windows.Forms.TextBox();
-            this.btnCalSample = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridInlineAttachments)).BeginInit();
@@ -246,6 +246,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Content-Type";
             // 
+            // btnCalSample
+            // 
+            this.btnCalSample.Location = new System.Drawing.Point(6, 47);
+            this.btnCalSample.Name = "btnCalSample";
+            this.btnCalSample.Size = new System.Drawing.Size(114, 23);
+            this.btnCalSample.TabIndex = 12;
+            this.btnCalSample.Text = "Insert vCal Sample";
+            this.btnCalSample.UseVisualStyleBackColor = true;
+            this.btnCalSample.Click += new System.EventHandler(this.btnCalSample_Click);
+            // 
             // cboAltViewContentType
             // 
             this.cboAltViewContentType.FormattingEnabled = true;
@@ -274,18 +284,8 @@
             this.txtAltViewBody.Location = new System.Drawing.Point(3, 16);
             this.txtAltViewBody.Multiline = true;
             this.txtAltViewBody.Name = "txtAltViewBody";
-            this.txtAltViewBody.Size = new System.Drawing.Size(376, 274);
+            this.txtAltViewBody.Size = new System.Drawing.Size(376, 329);
             this.txtAltViewBody.TabIndex = 0;
-            // 
-            // btnCalSample
-            // 
-            this.btnCalSample.Location = new System.Drawing.Point(6, 47);
-            this.btnCalSample.Name = "btnCalSample";
-            this.btnCalSample.Size = new System.Drawing.Size(114, 23);
-            this.btnCalSample.TabIndex = 12;
-            this.btnCalSample.Text = "Insert vCal Sample";
-            this.btnCalSample.UseVisualStyleBackColor = true;
-            this.btnCalSample.Click += new System.EventHandler(this.btnCalSample_Click);
             // 
             // frmAlternateView
             // 

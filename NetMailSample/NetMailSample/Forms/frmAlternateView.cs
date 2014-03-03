@@ -136,9 +136,9 @@ namespace NetMailSample.Forms
             DateTime dtEnd = DateTime.Now.AddHours(2);
             string msgBody = "Test Message Body";
             string msgSubject = "Test Subject";
-            string msgTo = "brandon.desjarlais@hotmail.com";
-            string msgFrom = "brandondesjarlais@outlook.com";
-            string msgDispName = "BD";
+            string msgTo = "ToEmail@@email.com";
+            string msgFrom = "FromEmail@email.com";
+            string msgDispName = "FNLN";
 
             StringBuilder sbCal = new StringBuilder();
             sbCal.AppendLine("BEGIN:VCALENDAR");
