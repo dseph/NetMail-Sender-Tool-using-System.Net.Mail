@@ -228,7 +228,8 @@
             this.cboTransferEncoding.Items.AddRange(new object[] {
             "SevenBit",
             "Base64",
-            "QuotedPrintable"});
+            "QuotedPrintable",
+            "Unknown"});
             this.cboTransferEncoding.Location = new System.Drawing.Point(6, 19);
             this.cboTransferEncoding.Name = "cboTransferEncoding";
             this.cboTransferEncoding.Size = new System.Drawing.Size(152, 21);

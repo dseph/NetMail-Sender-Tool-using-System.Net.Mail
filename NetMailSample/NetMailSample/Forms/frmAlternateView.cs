@@ -14,14 +14,15 @@ namespace NetMailSample.Forms
 {
     public partial class frmAlternateView : Form
     {
-        public string cid, cidPath;
+        public string cid, cidPath, tempSubject;
         public DataTable inlineTable = new DataTable();
         public AlternateView avCal;
 
-        public frmAlternateView()
+        public frmAlternateView(string subject)
         {
             InitializeComponent();
             cboTransferEncoding.Text = NetMailSample.Properties.Settings.Default.BodyTransferEncoding;
+            tempSubject = subject;
         }
 
         /// <summary>
@@ -135,7 +136,7 @@ namespace NetMailSample.Forms
             DateTime dtStart = DateTime.Now.AddHours(1);
             DateTime dtEnd = DateTime.Now.AddHours(2);
             string msgBody = "Test Message Body";
-            string msgSubject = "Test Subject";
+            string msgSubject = tempSubject;
             string msgTo = "ToEmail@email.com";
             string msgFrom = "FromEmail@email.com";
             string msgDispName = "FNLN";

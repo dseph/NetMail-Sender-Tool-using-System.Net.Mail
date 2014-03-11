@@ -187,7 +187,7 @@ namespace NetMailSample
                 {
                     mail.Headers.Add("Disposition-Notification-To", MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
                 }
-
+                
                 // smtp client setup
                 string sUser = txtBoxEmailAddress.Text.Trim();
                 string sPassword = mskPassword.Text.Trim();
@@ -196,7 +196,7 @@ namespace NetMailSample
                 SmtpClient smtp = new SmtpClient(cboServer.Text);
                 smtp.EnableSsl = chkEnableSSL.Checked;
                 smtp.Port = Int32.Parse(cboPort.Text.Trim());
-
+                
                 // check for credentials
                 if (sUser.Length != 0)
                 {
@@ -234,6 +234,9 @@ namespace NetMailSample
 
                 // send email
                 smtp.Send(mail);
+                
+                // output successful send notification
+                txtBoxErrorLog.AppendText("Message sent successfully." + "\r\n");
 
                 // cleanup
                 mail.Dispose();
@@ -243,8 +246,14 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                txtBoxErrorLog.Text = ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+                ErrorOutputLog(ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
+        }
+
+        public void ErrorOutputLog(string errorMessage)
+        {
+            txtBoxErrorLog.AppendText("\r\n" + "### Error ###" + "\r\n");
+            txtBoxErrorLog.AppendText(errorMessage);
         }
 
         /// <summary>
@@ -256,7 +265,6 @@ namespace NetMailSample
         {
             txtBoxErrorLog.Clear();
             SendEmail();
-            txtBoxErrorLog.Text = "Message sent successfully." + "\r\n";
         }
 
         /// <summary>
@@ -288,11 +296,11 @@ namespace NetMailSample
                 }
                 catch (IOException ioe)
                 {
-                    txtBoxErrorLog.Text = "Error: " + ioe.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ioe.StackTrace;
+                    ErrorOutputLog("Error: " + ioe.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ioe.StackTrace);
                 }
                 catch (Exception ex)
                 {
-                    txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+                    ErrorOutputLog(txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
                 }
             }
         }
@@ -318,7 +326,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+                ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -342,7 +350,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+                ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -366,7 +374,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace;
+                ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
             
         }
@@ -481,7 +489,7 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnAltView_Click(object sender, EventArgs e)
         {
-            NetMailSample.Forms.frmAlternateView aAltViewForm = new Forms.frmAlternateView();
+            NetMailSample.Forms.frmAlternateView aAltViewForm = new Forms.frmAlternateView(txtBoxSubject.Text);
             aAltViewForm.Owner = this;
             aAltViewForm.ShowDialog(this);
             if (NetMailSample.Properties.Settings.Default.AltViewCal != "")
