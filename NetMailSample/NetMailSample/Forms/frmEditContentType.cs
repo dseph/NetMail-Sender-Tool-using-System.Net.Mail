@@ -12,26 +12,32 @@ namespace NetMailSample.Forms
 {
     public partial class frmEditContentType : Form
     {
-        public string attContentType, origValue, cid;
+        public string newContentType, newCid;
+        public string origContentType;
         public bool isInline;
 
         /// <summary>
         /// form constructor
         /// </summary>
-        /// <param name="origVal">this is the original value of the attachment content type</param>
-        public frmEditContentType(string origVal)
+        /// <param name="contentType">this is the original value of the attachment content type</param>
+        public frmEditContentType(string contentType)
         {
             InitializeComponent();
-            origValue = origVal;
+            origContentType = contentType;
         }
         
         private void btnOK_Click(object sender, EventArgs e)
         {
-            attContentType = NetMailSample.Common.FileUtilities.GetContentType(cboContentType.Text);
+            newContentType = NetMailSample.Common.FileUtilities.GetContentType(cboContentType.Text);
             if (cboInline.Checked)
             {
                 isInline = true;
-                cid = txtCid.Text;
+                newCid = txtCid.Text;
+            }
+            else
+            {
+                isInline = false;
+                newCid = txtCid.Text;
             }
             this.Close();
         }
@@ -43,7 +49,7 @@ namespace NetMailSample.Forms
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            attContentType = NetMailSample.Common.FileUtilities.GetContentType(origValue);
+            newContentType = NetMailSample.Common.FileUtilities.GetContentType(origContentType);
             this.Close();
         }
 

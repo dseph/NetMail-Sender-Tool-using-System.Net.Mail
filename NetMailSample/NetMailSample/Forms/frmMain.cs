@@ -41,7 +41,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                txtBoxErrorLog.Text = ex.Message + "\r\n" + ex.StackTrace;
+                ErrorOutputLog(ex.Message + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -77,11 +77,6 @@ namespace NetMailSample
                 {
                     MessageUtilities.parseEmails(txtBoxBCC.Text, mail, MessageUtilities.addressType.Bcc);
                 }
-
-                // set the content
-                mail.Subject = txtBoxSubject.Text;
-                mail.Body = richTxtBody.Text;
-                mail.IsBodyHtml = NetMailSample.Properties.Settings.Default.BodyHtml;
 
                 // set encoding for message
                 if (NetMailSample.Properties.Settings.Default.BodyEncoding != "")
@@ -172,6 +167,7 @@ namespace NetMailSample
                             data.ContentDisposition.Inline = true;
                             data.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
                             data.ContentId = rowAtt.Cells[3].Value.ToString();
+                            NetMailSample.Properties.Settings.Default.BodyHtml = true;
                         }
                         else
                         {
@@ -187,7 +183,12 @@ namespace NetMailSample
                 {
                     mail.Headers.Add("Disposition-Notification-To", MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
                 }
-                
+
+                // set the content
+                mail.Subject = txtBoxSubject.Text;
+                mail.Body = richTxtBody.Text;
+                mail.IsBodyHtml = NetMailSample.Properties.Settings.Default.BodyHtml;
+
                 // smtp client setup
                 string sUser = txtBoxEmailAddress.Text.Trim();
                 string sPassword = mskPassword.Text.Trim();
@@ -292,6 +293,7 @@ namespace NetMailSample
                     dGridAttachments.Rows[n].Cells[1].Value = MediaTypeNames.Application.Octet;
                     size = FileUtilities.ConvertFileSize(f);
                     dGridAttachments.Rows[n].Cells[2].Value = size;
+                    dGridAttachments.Rows[n].Cells[3].Value = "";
                     dGridAttachments.Rows[n].Cells[4].Value = "False";
                 }
                 catch (IOException ioe)
@@ -338,10 +340,11 @@ namespace NetMailSample
         private void btnDeleteAttachment_Click(object sender, EventArgs e)
         {
             try
-            { 
-                if (dGridAttachments.SelectedRows.Count > 0) 
+            {
+                int cellRow = dGridAttachments.CurrentCellAddress.Y;
+                if (dGridAttachments.CurrentCell.ColumnIndex >= 0) 
                 { 
-                    dGridAttachments.Rows.RemoveAt(dGridAttachments.SelectedRows[0].Index); 
+                    dGridAttachments.Rows.RemoveAt(dGridAttachments.Rows[cellRow].Index); 
                 }
             }
             catch (InvalidOperationException)
@@ -363,9 +366,10 @@ namespace NetMailSample
         {
             try
             {
-                if (dGridHeaders.SelectedRows.Count > 0) 
+                int cellRow = dGridHeaders.CurrentCellAddress.Y;
+                if (dGridHeaders.CurrentCell.ColumnIndex >= 0) 
                 { 
-                    dGridHeaders.Rows.RemoveAt(dGridHeaders.SelectedRows[0].Index); 
+                    dGridHeaders.Rows.RemoveAt(dGridHeaders.Rows[cellRow].Index); 
                 }
             }
             catch (InvalidOperationException)
@@ -534,24 +538,24 @@ namespace NetMailSample
         {
             try
             {
-                if (dGridAttachments.SelectedRows.Count > 0)
+                if (dGridAttachments.CurrentCell.ColumnIndex >= 0)
                 {
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridAttachments.SelectedRows[0].Cells[1].Value.ToString());
+                    int cellRow = dGridAttachments.CurrentCellAddress.Y;
+
+                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridAttachments.Rows[cellRow].Cells[1].Value.ToString());
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
-                    dGridAttachments.SelectedRows[0].Cells[1].Value = mEditContentType.attContentType;
+                    dGridAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newContentType;
                     if (mEditContentType.isInline == true)
                     {
-                        dGridAttachments.SelectedRows[0].Cells[3].Value = mEditContentType.cid;
-                        dGridAttachments.SelectedRows[0].Cells[4].Value = "True";
-                        NetMailSample.Properties.Settings.Default.BodyHtml = true;
+                        dGridAttachments.Rows[cellRow].Cells[3].Value = mEditContentType.newCid;
+                        dGridAttachments.Rows[cellRow].Cells[4].Value = "True";
                     }
                     else
                     {
-                        dGridAttachments.SelectedRows[0].Cells[3].Value = "";
-                        dGridAttachments.SelectedRows[0].Cells[4].Value = "False";
+                        dGridAttachments.Rows[cellRow].Cells[3].Value = mEditContentType.newCid;
+                        dGridAttachments.Rows[cellRow].Cells[4].Value = "False";
                     }
-                    
                 }
             }
             catch (NullReferenceException)
@@ -597,6 +601,7 @@ namespace NetMailSample
         // toggle the send by pickup checkbox
         private void rdoSendByPickupFolder_CheckedChanged(object sender, EventArgs e)
         {
+            chkEnableSSL.Checked = false;
             if (rdoSendByPickupFolder.Checked)
             {
                 chkBoxSpecificPickupFolder.Enabled = true;

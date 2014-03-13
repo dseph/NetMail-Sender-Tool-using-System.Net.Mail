@@ -107,19 +107,25 @@ namespace NetMailSample.Forms
 
         private void btnDeleteAttachment_Click(object sender, EventArgs e)
         {
-            if (dGridInlineAttachments.SelectedRows.Count > 0) { dGridInlineAttachments.Rows.RemoveAt(dGridInlineAttachments.SelectedRows[0].Index); }
+            int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
+            if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0) 
+            { 
+                dGridInlineAttachments.Rows.RemoveAt(dGridInlineAttachments.Rows[cellRow].Index); 
+            }
         }
 
         private void btnModifyContentType_Click(object sender, EventArgs e)
         {
             try
             {
-                if (dGridInlineAttachments.SelectedRows.Count > 0)
+                int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
+                if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0)
                 {
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.SelectedRows[0].Cells[2].Value.ToString());
+                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString());
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
-                    dGridInlineAttachments.SelectedRows[0].Cells[2].Value = mEditContentType.attContentType;
+                    dGridInlineAttachments.Rows[cellRow].Cells[2].Value = mEditContentType.newContentType;
+                    dGridInlineAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newCid;
                 }
             }
             catch (NullReferenceException)

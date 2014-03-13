@@ -417,7 +417,7 @@
             this.groupBox3.Size = new System.Drawing.Size(414, 180);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Message Attachments - (select row to modify or delete attachment)";
+            this.groupBox3.Text = "Message Attachments";
             // 
             // btnEditContentType
             // 
@@ -431,6 +431,8 @@
             // 
             // dGridAttachments
             // 
+            this.dGridAttachments.AllowUserToAddRows = false;
+            this.dGridAttachments.AllowUserToDeleteRows = false;
             this.dGridAttachments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridAttachments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFilePath,
@@ -441,6 +443,7 @@
             this.dGridAttachments.Location = new System.Drawing.Point(7, 19);
             this.dGridAttachments.MultiSelect = false;
             this.dGridAttachments.Name = "dGridAttachments";
+            this.dGridAttachments.ReadOnly = true;
             this.dGridAttachments.Size = new System.Drawing.Size(349, 155);
             this.dGridAttachments.TabIndex = 25;
             // 
@@ -448,26 +451,31 @@
             // 
             this.colFilePath.HeaderText = "File Path";
             this.colFilePath.Name = "colFilePath";
+            this.colFilePath.ReadOnly = true;
             // 
             // colContentType
             // 
             this.colContentType.HeaderText = "Content Type";
             this.colContentType.Name = "colContentType";
+            this.colContentType.ReadOnly = true;
             // 
             // colFileSize
             // 
             this.colFileSize.HeaderText = "Size";
             this.colFileSize.Name = "colFileSize";
+            this.colFileSize.ReadOnly = true;
             // 
             // colContentId
             // 
             this.colContentId.HeaderText = "Content Id";
             this.colContentId.Name = "colContentId";
+            this.colContentId.ReadOnly = true;
             // 
             // colInline
             // 
             this.colInline.HeaderText = "Inline";
             this.colInline.Name = "colInline";
+            this.colInline.ReadOnly = true;
             // 
             // btnInsertAttachment
             // 
@@ -503,10 +511,12 @@
             this.groupBox2.Size = new System.Drawing.Size(414, 137);
             this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Custom Headers - (select row to use delete button)";
+            this.groupBox2.Text = "Custom Headers";
             // 
             // dGridHeaders
             // 
+            this.dGridHeaders.AllowUserToAddRows = false;
+            this.dGridHeaders.AllowUserToDeleteRows = false;
             this.dGridHeaders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridHeaders.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colName,
@@ -514,6 +524,7 @@
             this.dGridHeaders.Location = new System.Drawing.Point(7, 16);
             this.dGridHeaders.MultiSelect = false;
             this.dGridHeaders.Name = "dGridHeaders";
+            this.dGridHeaders.ReadOnly = true;
             this.dGridHeaders.Size = new System.Drawing.Size(349, 115);
             this.dGridHeaders.TabIndex = 20;
             // 
@@ -522,6 +533,7 @@
             this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.colName.HeaderText = "Name";
             this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
             this.colName.Width = 60;
             // 
             // colValue
@@ -529,6 +541,7 @@
             this.colValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.colValue.HeaderText = "Value";
             this.colValue.Name = "colValue";
+            this.colValue.ReadOnly = true;
             this.colValue.Width = 59;
             // 
             // btnDeleteHeader

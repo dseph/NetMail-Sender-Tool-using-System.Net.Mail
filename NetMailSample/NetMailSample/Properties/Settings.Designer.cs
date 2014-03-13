@@ -26,18 +26,6 @@ namespace NetMailSample.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool BodyHtml {
-            get {
-                return ((bool)(this["BodyHtml"]));
-            }
-            set {
-                this["BodyHtml"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ReadRcpt {
             get {
                 return ((bool)(this["ReadRcpt"]));
@@ -140,6 +128,18 @@ namespace NetMailSample.Properties {
             }
             set {
                 this["AltViewCal"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BodyHtml {
+            get {
+                return ((bool)(this["BodyHtml"]));
+            }
+            set {
+                this["BodyHtml"] = value;
             }
         }
     }

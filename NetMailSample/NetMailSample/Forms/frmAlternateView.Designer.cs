@@ -162,7 +162,7 @@
             this.groupBox2.Size = new System.Drawing.Size(359, 324);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Message Attachments (select row to modify or delete)";
+            this.groupBox2.Text = "Message Attachments";
             // 
             // btnModifyContentType
             // 
@@ -186,6 +186,8 @@
             // 
             // dGridInlineAttachments
             // 
+            this.dGridInlineAttachments.AllowUserToAddRows = false;
+            this.dGridInlineAttachments.AllowUserToDeleteRows = false;
             this.dGridInlineAttachments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridInlineAttachments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFilePath,
@@ -194,6 +196,7 @@
             this.dGridInlineAttachments.Location = new System.Drawing.Point(6, 16);
             this.dGridInlineAttachments.MultiSelect = false;
             this.dGridInlineAttachments.Name = "dGridInlineAttachments";
+            this.dGridInlineAttachments.ReadOnly = true;
             this.dGridInlineAttachments.Size = new System.Drawing.Size(347, 274);
             this.dGridInlineAttachments.TabIndex = 0;
             // 
@@ -201,16 +204,19 @@
             // 
             this.colFilePath.HeaderText = "Path";
             this.colFilePath.Name = "colFilePath";
+            this.colFilePath.ReadOnly = true;
             // 
             // colCid
             // 
             this.colCid.HeaderText = "Content Id";
             this.colCid.Name = "colCid";
+            this.colCid.ReadOnly = true;
             // 
             // colContentType
             // 
             this.colContentType.HeaderText = "Content Type";
             this.colContentType.Name = "colContentType";
+            this.colContentType.ReadOnly = true;
             // 
             // groupBox4
             // 
