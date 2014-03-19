@@ -13,17 +13,19 @@ namespace NetMailSample.Forms
     public partial class frmEditContentType : Form
     {
         public string newContentType, newCid;
-        public string origContentType;
+        public string origContentType, origCid;
         public bool isInline;
 
         /// <summary>
         /// form constructor
         /// </summary>
         /// <param name="contentType">this is the original value of the attachment content type</param>
-        public frmEditContentType(string contentType)
+        /// <param name="altView">this determines if this form was opened from the main form or the altview</param>
+        public frmEditContentType(string contentType, string cid)
         {
             InitializeComponent();
             origContentType = contentType;
+            origCid = cid;
         }
         
         private void btnOK_Click(object sender, EventArgs e)
@@ -37,7 +39,6 @@ namespace NetMailSample.Forms
             else
             {
                 isInline = false;
-                newCid = txtCid.Text;
             }
             this.Close();
         }
@@ -50,6 +51,7 @@ namespace NetMailSample.Forms
         private void btnCancel_Click(object sender, EventArgs e)
         {
             newContentType = NetMailSample.Common.FileUtilities.GetContentType(origContentType);
+            newCid = origCid;
             this.Close();
         }
 

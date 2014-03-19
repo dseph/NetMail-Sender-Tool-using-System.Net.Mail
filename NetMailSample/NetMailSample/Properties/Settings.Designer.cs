@@ -110,12 +110,12 @@ namespace NetMailSample.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("QuotedPrintable")]
-        public string BodyTransferEncoding {
+        public string htmlBodyTransferEncoding {
             get {
-                return ((string)(this["BodyTransferEncoding"]));
+                return ((string)(this["htmlBodyTransferEncoding"]));
             }
             set {
-                this["BodyTransferEncoding"] = value;
+                this["htmlBodyTransferEncoding"] = value;
             }
         }
         
@@ -140,6 +140,30 @@ namespace NetMailSample.Properties {
             }
             set {
                 this["BodyHtml"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("QuotedPrintable")]
+        public string plainBodyTransferEncoding {
+            get {
+                return ((string)(this["plainBodyTransferEncoding"]));
+            }
+            set {
+                this["plainBodyTransferEncoding"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("QuotedPrintable")]
+        public string vCalBodyTransferEncoding {
+            get {
+                return ((string)(this["vCalBodyTransferEncoding"]));
+            }
+            set {
+                this["vCalBodyTransferEncoding"] = value;
             }
         }
     }

@@ -23,7 +23,7 @@
     <Setting Name="AltViewPlain" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BodyTransferEncoding" Type="System.String" Scope="User">
+    <Setting Name="htmlBodyTransferEncoding" Type="System.String" Scope="User">
       <Value Profile="(Default)">QuotedPrintable</Value>
     </Setting>
     <Setting Name="AltViewCal" Type="System.String" Scope="User">
@@ -31,6 +31,12 @@
     </Setting>
     <Setting Name="BodyHtml" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="plainBodyTransferEncoding" Type="System.String" Scope="User">
+      <Value Profile="(Default)">QuotedPrintable</Value>
+    </Setting>
+    <Setting Name="vCalBodyTransferEncoding" Type="System.String" Scope="User">
+      <Value Profile="(Default)">QuotedPrintable</Value>
     </Setting>
   </Settings>
 </SettingsFile>

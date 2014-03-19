@@ -106,6 +106,8 @@ namespace NetMailSample
                         break;
                 }
 
+                // set 
+
                 // add HTML AltView
                 if (NetMailSample.Properties.Settings.Default.AltViewHtml != "")
                 {
@@ -125,7 +127,7 @@ namespace NetMailSample
                     }
 
                     // set transfer encoding
-                    htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.BodyTransferEncoding);
+                    htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding);
                     mail.AlternateViews.Add(htmlView);
                 }
                 
@@ -134,6 +136,7 @@ namespace NetMailSample
                 {
                     ContentType sPlainContentType = new ContentType("text/plain");
                     AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
+                    plainView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.plainBodyTransferEncoding);
                     mail.AlternateViews.Add(plainView);
                 }
 
@@ -144,6 +147,7 @@ namespace NetMailSample
                     ct.Parameters.Add("method", "REQUEST");
                     ct.Parameters.Add("name", "meeting.ics");
                     AlternateView calView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewCal, ct);
+                    calView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.vCalBodyTransferEncoding);
                     mail.AlternateViews.Add(calView);
                 }
 
@@ -289,9 +293,9 @@ namespace NetMailSample
                 {
                     string text = File.ReadAllText(file);
                     int n = dGridAttachments.Rows.Add();
+                    size = FileUtilities.ConvertFileSize(f);
                     dGridAttachments.Rows[n].Cells[0].Value = file;
                     dGridAttachments.Rows[n].Cells[1].Value = MediaTypeNames.Application.Octet;
-                    size = FileUtilities.ConvertFileSize(f);
                     dGridAttachments.Rows[n].Cells[2].Value = size;
                     dGridAttachments.Rows[n].Cells[3].Value = "";
                     dGridAttachments.Rows[n].Cells[4].Value = "False";
@@ -302,7 +306,7 @@ namespace NetMailSample
                 }
                 catch (Exception ex)
                 {
-                    ErrorOutputLog(txtBoxErrorLog.Text = "Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                    ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
                 }
             }
         }
@@ -347,7 +351,7 @@ namespace NetMailSample
                     dGridAttachments.Rows.RemoveAt(dGridAttachments.Rows[cellRow].Index); 
                 }
             }
-            catch (InvalidOperationException)
+            catch (NullReferenceException)
             {
                 return;
             }
@@ -372,7 +376,7 @@ namespace NetMailSample
                     dGridHeaders.Rows.RemoveAt(dGridHeaders.Rows[cellRow].Index); 
                 }
             }
-            catch (InvalidOperationException)
+            catch (NullReferenceException)
             {
                 return;
             }
@@ -542,7 +546,7 @@ namespace NetMailSample
                 {
                     int cellRow = dGridAttachments.CurrentCellAddress.Y;
 
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridAttachments.Rows[cellRow].Cells[1].Value.ToString());
+                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridAttachments.Rows[cellRow].Cells[1].Value.ToString(), dGridAttachments.Rows[cellRow].Cells[3].Value.ToString());
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
                     dGridAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newContentType;

@@ -21,7 +21,7 @@ namespace NetMailSample.Forms
         public frmAlternateView(string subject)
         {
             InitializeComponent();
-            cboTransferEncoding.Text = NetMailSample.Properties.Settings.Default.BodyTransferEncoding;
+            cboTransferEncoding.Text = NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding;
             tempSubject = subject;
         }
 
@@ -54,7 +54,7 @@ namespace NetMailSample.Forms
                     break;
             }
 
-            NetMailSample.Properties.Settings.Default.BodyTransferEncoding = cboTransferEncoding.Text;
+            NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding = cboTransferEncoding.Text;
             this.Close();
         }
 
@@ -107,10 +107,17 @@ namespace NetMailSample.Forms
 
         private void btnDeleteAttachment_Click(object sender, EventArgs e)
         {
-            int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
-            if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0) 
+            try
             { 
-                dGridInlineAttachments.Rows.RemoveAt(dGridInlineAttachments.Rows[cellRow].Index); 
+                int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
+                if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0) 
+                { 
+                    dGridInlineAttachments.Rows.RemoveAt(dGridInlineAttachments.Rows[cellRow].Index); 
+                }
+            }
+            catch (NullReferenceException)
+            {
+                return;
             }
         }
 
@@ -121,11 +128,15 @@ namespace NetMailSample.Forms
                 int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
                 if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0)
                 {
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString());
+                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString(), dGridInlineAttachments.Rows[cellRow].Cells[1].Value.ToString());
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
                     dGridInlineAttachments.Rows[cellRow].Cells[2].Value = mEditContentType.newContentType;
                     dGridInlineAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newCid;
+                    if (mEditContentType.isInline == true)
+                    {
+                        NetMailSample.Properties.Settings.Default.BodyHtml = true;
+                    }
                 }
             }
             catch (NullReferenceException)
