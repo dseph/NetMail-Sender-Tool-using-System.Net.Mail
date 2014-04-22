@@ -370,7 +370,8 @@
             this.cboServer.Items.AddRange(new object[] {
             "smtp.live.com",
             "smtp.gmail.com",
-            "smtp.mail.yahoo.com"});
+            "smtp.mail.yahoo.com",
+            "outlook.office365.com"});
             this.cboServer.Location = new System.Drawing.Point(327, 37);
             this.cboServer.Name = "cboServer";
             this.cboServer.Size = new System.Drawing.Size(191, 21);

@@ -97,6 +97,7 @@ namespace NetMailSample.Forms
                 dGridInlineAttachments.Rows[n].Cells[2].Value = MediaTypeNames.Application.Octet;
                 txtLinkedResPath.Text = "";
                 txtCid.Text = "";
+                NetMailSample.Properties.Settings.Default.BodyHtml = true;
             }
             else
             {

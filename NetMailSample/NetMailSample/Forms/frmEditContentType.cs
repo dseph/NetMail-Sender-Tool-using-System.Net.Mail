@@ -35,6 +35,7 @@ namespace NetMailSample.Forms
             {
                 isInline = true;
                 newCid = txtCid.Text;
+                NetMailSample.Properties.Settings.Default.BodyHtml = true;
             }
             else
             {

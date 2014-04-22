@@ -19,7 +19,7 @@ namespace NetMailSample
     public partial class frmMain : Form
     {
         public string hdrName, hdrValue;
-        DataTable inlineAttachmentsTable = new DataTable();       
+        DataTable inlineAttachmentsTable = new DataTable();
         bool ContinueTimerRun = false;
 
         public frmMain()
@@ -248,6 +248,10 @@ namespace NetMailSample
                 mail = null;
                 smtp.Dispose();
                 smtp = null;
+            }
+            catch (SmtpException se)
+            {
+                ErrorOutputLog(se.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + se.StackTrace + "\r\n" + "Status Code: " + se.StatusCode);
             }
             catch (Exception ex)
             {
@@ -617,5 +621,7 @@ namespace NetMailSample
                 txtPickupFolder.Enabled = false;
             }
         }
+
+        
     }
 }
