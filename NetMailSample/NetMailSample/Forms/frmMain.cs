@@ -415,6 +415,10 @@ namespace NetMailSample
             while (ContinueTimerRun == true)
             {
                 msgCount++;
+                if (msgCount == 300)
+                {
+                    ContinueTimerRun = false;
+                }
                 txtBoxErrorLog.AppendText(string.Format("Sending Message {0}...\r\n", msgCount));
                 SendEmail();
                 WaitLoop((int)numUpDnSeconds.Value);

@@ -362,7 +362,7 @@
             this.cboPort.Name = "cboPort";
             this.cboPort.Size = new System.Drawing.Size(55, 21);
             this.cboPort.TabIndex = 6;
-            this.cboPort.Text = "587";
+            this.cboPort.Text = "25";
             // 
             // cboServer
             // 
@@ -616,11 +616,16 @@
             // 
             this.numUpDnSeconds.Enabled = false;
             this.numUpDnSeconds.Location = new System.Drawing.Point(371, 16);
+            this.numUpDnSeconds.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
             this.numUpDnSeconds.Name = "numUpDnSeconds";
             this.numUpDnSeconds.Size = new System.Drawing.Size(43, 20);
             this.numUpDnSeconds.TabIndex = 25;
             this.numUpDnSeconds.Value = new decimal(new int[] {
-            15,
+            10,
             0,
             0,
             0});
