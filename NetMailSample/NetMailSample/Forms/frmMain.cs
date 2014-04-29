@@ -21,11 +21,39 @@ namespace NetMailSample
         public string hdrName, hdrValue;
         DataTable inlineAttachmentsTable = new DataTable();
         bool ContinueTimerRun = false;
+        ClassLogger _logger = null;
 
         public frmMain()
         {
             InitializeComponent();
             checkDotNetVersion();
+
+            // create the logger
+            _logger = new ClassLogger("NetMailErrors.log");
+            _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
+        }
+
+        void _logger_LogAdded(object sender, LoggerEventArgs a)
+        {
+            try
+            {
+                if (txtBoxErrorLog.InvokeRequired)
+                {
+                    // Need to invoke
+                    txtBoxErrorLog.Invoke(new MethodInvoker(delegate()
+                    {
+                        txtBoxErrorLog.Text = a.LogDetails;
+                    }));
+                }
+                else
+                {
+                    txtBoxErrorLog.Text = a.LogDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                txtBoxErrorLog.Text = ex.Message;
+            }
         }
 
         /// <summary>
@@ -41,7 +69,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                ErrorOutputLog(ex.Message + "\r\n" + ex.StackTrace);
+                ErrorOutputLog("Error:" + ex.Message + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -241,7 +269,7 @@ namespace NetMailSample
                 smtp.Send(mail);
                 
                 // output successful send notification
-                txtBoxErrorLog.AppendText("Message sent successfully." + "\r\n");
+                ErrorOutputLog("Message sent successfully." + "\r\n");
 
                 // cleanup
                 mail.Dispose();
@@ -251,18 +279,17 @@ namespace NetMailSample
             }
             catch (SmtpException se)
             {
-                ErrorOutputLog(se.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + se.StackTrace + "\r\n" + "Status Code: " + se.StatusCode);
-            }
+                ErrorOutputLog("Error: " + se.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + se.StackTrace + "\r\n" + "\r\n" + "Status Code: " + se.StatusCode + "\r\n" + "Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+            } 
             catch (Exception ex)
             {
-                ErrorOutputLog(ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                ErrorOutputLog("Error:" + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
         }
 
         public void ErrorOutputLog(string errorMessage)
         {
-            txtBoxErrorLog.AppendText("\r\n" + "### Error ###" + "\r\n");
-            txtBoxErrorLog.AppendText(errorMessage);
+            _logger.Log(errorMessage);
         }
 
         /// <summary>
@@ -404,7 +431,7 @@ namespace NetMailSample
             Decimal msgCount = 0;
             ContinueTimerRun = true;
 
-            txtBoxErrorLog.AppendText(string.Format("Started time based send.\r\n"));
+            ErrorOutputLog("Started time based send.\r\n");
             btnStopSendLoop.Focus();
 
             if (ValidateForm() == false)
@@ -419,12 +446,12 @@ namespace NetMailSample
                 {
                     ContinueTimerRun = false;
                 }
-                txtBoxErrorLog.AppendText(string.Format("Sending Message {0}...\r\n", msgCount));
+                ErrorOutputLog(string.Format("Sending Message {0}...\r\n", msgCount));
                 SendEmail();
                 WaitLoop((int)numUpDnSeconds.Value);
             }
 
-            txtBoxErrorLog.AppendText(string.Format("Finished timer based email send.\r\n"));
+            ErrorOutputLog("Finished timer based email send.\r\n");
         }
 
         /// <summary>
@@ -436,7 +463,7 @@ namespace NetMailSample
         {
             txtBoxErrorLog.Clear();
             ContinueTimerRun = false;
-            txtBoxErrorLog.AppendText(string.Format("User chose to stop email loop.\r\n"));
+            ErrorOutputLog("User chose to stop email loop.\r\n");
         }
 
         /// <summary>
@@ -492,8 +519,7 @@ namespace NetMailSample
                 bRet = false;
             }
 
-            txtBoxErrorLog.AppendText(oSB.ToString());
-
+            ErrorOutputLog(oSB.ToString());
             return bRet;
         }
 
