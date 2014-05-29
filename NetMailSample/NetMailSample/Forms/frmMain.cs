@@ -1,18 +1,15 @@
-﻿using NetMailSample.Common;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using NetMailSample.Common;
 
 namespace NetMailSample
 {
@@ -69,7 +66,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                ErrorOutputLog("Error:" + ex.Message + "\r\n" + ex.StackTrace);
+                _logger.Log("Error:" + ex.Message + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -84,11 +81,12 @@ namespace NetMailSample
                 return;
             }
 
+            // create mail and smtp object
+            MailMessage mail = new MailMessage();
+            SmtpClient smtp = new SmtpClient();
+
             try
             {
-                // create the mail message
-                MailMessage mail = new MailMessage();
-
                 // set the sender email address
                 mail.From = new MailAddress(MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
 
@@ -133,8 +131,6 @@ namespace NetMailSample
                         mail.Priority = MailPriority.Normal;
                         break;
                 }
-
-                // set 
 
                 // add HTML AltView
                 if (NetMailSample.Properties.Settings.Default.AltViewHtml != "")
@@ -226,10 +222,10 @@ namespace NetMailSample
                 string sPassword = mskPassword.Text.Trim();
                 string sDomain = txtBoxDomain.Text.Trim();
 
-                SmtpClient smtp = new SmtpClient(cboServer.Text);
                 smtp.EnableSsl = chkEnableSSL.Checked;
                 smtp.Port = Int32.Parse(cboPort.Text.Trim());
-                
+                smtp.Host = cboServer.Text;
+
                 // check for credentials
                 if (sUser.Length != 0)
                 {
@@ -257,7 +253,6 @@ namespace NetMailSample
                         {
                             throw new DirectoryNotFoundException("The specified directory does not exist.");
                         }
-
                     }
                     else
                     {
@@ -269,27 +264,33 @@ namespace NetMailSample
                 smtp.Send(mail);
                 
                 // output successful send notification
-                ErrorOutputLog("Message sent successfully." + "\r\n");
-
-                // cleanup
-                mail.Dispose();
-                mail = null;
-                smtp.Dispose();
-                smtp = null;
+                _logger.Log("Message sent successfully." + "\r\n");
             }
             catch (SmtpException se)
             {
-                ErrorOutputLog("Error: " + se.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + se.StackTrace + "\r\n" + "\r\n" + "Status Code: " + se.StatusCode + "\r\n" + "Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
-            } 
+                _logger.Log("Error: " + se.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" 
+                    + se.StackTrace + "\r\n" + "\r\n" + "Status Code: " + se.StatusCode + "\r\n" 
+                    + "Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+            }
             catch (Exception ex)
             {
-                ErrorOutputLog("Error:" + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error:" + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
-        }
-
-        public void ErrorOutputLog(string errorMessage)
-        {
-            _logger.Log(errorMessage);
+            finally
+            {
+                // cleanup resources
+                if (mail != null)
+                {
+                    mail.Dispose();
+                    mail = null;
+                }
+                if (smtp != null)
+                {
+                    smtp.Dispose();
+                    smtp = null;
+                }
+                
+            }
         }
 
         /// <summary>
@@ -333,11 +334,11 @@ namespace NetMailSample
                 }
                 catch (IOException ioe)
                 {
-                    ErrorOutputLog("Error: " + ioe.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ioe.StackTrace);
+                    _logger.Log("Error: " + ioe.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ioe.StackTrace);
                 }
                 catch (Exception ex)
                 {
-                    ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                    _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
                 }
             }
         }
@@ -363,7 +364,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -388,7 +389,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -413,7 +414,7 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                ErrorOutputLog("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
             }
             
         }
@@ -431,7 +432,7 @@ namespace NetMailSample
             Decimal msgCount = 0;
             ContinueTimerRun = true;
 
-            ErrorOutputLog("Started time based send.\r\n");
+            _logger.Log("Started time based send.\r\n");
             btnStopSendLoop.Focus();
 
             if (ValidateForm() == false)
@@ -446,12 +447,12 @@ namespace NetMailSample
                 {
                     ContinueTimerRun = false;
                 }
-                ErrorOutputLog(string.Format("Sending Message {0}...\r\n", msgCount));
+                _logger.Log(string.Format("Sending Message {0}...\r\n", msgCount));
                 SendEmail();
                 WaitLoop((int)numUpDnSeconds.Value);
             }
 
-            ErrorOutputLog("Finished timer based email send.\r\n");
+            _logger.Log("Finished timer based email send.\r\n");
         }
 
         /// <summary>
@@ -463,7 +464,7 @@ namespace NetMailSample
         {
             txtBoxErrorLog.Clear();
             ContinueTimerRun = false;
-            ErrorOutputLog("User chose to stop email loop.\r\n");
+            _logger.Log("User chose to stop email loop.\r\n");
         }
 
         /// <summary>
@@ -519,7 +520,7 @@ namespace NetMailSample
                 bRet = false;
             }
 
-            ErrorOutputLog(oSB.ToString());
+            _logger.Log(oSB.ToString());
             return bRet;
         }
 
@@ -650,8 +651,6 @@ namespace NetMailSample
                 chkBoxSpecificPickupFolder.Enabled = false;
                 txtPickupFolder.Enabled = false;
             }
-        }
-
-        
+        }       
     }
 }
