@@ -279,17 +279,10 @@ namespace NetMailSample
             finally
             {
                 // cleanup resources
-                if (mail != null)
-                {
                     mail.Dispose();
                     mail = null;
-                }
-                if (smtp != null)
-                {
                     smtp.Dispose();
                     smtp = null;
-                }
-                
             }
         }
 
