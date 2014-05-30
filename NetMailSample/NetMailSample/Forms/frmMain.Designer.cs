@@ -83,11 +83,6 @@
             this.numUpDnSeconds = new System.Windows.Forms.NumericUpDown();
             this.lblNumSeconds = new System.Windows.Forms.Label();
             this.btnAltView = new System.Windows.Forms.Button();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripRuntime = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripNETVer = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnMessageOptions = new System.Windows.Forms.Button();
             this.grpMailMessage.SuspendLayout();
             this.grpSmtpSettings.SuspendLayout();
@@ -98,7 +93,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dGridHeaders)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDnSeconds)).BeginInit();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSendEmail
@@ -650,43 +644,6 @@
             this.btnAltView.UseVisualStyleBackColor = true;
             this.btnAltView.Click += new System.EventHandler(this.btnAltView_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.toolStripRuntime,
-            this.toolStripStatusLabel3,
-            this.toolStripNETVer});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 571);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(974, 22);
-            this.statusStrip1.TabIndex = 20;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(94, 17);
-            this.toolStripStatusLabel1.Text = ".NET Runtime = ";
-            // 
-            // toolStripRuntime
-            // 
-            this.toolStripRuntime.Name = "toolStripRuntime";
-            this.toolStripRuntime.Size = new System.Drawing.Size(18, 17);
-            this.toolStripRuntime.Text = " - ";
-            // 
-            // toolStripStatusLabel3
-            // 
-            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(10, 17);
-            this.toolStripStatusLabel3.Text = "|";
-            // 
-            // toolStripNETVer
-            // 
-            this.toolStripNETVer.Name = "toolStripNETVer";
-            this.toolStripNETVer.Size = new System.Drawing.Size(18, 17);
-            this.toolStripNETVer.Text = " - ";
-            // 
             // btnMessageOptions
             // 
             this.btnMessageOptions.Location = new System.Drawing.Point(627, 530);
@@ -701,9 +658,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(974, 593);
+            this.ClientSize = new System.Drawing.Size(974, 564);
             this.Controls.Add(this.btnMessageOptions);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnAltView);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
@@ -731,10 +687,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDnSeconds)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -785,11 +738,6 @@
         private System.Windows.Forms.NumericUpDown numUpDnSeconds;
         private System.Windows.Forms.Label lblNumSeconds;
         private System.Windows.Forms.Button btnAltView;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripRuntime;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripNETVer;
         private System.Windows.Forms.CheckBox chkPasswordRequired;
         private System.Windows.Forms.Button btnMessageOptions;
         private System.Windows.Forms.DataGridView dGridAttachments;

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Net;
@@ -23,11 +20,14 @@ namespace NetMailSample
         public frmMain()
         {
             InitializeComponent();
-            checkDotNetVersion();
 
             // create the logger
             _logger = new ClassLogger("NetMailErrors.log");
             _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
+
+            // log the .net version
+            checkDotNetVersion();
+            txtBoxErrorLog.Clear();
         }
 
         void _logger_LogAdded(object sender, LoggerEventArgs a)
@@ -61,8 +61,8 @@ namespace NetMailSample
             try
             {
                 // check for the installed .NET versions
-                toolStripRuntime.Text = DotNetVersion.GetRuntimeVersionFromEnvironment();
-                toolStripNETVer.Text = DotNetVersion.GetDotNetVerFromRegistry();
+                _logger.Log("The .NET Runtime = " + DotNetVersion.GetRuntimeVersionFromEnvironment());
+                _logger.Log(DotNetVersion.GetDotNetVerFromRegistry());
             }
             catch (Exception ex)
             {
