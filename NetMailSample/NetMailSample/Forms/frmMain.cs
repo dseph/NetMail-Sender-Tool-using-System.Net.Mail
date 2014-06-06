@@ -262,9 +262,6 @@ namespace NetMailSample
 
                 // send email
                 smtp.Send(mail);
-                
-                // output successful send notification
-                _logger.Log("Message sent successfully." + "\r\n");
             }
             catch (SmtpException se)
             {
@@ -295,6 +292,7 @@ namespace NetMailSample
         {
             txtBoxErrorLog.Clear();
             SendEmail();
+            _logger.Log("Message sent successfully." + "\r\n");
         }
 
         /// <summary>
@@ -421,11 +419,9 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnStartSendLoop_Click(object sender, EventArgs e)
         {
-            this.txtBoxErrorLog.Text = string.Empty;
             Decimal msgCount = 0;
             ContinueTimerRun = true;
 
-            _logger.Log("Started time based send.\r\n");
             btnStopSendLoop.Focus();
 
             if (ValidateForm() == false)
@@ -442,10 +438,12 @@ namespace NetMailSample
                 }
                 _logger.Log(string.Format("Sending Message {0}...\r\n", msgCount));
                 SendEmail();
+                txtBoxErrorLog.Text = "Sending messages...";
                 WaitLoop((int)numUpDnSeconds.Value);
             }
 
             _logger.Log("Finished timer based email send.\r\n");
+            txtBoxErrorLog.Text = "Finished timer based email send.";
         }
 
         /// <summary>
@@ -455,7 +453,6 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnStopSendLoop_Click(object sender, EventArgs e)
         {
-            txtBoxErrorLog.Clear();
             ContinueTimerRun = false;
             _logger.Log("User chose to stop email loop.\r\n");
         }
@@ -466,8 +463,6 @@ namespace NetMailSample
         /// <param name="numSeconds">amount of time to wait</param>
         private void WaitLoop(int numSeconds)
         {
-            DateTime oStart = DateTime.Now;
-
             for (int secondsLoop = 0; secondsLoop < numSeconds; secondsLoop++)
             {
                 for (int Loop1 = 0; Loop1 < 10; Loop1++)
@@ -482,7 +477,6 @@ namespace NetMailSample
                 if (ContinueTimerRun == false)
                     break;
             }
-            DateTime oEnd = DateTime.Now;
         }
 
         /// <summary>
