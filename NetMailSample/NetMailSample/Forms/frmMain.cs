@@ -12,7 +12,7 @@ namespace NetMailSample
 {
     public partial class frmMain : Form
     {
-        public string hdrName, hdrValue;
+        public string hdrName, hdrValue, msgSubject;
         DataTable inlineAttachmentsTable = new DataTable();
         bool ContinueTimerRun = false;
         ClassLogger _logger = null;
@@ -24,7 +24,7 @@ namespace NetMailSample
             // create the logger
             _logger = new ClassLogger("NetMailErrors.log");
             _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
-
+            
             // log the .net version
             checkDotNetVersion();
             txtBoxErrorLog.Clear();
@@ -214,6 +214,7 @@ namespace NetMailSample
 
                 // set the content
                 mail.Subject = txtBoxSubject.Text;
+                msgSubject = txtBoxSubject.Text;
                 mail.Body = richTxtBody.Text;
                 mail.IsBodyHtml = NetMailSample.Properties.Settings.Default.BodyHtml;
 
@@ -292,7 +293,7 @@ namespace NetMailSample
         {
             txtBoxErrorLog.Clear();
             SendEmail();
-            _logger.Log("Message sent successfully." + "\r\n");
+            _logger.Log("Message sent successfully: " + msgSubject + "\r\n");
         }
 
         /// <summary>
@@ -406,8 +407,7 @@ namespace NetMailSample
             catch (Exception ex)
             {
                 _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
-            }
-            
+            }   
         }
 
         /// <summary>
@@ -638,6 +638,12 @@ namespace NetMailSample
                 chkBoxSpecificPickupFolder.Enabled = false;
                 txtPickupFolder.Enabled = false;
             }
-        }       
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // clean up resources on exit
+            _logger.Dispose();
+        }
     }
 }

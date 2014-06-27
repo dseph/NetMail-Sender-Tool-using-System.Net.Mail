@@ -10,8 +10,7 @@ namespace NetMailSample.Common
     {
         /// <summary>
         /// find the installed .NET Framework versions by querying the registry (versions 4.5 and later)
-        /// Release key versions: (378389 = 4.5; 378675 = 4.5.1 on Win8.1; 378758 = 4.5.1 on Win8/Win7SP1/VistaSP2)
-        /// mainly this will be for any logging that may get added later
+        /// Release key versions: (378389 = 4.5; 378675 = 4.5.x on Win8.1; 378758 = 4.5.x on Win8/Win7SP1/VistaSP2)
         /// </summary>
         public static string GetDotNetVerFromRegistry()
         {

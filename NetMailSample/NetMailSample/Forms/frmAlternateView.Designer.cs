@@ -291,6 +291,7 @@
             this.txtAltViewBody.Location = new System.Drawing.Point(3, 16);
             this.txtAltViewBody.Multiline = true;
             this.txtAltViewBody.Name = "txtAltViewBody";
+            this.txtAltViewBody.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtAltViewBody.Size = new System.Drawing.Size(376, 329);
             this.txtAltViewBody.TabIndex = 0;
             // 

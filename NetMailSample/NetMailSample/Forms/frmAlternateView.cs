@@ -39,17 +39,19 @@ namespace NetMailSample.Forms
                         sb.AppendLine((lines[i]));
                     }
                     NetMailSample.Properties.Settings.Default.AltViewCal = sb.ToString();
+                    NetMailSample.Properties.Settings.Default.vCalBodyTransferEncoding = cboTransferEncoding.Text;
                     break;
                 case "PlainText":
                     NetMailSample.Properties.Settings.Default.AltViewPlain = txtAltViewBody.Text;
+                    NetMailSample.Properties.Settings.Default.plainBodyTransferEncoding = cboTransferEncoding.Text;
                     break;
                 default:
                     NetMailSample.Properties.Settings.Default.AltViewHtml = txtAltViewBody.Text;
+                    NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding = cboTransferEncoding.Text;
                     AddInlineTableForAttachments();
                     break;
             }
 
-            NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding = cboTransferEncoding.Text;
             this.Close();
         }
 

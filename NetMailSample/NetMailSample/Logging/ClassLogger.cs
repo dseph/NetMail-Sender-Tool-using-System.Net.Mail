@@ -30,6 +30,7 @@ namespace NetMailSample
         private StreamWriter _logStream = null;
         private string _logPath = "";
         private bool _logDateAndTime = true;
+        private bool disposed = false;
 
         public delegate void LoggerEventHandler(object sender, LoggerEventArgs a);
         public event LoggerEventHandler LogAdded;
@@ -43,16 +44,27 @@ namespace NetMailSample
             }
             catch { }
         }
-
-        ~ClassLogger()
+        
+        public void Dispose()
         {
-            try
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            // Dispose of managed resources here. 
+            if (disposing)
             {
                 _logStream.Flush();
                 _logStream.Close();
             }
-            catch { }
-        }
+
+            disposed = true;
+        }  
+
 
         protected virtual void OnLogAdded(LoggerEventArgs e)
         {
@@ -69,11 +81,7 @@ namespace NetMailSample
             get { return _logDateAndTime; }
             set { _logDateAndTime = value; }
         }
-
-        public void ClearFile()
-        {
-        }
-
+        
         public void Log(string Details, string Description = "", bool SuppressEvent = false)
         {
             try
@@ -83,13 +91,13 @@ namespace NetMailSample
                 if (String.IsNullOrEmpty(Description))
                 {
                     if (_logDateAndTime)
-                        _logStream.WriteLine(String.Format("{0:dd/MM/yy HH:mm:ss}", oLogTime) + " ==> " + Details);
+                        _logStream.WriteLine(String.Format("{0:MM/dd/yy HH:mm:ss}", oLogTime) + " ==> " + Details);
                 }
                 else
                 {
                     _logStream.WriteLine("");
                     if (_logDateAndTime)
-                        _logStream.WriteLine(String.Format("{0:dd/MM/yy HH:mm:ss}", oLogTime) + " ==> " + Description);
+                        _logStream.WriteLine(String.Format("{0:MM/dd/yy HH:mm:ss}", oLogTime) + " ==> " + Description);
                     _logStream.WriteLine(Details);
                 }
                 _logStream.Flush();

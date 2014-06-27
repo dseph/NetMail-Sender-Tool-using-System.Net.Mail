@@ -674,6 +674,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NetMail Sender";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.grpMailMessage.ResumeLayout(false);
             this.grpMailMessage.PerformLayout();
             this.grpSmtpSettings.ResumeLayout(false);
