@@ -91,13 +91,13 @@ namespace NetMailSample
                 if (String.IsNullOrEmpty(Description))
                 {
                     if (_logDateAndTime)
-                        _logStream.WriteLine(String.Format("{0:MM/dd/yy HH:mm:ss}", oLogTime) + " ==> " + Details);
+                        _logStream.WriteLine(String.Format("{0:MM/dd/yy h:mm:ss tt}", oLogTime) + " ==> " + Details);
                 }
                 else
                 {
                     _logStream.WriteLine("");
                     if (_logDateAndTime)
-                        _logStream.WriteLine(String.Format("{0:MM/dd/yy HH:mm:ss}", oLogTime) + " ==> " + Description);
+                        _logStream.WriteLine(String.Format("{0:MM/dd/yy h:mm:ss tt}", oLogTime) + " ==> " + Description);
                     _logStream.WriteLine(Details);
                 }
                 _logStream.Flush();

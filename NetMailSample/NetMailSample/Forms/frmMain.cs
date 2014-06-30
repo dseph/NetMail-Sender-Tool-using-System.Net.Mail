@@ -567,8 +567,28 @@ namespace NetMailSample
                 if (dGridAttachments.CurrentCell.ColumnIndex >= 0)
                 {
                     int cellRow = dGridAttachments.CurrentCellAddress.Y;
+                    string ctype, cid;
 
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridAttachments.Rows[cellRow].Cells[1].Value.ToString(), dGridAttachments.Rows[cellRow].Cells[3].Value.ToString());
+                    // null checks
+                    if (dGridAttachments.Rows[cellRow].Cells[1].Value != null)
+                    {
+                        ctype = dGridAttachments.Rows[cellRow].Cells[1].Value.ToString();
+                    }
+                    else
+                    {
+                        ctype = "";
+                    }
+
+                    if (dGridAttachments.Rows[cellRow].Cells[3].Value != null)
+                    {
+                        cid = dGridAttachments.Rows[cellRow].Cells[3].Value.ToString();
+                    }
+                    else
+                    {
+                        cid = "";
+                    }
+
+                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(ctype, cid);
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
                     dGridAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newContentType;
@@ -644,6 +664,11 @@ namespace NetMailSample
         {
             // clean up resources on exit
             _logger.Dispose();
+        }
+
+        private void rdoSendByPort_CheckedChanged(object sender, EventArgs e)
+        {
+            chkEnableSSL.Checked = true;
         }
     }
 }

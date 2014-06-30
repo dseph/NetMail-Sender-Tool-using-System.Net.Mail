@@ -323,6 +323,7 @@
             this.rdoSendByPort.TabStop = true;
             this.rdoSendByPort.Text = "Send By Port:";
             this.rdoSendByPort.UseVisualStyleBackColor = true;
+            this.rdoSendByPort.CheckedChanged += new System.EventHandler(this.rdoSendByPort_CheckedChanged);
             // 
             // label2
             // 

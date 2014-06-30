@@ -22,7 +22,7 @@ namespace NetMailSample.Forms
             origContentType = contentType;
             origCid = cid;
         }
-        
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             newContentType = NetMailSample.Common.FileUtilities.GetContentType(cboContentType.Text);
