@@ -98,7 +98,7 @@ namespace NetMailSample.Forms
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Both ContentId and File Path are required to add a linked resource.",
+                System.Windows.Forms.MessageBox.Show("Path and Content Id are required to add a linked resource.",
                 "Invalid Linked Resource", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
@@ -123,10 +123,32 @@ namespace NetMailSample.Forms
         {
             try
             {
-                int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
                 if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0)
                 {
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString(), dGridInlineAttachments.Rows[cellRow].Cells[1].Value.ToString());
+                    int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
+                    string ctype, cid;
+
+                    // null checks
+                    if (dGridInlineAttachments.Rows[cellRow].Cells[1].Value != null)
+                    {
+                        ctype = dGridInlineAttachments.Rows[cellRow].Cells[1].Value.ToString();
+                    }
+                    else
+                    {
+                        ctype = "";
+                    }
+
+                    if (dGridInlineAttachments.Rows[cellRow].Cells[2].Value != null)
+                    {
+                        cid = dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString();
+                    }
+                    else
+                    {
+                        cid = "";
+                    }
+
+                    //NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString(), dGridInlineAttachments.Rows[cellRow].Cells[1].Value.ToString());
+                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(cid, ctype);
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
                     dGridInlineAttachments.Rows[cellRow].Cells[2].Value = mEditContentType.newContentType;
@@ -147,6 +169,7 @@ namespace NetMailSample.Forms
         private void btnCalSample_Click(object sender, EventArgs e)
         {
             cboAltViewContentType.Text = "vCalendar";
+            cboTransferEncoding.Text = "Base64";
 
             DateTime dtStart = DateTime.Now.AddHours(1);
             DateTime dtEnd = DateTime.Now.AddHours(2);
@@ -178,6 +201,25 @@ namespace NetMailSample.Forms
             sbCal.Append("END:VCALENDAR\r\n");
             
             txtAltViewBody.Text = sbCal.ToString();
+        }
+
+        /// <summary>
+        /// This button click will decode a base64 string
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnConvertEncoding_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                byte[] encodedBytes = Convert.FromBase64String(txtAltViewBody.Text);
+                string result = Encoding.UTF8.GetString(encodedBytes);
+                txtAltViewBody.Text = result;
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
     }
 }
