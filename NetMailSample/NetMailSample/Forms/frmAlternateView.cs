@@ -128,7 +128,7 @@ namespace NetMailSample.Forms
                     int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
                     string ctype, cid;
 
-                    // null checks
+                    // null column check
                     if (dGridInlineAttachments.Rows[cellRow].Cells[1].Value != null)
                     {
                         ctype = dGridInlineAttachments.Rows[cellRow].Cells[1].Value.ToString();
@@ -147,7 +147,6 @@ namespace NetMailSample.Forms
                         cid = "";
                     }
 
-                    //NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(dGridInlineAttachments.Rows[cellRow].Cells[2].Value.ToString(), dGridInlineAttachments.Rows[cellRow].Cells[1].Value.ToString());
                     NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(cid, ctype);
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);

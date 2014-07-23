@@ -14,7 +14,8 @@ namespace NetMailSample
     {
         public string hdrName, hdrValue, msgSubject;
         DataTable inlineAttachmentsTable = new DataTable();
-        bool ContinueTimerRun = false;
+        bool continueTimerRun = false;
+        bool formValidated = false;
         ClassLogger _logger = null;
 
         public frmMain()
@@ -293,7 +294,15 @@ namespace NetMailSample
         {
             txtBoxErrorLog.Clear();
             SendEmail();
-            _logger.Log("Message sent successfully: " + msgSubject + "\r\n");
+            if (formValidated == true)
+            {
+                _logger.Log("Message send = SUCCESS: " + msgSubject + "\r\n");
+            }
+            else
+            {
+                _logger.Log("Message send = FAIL: " + msgSubject + "\r\n");
+            }
+            
         }
 
         /// <summary>
@@ -420,7 +429,7 @@ namespace NetMailSample
         private void btnStartSendLoop_Click(object sender, EventArgs e)
         {
             Decimal msgCount = 0;
-            ContinueTimerRun = true;
+            continueTimerRun = true;
 
             btnStopSendLoop.Focus();
 
@@ -429,12 +438,12 @@ namespace NetMailSample
                 return;
             }
 
-            while (ContinueTimerRun == true)
+            while (continueTimerRun == true)
             {
                 msgCount++;
                 if (msgCount == 300)
                 {
-                    ContinueTimerRun = false;
+                    continueTimerRun = false;
                 }
                 _logger.Log(string.Format("Sending Message {0}...\r\n", msgCount));
                 SendEmail();
@@ -453,7 +462,7 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnStopSendLoop_Click(object sender, EventArgs e)
         {
-            ContinueTimerRun = false;
+            continueTimerRun = false;
             _logger.Log("User chose to stop email loop.\r\n");
         }
 
@@ -470,11 +479,11 @@ namespace NetMailSample
                     System.Threading.Thread.Sleep(100);
                     Application.DoEvents();
 
-                    if (ContinueTimerRun == false)
+                    if (continueTimerRun == false)
                         break;
                 }
 
-                if (ContinueTimerRun == false)
+                if (continueTimerRun == false)
                     break;
             }
         }
@@ -487,27 +496,25 @@ namespace NetMailSample
         {
             bool bRet = true;
 
-            StringBuilder oSB = new System.Text.StringBuilder();
-
             if (txtBoxEmailAddress.Text.Trim() == "")
             {
-                oSB.AppendFormat("User is required.\r\n");
+                _logger.Log("User is required.");
                 bRet = false;
             }
 
             if (chkPasswordRequired.Checked && mskPassword.Text.Trim() == "")
             {
-                oSB.AppendFormat("Password is required.\r\n");
+                _logger.Log("Password is required.");
                 bRet = false;
             }
 
             if (txtBoxTo.Text.Trim() == "")
             {
-                oSB.AppendFormat("To address is not valid. \r\n");
+                _logger.Log("To address is required.");
                 bRet = false;
             }
 
-            _logger.Log(oSB.ToString());
+            formValidated = bRet;
             return bRet;
         }
 
