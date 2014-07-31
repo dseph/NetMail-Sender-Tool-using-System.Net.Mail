@@ -677,5 +677,21 @@ namespace NetMailSample
         {
             chkEnableSSL.Checked = true;
         }
+
+        private void cboServer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboServer.Text == "smtp.gmail.com" || cboServer.Text == "smtp.mail.yahoo.com" || cboServer.Text == "plus.smtp.mail.yahoo.com")
+            {
+                cboPort.Text = "465";
+            }
+            else if (cboServer.Text == "smtp.live.com")
+            {
+                cboPort.Text = "587";
+            }
+            else
+            {
+                cboPort.Text = "25";
+            }
+        }
     }
 }

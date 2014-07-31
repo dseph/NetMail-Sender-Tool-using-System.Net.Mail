@@ -352,26 +352,30 @@
             this.cboPort.Items.AddRange(new object[] {
             "25",
             "465",
-            "587"});
+            "587",
+            "995"});
             this.cboPort.Location = new System.Drawing.Point(327, 64);
             this.cboPort.Name = "cboPort";
             this.cboPort.Size = new System.Drawing.Size(55, 21);
             this.cboPort.TabIndex = 6;
-            this.cboPort.Text = "25";
+            this.cboPort.Text = "587";
             // 
             // cboServer
             // 
             this.cboServer.FormattingEnabled = true;
             this.cboServer.Items.AddRange(new object[] {
             "smtp.live.com",
+            "outlook.office365.com",
             "smtp.gmail.com",
+            "smtp.zoho.com",
             "smtp.mail.yahoo.com",
-            "outlook.office365.com"});
+            "plus.smtp.mail.yahoo.com"});
             this.cboServer.Location = new System.Drawing.Point(327, 37);
             this.cboServer.Name = "cboServer";
             this.cboServer.Size = new System.Drawing.Size(191, 21);
             this.cboServer.TabIndex = 5;
             this.cboServer.Text = "smtp.live.com";
+            this.cboServer.SelectedIndexChanged += new System.EventHandler(this.cboServer_SelectedIndexChanged);
             // 
             // label1
             // 
