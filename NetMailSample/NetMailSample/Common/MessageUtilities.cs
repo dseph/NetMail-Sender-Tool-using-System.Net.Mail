@@ -21,11 +21,11 @@ namespace NetMailSample.Common
         /// Depending on the mail address type, add each mail address from the colleciton to the mail message
         /// </summary>
         /// <param name="mail">This is the MailMessage object from the main form</param>
-        /// <param name="mac">This is the Collection of addresses that need to be added</param>
+        /// <param name="mailAddrCol">This is the Collection of addresses that need to be added</param>
         /// <param name="mailAddressType">type of mail address to be added</param>
-        public static void addEmailToMailAddressCollection(MailMessage mail, MailAddressCollection mac, addressType mailAddressType)
+        public static void addSmtpToMailAddressCollection(MailMessage mail, MailAddressCollection mailAddrCol, addressType mailAddressType)
         {
-            foreach (MailAddress ma in mac)
+            foreach (MailAddress ma in mailAddrCol)
             {
                 if (mailAddressType == addressType.To)
                 {

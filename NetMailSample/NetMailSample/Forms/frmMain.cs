@@ -85,34 +85,34 @@ namespace NetMailSample
             // create mail and smtp object
             MailMessage mail = new MailMessage();
             SmtpClient smtp = new SmtpClient();
-            MailAddressCollection mac = new MailAddressCollection();
+            MailAddressCollection mailAddrCol = new MailAddressCollection();
 
             try
             {
                 // set the From email address information
                 mail.From = new MailAddress(txtBoxEmailAddress.Text);
-                
+
                 // set the To email address information
-                mac.Clear();
+                mailAddrCol.Clear();
                 _logger.Log("Adding To addresses: " + txtBoxTo.Text);
-                mac.Add(txtBoxTo.Text);
-                MessageUtilities.addEmailToMailAddressCollection(mail, mac, MessageUtilities.addressType.To);
+                mailAddrCol.Add(txtBoxTo.Text);
+                MessageUtilities.addSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.To);
                 
                 // check for Cc and Bcc, which can be empty so we only need to add when the textbox contains a value
                 if (txtBoxCC.Text.Trim() != "")
                 {
-                    mac.Clear();
+                    mailAddrCol.Clear();
                     _logger.Log("Adding Cc addresses: " + txtBoxCC.Text);
-                    mac.Add(txtBoxCC.Text);
-                    MessageUtilities.addEmailToMailAddressCollection(mail, mac, MessageUtilities.addressType.Cc);
+                    mailAddrCol.Add(txtBoxCC.Text);
+                    MessageUtilities.addSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Cc);
                 }
 
                 if (txtBoxBCC.Text.Trim() != "")
                 {
-                    mac.Clear();
+                    mailAddrCol.Clear();
                     _logger.Log("Adding Bcc addresses: " + txtBoxBCC.Text);
-                    mac.Add(txtBoxBCC.Text);
-                    MessageUtilities.addEmailToMailAddressCollection(mail, mac, MessageUtilities.addressType.Bcc);
+                    mailAddrCol.Add(txtBoxBCC.Text);
+                    MessageUtilities.addSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Bcc);
                 }
 
                 // set encoding for message
@@ -280,7 +280,7 @@ namespace NetMailSample
                 txtBoxErrorLog.Clear();
                 if (se.StatusCode == SmtpStatusCode.MailboxBusy || se.StatusCode == SmtpStatusCode.MailboxUnavailable)
                 {
-                    _logger.Log("Deliver failed - retrying in 5 seconds.");
+                    _logger.Log("Delivery failed - retrying in 5 seconds.");
                     System.Threading.Thread.Sleep(5000);
                     smtp.Send(mail);
                 }
@@ -360,7 +360,7 @@ namespace NetMailSample
                 {
                     string text = File.ReadAllText(file);
                     int n = dGridAttachments.Rows.Add();
-                    size = FileUtilities.ConvertFileSize(f);
+                    size = FileUtilities.SizeSuffix(f.Length);
                     dGridAttachments.Rows[n].Cells[0].Value = file;
                     dGridAttachments.Rows[n].Cells[1].Value = MediaTypeNames.Application.Octet;
                     dGridAttachments.Rows[n].Cells[2].Value = size;

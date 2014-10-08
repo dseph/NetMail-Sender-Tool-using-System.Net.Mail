@@ -1,177 +1,26 @@
 ﻿using System;
-using System.IO;
 using System.Net.Mime;
 
 namespace NetMailSample.Common
 {   
     public static class FileUtilities
     {
-        ///<summary> Valid units of measurement for file sizes</summary>
-        public enum SizeType
-        {
-            Bytes,
-            KiloBytes,
-            MegaBytes,
-            GigaBytes,
-            TeraBytes
-        }
-                
+        static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB" };
+        
         /// <summary>
-        /// Converts size of file from one type to another
+        /// this function 
         /// </summary>
-        /// <param name="ConvertFrom">The SizeType that you are converting from</param>
-        /// <param name="ConvertTo">The SizeType that you are converting to</param>
-        /// <param name="Value">The value to be converted</param>
+        /// <param name="value">the length of the file being attached</param>
         /// <returns></returns>
-        /// <remarks></remarks>
-        public static decimal Convert(SizeType ConvertFrom, SizeType ConvertTo, decimal Value)
+        public static string SizeSuffix(Int64 value)
         {
-            decimal ConvertedValue = 0;
+            if (value < 0) { return "-" + SizeSuffix(-value); }
+            if (value == 0) { return "0.0 bytes"; }
 
-            //First check to see if they entered the same value for the ConvertFrom and ConvertTo parameters
-            if (ConvertFrom == ConvertTo)
-            {
-                return Value; 
-            }             
-            else
-            {
-                try
-                {
-                    switch (ConvertFrom)
-                    {
-                        case SizeType.Bytes: 
-                            switch (ConvertTo)
-                            {
-                                case SizeType.KiloBytes: 
-                                    ConvertedValue = Value / 1024;
-                                    break;
-                                case SizeType.MegaBytes: 
-                                    ConvertedValue = Value / 1024 / 1024;
-                                    break;
-                                case SizeType.GigaBytes: 
-                                    ConvertedValue = Value / 1024 / 1024 / 1024;
-                                    break;
-                                case SizeType.TeraBytes: 
-                                    ConvertedValue = Value / 1024 / 1024 / 1024 / 1024;
-                                    break;
-                            }
-                            break;
-                        case SizeType.KiloBytes: 
-                            switch (ConvertTo)
-                            {
-                                case SizeType.Bytes: 
-                                    ConvertedValue = Value * 1024;
-                                    break;
-                                case SizeType.MegaBytes: 
-                                    ConvertedValue = Value / 1024;
-                                    break;
-                                case SizeType.GigaBytes: 
-                                    ConvertedValue = Value / 1024 / 1024;
-                                    break;
-                                case SizeType.TeraBytes: 
-                                    ConvertedValue = Value / 1024 / 1024 / 1024;
-                                    break;
-                            }
-                            break;
-                        case SizeType.MegaBytes: 
-                            switch (ConvertTo)
-                            {
-                                case SizeType.Bytes: 
-                                    ConvertedValue = Value * 1024 * 1024;
-                                    break;
-                                case SizeType.KiloBytes: 
-                                    ConvertedValue = Value * 1024;
-                                    break;
-                                case SizeType.GigaBytes: 
-                                    ConvertedValue = Value / 1024;
-                                    break;
-                                case SizeType.TeraBytes: 
-                                    ConvertedValue = Value / 1024 / 1024;
-                                    break;
-                            }
-                            break;
-                        case SizeType.GigaBytes: 
-                            switch (ConvertTo)
-                            {
-                                case SizeType.Bytes:
-                                    ConvertedValue = Value * 1024 * 1024 * 1024;
-                                    break;
-                                case SizeType.KiloBytes:
-                                    ConvertedValue = Value * 1024 * 1024;
-                                    break;
-                                case SizeType.MegaBytes:
-                                    ConvertedValue = Value * 1024;
-                                    break;
-                                case SizeType.TeraBytes:
-                                    ConvertedValue = Value / 1024;
-                                    break;
-                            }
-                            break;
-                        case SizeType.TeraBytes: 
-                            switch (ConvertTo)
-                            {
-                                case SizeType.Bytes: 
-                                    ConvertedValue = Value * 1024 * 1024 * 1024 * 1024;
-                                    break;
-                                case SizeType.KiloBytes:
-                                    ConvertedValue = Value * 1024 * 1024 * 1024;
-                                    break;
-                                case SizeType.MegaBytes:
-                                    ConvertedValue = Value * 1024 * 1024;
-                                    break;
-                                case SizeType.GigaBytes:
-                                    ConvertedValue = Value * 1024;
-                                    break;
-                            }
-                            break;
-                    }
-                }
-                catch (Exception)
-                {
-                    return -1;
-                }
-            }
+            int mag = (int)Math.Log(value, 1024);
+            decimal adjustedSize = (decimal)value / (1L << (mag * 10));
 
-            // check if .0 is at the end and remove it
-            if (decimal.Remainder(ConvertedValue, 1) == 0)
-                ConvertedValue = decimal.Truncate(ConvertedValue);
-            return ConvertedValue;
-        }
-
-        /// <summary>
-        /// Method to convert and display the file size with the appropriate label (KB, MB, GB, TB)
-        /// </summary>
-        /// <param name="myFile">The file you want to convert the size from</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static string ConvertFileSize(FileInfo myFile)
-        {
-            decimal val;
-
-            if (myFile.Length < 1024)
-            {
-                return myFile.Length + " bytes";
-            }
-            else if (myFile.Length > 1024 && myFile.Length < 1048576)
-            {
-                val = Math.Round(Convert(SizeType.Bytes, SizeType.KiloBytes, myFile.Length));
-                return val + " KB";
-            }
-            else if (myFile.Length > 1048576 && myFile.Length < 1073741824)
-            {
-                val = Math.Round(Convert(SizeType.Bytes, SizeType.MegaBytes, myFile.Length));
-                return val + " MB";
-            }
-            else if (myFile.Length > 1073741824 && myFile.Length < 1099511627776)
-            {
-                val = Math.Round(Convert(SizeType.Bytes, SizeType.GigaBytes, myFile.Length));
-                return val + " GB";
-            }
-            else
-            {
-                val = Math.Round(Convert(SizeType.Bytes, SizeType.TeraBytes, myFile.Length));
-                return val + " TB";
-            }
+            return string.Format("{0:n1} {1}", adjustedSize, SizeSuffixes[mag]);
         }
 
         /// <summary>
