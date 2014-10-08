@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Windows.Forms;
 
 namespace NetMailSample.Forms
@@ -14,10 +13,10 @@ namespace NetMailSample.Forms
             try
             {
                 // set the individual options for the form based on the app settings
-                if (NetMailSample.Properties.Settings.Default.BodyHtml == true) { chkBodyHtml.Checked = true; }
-                if (NetMailSample.Properties.Settings.Default.ReadRcpt == true) { chkReadRcpt.Checked = true; }
+                if (Properties.Settings.Default.BodyHtml == true) { chkBodyHtml.Checked = true; }
+                if (Properties.Settings.Default.ReadRcpt == true) { chkReadRcpt.Checked = true; }
 
-                switch (NetMailSample.Properties.Settings.Default.MsgPriority)
+                switch (Properties.Settings.Default.MsgPriority)
                 {
                     case "High":
                         cboMsgPriority.Text = "High";
@@ -30,9 +29,9 @@ namespace NetMailSample.Forms
                         break;
                 }
 
-                cboBodyEncoding.Text = NetMailSample.Properties.Settings.Default.BodyEncoding;
-                cboHeaderEncoding.Text = NetMailSample.Properties.Settings.Default.HeaderEncoding;
-                cboSubjectEncoding.Text = NetMailSample.Properties.Settings.Default.SubjectEncoding;
+                cboBodyEncoding.Text = Properties.Settings.Default.BodyEncoding;
+                cboHeaderEncoding.Text = Properties.Settings.Default.HeaderEncoding;
+                cboSubjectEncoding.Text = Properties.Settings.Default.SubjectEncoding;
             }
             catch (Exception)
             {
@@ -48,12 +47,12 @@ namespace NetMailSample.Forms
         /// <param name="e"></param>
         private void btnOK_Click(object sender, EventArgs e)
         {
-            NetMailSample.Properties.Settings.Default.BodyEncoding = cboBodyEncoding.Text;
-            NetMailSample.Properties.Settings.Default.HeaderEncoding = cboHeaderEncoding.Text;
-            NetMailSample.Properties.Settings.Default.SubjectEncoding = cboSubjectEncoding.Text;
-            NetMailSample.Properties.Settings.Default.BodyHtml = chkBodyHtml.Checked;
-            NetMailSample.Properties.Settings.Default.ReadRcpt = chkReadRcpt.Checked;
-            NetMailSample.Properties.Settings.Default.MsgPriority = cboMsgPriority.Text;
+            Properties.Settings.Default.BodyEncoding = cboBodyEncoding.Text;
+            Properties.Settings.Default.HeaderEncoding = cboHeaderEncoding.Text;
+            Properties.Settings.Default.SubjectEncoding = cboSubjectEncoding.Text;
+            Properties.Settings.Default.BodyHtml = chkBodyHtml.Checked;
+            Properties.Settings.Default.ReadRcpt = chkReadRcpt.Checked;
+            Properties.Settings.Default.MsgPriority = cboMsgPriority.Text;
             this.Close();
         }
 

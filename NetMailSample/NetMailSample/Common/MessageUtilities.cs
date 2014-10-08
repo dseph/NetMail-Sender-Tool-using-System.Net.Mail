@@ -9,6 +9,7 @@ namespace NetMailSample.Common
 {
     public static class MessageUtilities
     {
+        // mail address message type enum
         public enum addressType
         {
             To,
@@ -17,76 +18,27 @@ namespace NetMailSample.Common
         };
 
         /// <summary>
-        /// This function validates a single email address with a regular expression
+        /// Depending on the mail address type, add each mail address from the colleciton to the mail message
         /// </summary>
-        /// <param name="input">the email address that needs to be validated</param>
-        /// <returns>A validated email address or an error noting which address is invalid</returns>
-        public static string parseEmail(string input)
+        /// <param name="mail">This is the MailMessage object from the main form</param>
+        /// <param name="mac">This is the Collection of addresses that need to be added</param>
+        /// <param name="mailAddressType">type of mail address to be added</param>
+        public static void addEmailToMailAddressCollection(MailMessage mail, MailAddressCollection mac, addressType mailAddressType)
         {
-            Regex r = new Regex(@"^((?:(?:(?:[a-zA-Z0-9][\.\-\+_]?)*)[a-zA-Z0-9])+)\@((?:(?:(?:[a-zA-Z0-9][\.\-_]?){0,62})[a-zA-Z0-9])+)\.([a-zA-Z0-9]{2,6})$");
-            if (r.Match(input.Trim()).Success)
-            { 
-                return input; 
-            }
-            else
-            { 
-                throw new ArgumentException("Not an email address - " + input); 
-            }
-        }
-
-        /// <summary>
-        /// This function validates one or more email addresses passed into the function
-        /// if none fail, each address gets added indvidually to the mail message object
-        /// </summary>
-        /// <param name="input">the email address that needs to be validated</param>
-        /// <param name="mail">the MailMessage object where the validated email address will be added based on addressType</param>
-        /// <param name="mailAddressType">determines which type of mail address field the email address needs to be added</param>
-        public static void parseEmails(string input, MailMessage mail, addressType mailAddressType)
-        {
-            // create a list for the parsed input string to hold valid individual emails
-            // split the string and regex each individual email address
-            ArrayList al = new ArrayList();
-            int failCount = 0;
-            Regex r = new Regex(@"^((?:(?:(?:[a-zA-Z0-9][\.\-\+_]?)*)[a-zA-Z0-9])+)\@((?:(?:(?:[a-zA-Z0-9][\.\-_]?){0,62})[a-zA-Z0-9])+)\.([a-zA-Z0-9]{2,6})$");
-            string[] emails = input.Split(';');
-            foreach (string s in emails)
+            foreach (MailAddress ma in mac)
             {
-                string temp = s.Trim();
-                if (r.Match(temp).Success) 
-                { 
-                    al.Add(temp); 
-                }
-                else 
-                { 
-                    failCount++; 
-                }
-            }
-
-            // if we didn't fail validation for an email address,
-            // we can now loop through each email and add it to the mail object  
-            if (failCount == 0) 
-            {
-                foreach (object o in al)
+                if (mailAddressType == addressType.To)
                 {
-                    switch (mailAddressType)
-                    {
-                        case addressType.To:
-                            mail.To.Add(o.ToString());
-                            break;
-                        case addressType.Cc:
-                            mail.CC.Add(o.ToString());
-                            break;
-                        case addressType.Bcc:
-                            mail.Bcc.Add(o.ToString());
-                            break;
-                        default:
-                            throw new ArgumentException("Error with email address - " + o.ToString()); 
-                    }
+                    mail.To.Add(ma.Address);
                 }
-            }
-            else 
-            { 
-                throw new ArgumentException("Not an email address - " + input); 
+                else if (mailAddressType == addressType.Cc)
+                {
+                    mail.CC.Add(ma.Address);
+                }
+                else
+                {
+                    mail.Bcc.Add(ma.Address);
+                }
             }
         }
 

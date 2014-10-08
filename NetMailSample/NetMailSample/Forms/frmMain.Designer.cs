@@ -170,7 +170,7 @@
             this.grpMailMessage.Size = new System.Drawing.Size(530, 323);
             this.grpMailMessage.TabIndex = 3;
             this.grpMailMessage.TabStop = false;
-            this.grpMailMessage.Text = "Mail Message";
+            this.grpMailMessage.Text = "Mail Message - seperate multiple addresses with comma";
             // 
             // richTxtBody
             // 

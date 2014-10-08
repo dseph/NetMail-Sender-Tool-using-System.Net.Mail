@@ -25,7 +25,7 @@ namespace NetMailSample
         }
     }
 
-    public class ClassLogger
+    public class ClassLogger : IDisposable
     {
         private StreamWriter _logStream = null;
         private string _logPath = "";

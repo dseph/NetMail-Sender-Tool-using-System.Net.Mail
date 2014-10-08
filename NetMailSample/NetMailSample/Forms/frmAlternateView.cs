@@ -13,10 +13,14 @@ namespace NetMailSample.Forms
         public DataTable inlineTable = new DataTable();
         public AlternateView avCal;
 
+        /// <summary>
+        /// form constructor
+        /// </summary>
+        /// <param name="subject"></param>
         public frmAlternateView(string subject)
         {
             InitializeComponent();
-            cboTransferEncoding.Text = NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding;
+            cboTransferEncoding.Text = Properties.Settings.Default.htmlBodyTransferEncoding;
             tempSubject = subject;
         }
 
@@ -38,16 +42,16 @@ namespace NetMailSample.Forms
                     {
                         sb.AppendLine((lines[i]));
                     }
-                    NetMailSample.Properties.Settings.Default.AltViewCal = sb.ToString();
-                    NetMailSample.Properties.Settings.Default.vCalBodyTransferEncoding = cboTransferEncoding.Text;
+                    Properties.Settings.Default.AltViewCal = sb.ToString();
+                    Properties.Settings.Default.vCalBodyTransferEncoding = cboTransferEncoding.Text;
                     break;
                 case "PlainText":
-                    NetMailSample.Properties.Settings.Default.AltViewPlain = txtAltViewBody.Text;
-                    NetMailSample.Properties.Settings.Default.plainBodyTransferEncoding = cboTransferEncoding.Text;
+                    Properties.Settings.Default.AltViewPlain = txtAltViewBody.Text;
+                    Properties.Settings.Default.plainBodyTransferEncoding = cboTransferEncoding.Text;
                     break;
                 default:
-                    NetMailSample.Properties.Settings.Default.AltViewHtml = txtAltViewBody.Text;
-                    NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding = cboTransferEncoding.Text;
+                    Properties.Settings.Default.AltViewHtml = txtAltViewBody.Text;
+                    Properties.Settings.Default.htmlBodyTransferEncoding = cboTransferEncoding.Text;
                     AddInlineTableForAttachments();
                     break;
             }
@@ -55,6 +59,9 @@ namespace NetMailSample.Forms
             this.Close();
         }
 
+        /// <summary>
+        /// add attachment to the grid
+        /// </summary>
         private void AddInlineTableForAttachments()
         {
             inlineTable.Columns.Add("Path", typeof(string));
@@ -70,11 +77,21 @@ namespace NetMailSample.Forms
             }
         }
 
+        /// <summary>
+        /// user cancelled the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// simple open file dialog to capture the file path
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnLinkedResBrowse_Click(object sender, EventArgs e)
         {
             DialogResult result = openFileDialog1.ShowDialog();
@@ -84,6 +101,11 @@ namespace NetMailSample.Forms
             }
         }
 
+        /// <summary>
+        /// adds the linked resource / embedded file to the altview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddLR_Click(object sender, EventArgs e)
         {
             if (txtLinkedResPath.Text != "" && txtCid.Text != "")
@@ -94,15 +116,20 @@ namespace NetMailSample.Forms
                 dGridInlineAttachments.Rows[n].Cells[2].Value = MediaTypeNames.Application.Octet;
                 txtLinkedResPath.Text = "";
                 txtCid.Text = "";
-                NetMailSample.Properties.Settings.Default.BodyHtml = true;
+                Properties.Settings.Default.BodyHtml = true;
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Path and Content Id are required to add a linked resource.",
+                MessageBox.Show("Path and Content Id are required to add a linked resource.",
                 "Invalid Linked Resource", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
+        /// <summary>
+        /// check for the current location in the grid and delete the row
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDeleteAttachment_Click(object sender, EventArgs e)
         {
             try
@@ -119,6 +146,12 @@ namespace NetMailSample.Forms
             }
         }
 
+        /// <summary>
+        /// display editcontenttype form and do some checks for the grid to make sure
+        /// we should be displaying the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnModifyContentType_Click(object sender, EventArgs e)
         {
             try
@@ -146,15 +179,18 @@ namespace NetMailSample.Forms
                     {
                         cid = "";
                     }
-
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(cid, ctype);
+                    
+                    Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(cid, ctype, "True");
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
-                    dGridInlineAttachments.Rows[cellRow].Cells[2].Value = mEditContentType.newContentType;
-                    dGridInlineAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newCid;
-                    if (mEditContentType.isInline == true)
+                    if (mEditContentType.isCancelled == false)
                     {
-                        NetMailSample.Properties.Settings.Default.BodyHtml = true;
+                        dGridInlineAttachments.Rows[cellRow].Cells[2].Value = mEditContentType.newContentType;
+                        dGridInlineAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newCid;
+                        if (mEditContentType.isInline == true)
+                        {
+                            Properties.Settings.Default.BodyHtml = true;
+                        }
                     }
                 }
             }
@@ -164,7 +200,11 @@ namespace NetMailSample.Forms
             }
         }
 
-        // this button will display a vCalendar sample in the textbox
+        /// <summary>
+        /// this button will display a vCalendar sample in the textbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCalSample_Click(object sender, EventArgs e)
         {
             cboAltViewContentType.Text = "vCalendar";

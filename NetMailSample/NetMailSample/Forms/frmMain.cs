@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
-using System.Text;
 using System.Windows.Forms;
 using NetMailSample.Common;
 
@@ -67,7 +66,8 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                _logger.Log("Error:" + ex.Message + "\r\n" + ex.StackTrace);
+                _logger.Log("Error:" + ex.Message);
+                _logger.Log("Stack Trace: " + ex.StackTrace);
             }
         }
 
@@ -85,42 +85,52 @@ namespace NetMailSample
             // create mail and smtp object
             MailMessage mail = new MailMessage();
             SmtpClient smtp = new SmtpClient();
+            MailAddressCollection mac = new MailAddressCollection();
 
             try
             {
-                // set the sender email address
-                mail.From = new MailAddress(MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
-
-                // check for To, Cc and Bcc
-                // Cc and Bcc can be empty so we only need to validate when the textbox contains a value
-                MessageUtilities.parseEmails(txtBoxTo.Text, mail, MessageUtilities.addressType.To);
-
+                // set the From email address information
+                mail.From = new MailAddress(txtBoxEmailAddress.Text);
+                
+                // set the To email address information
+                mac.Clear();
+                _logger.Log("Adding To addresses: " + txtBoxTo.Text);
+                mac.Add(txtBoxTo.Text);
+                MessageUtilities.addEmailToMailAddressCollection(mail, mac, MessageUtilities.addressType.To);
+                
+                // check for Cc and Bcc, which can be empty so we only need to add when the textbox contains a value
                 if (txtBoxCC.Text.Trim() != "")
                 {
-                    MessageUtilities.parseEmails(txtBoxCC.Text, mail, MessageUtilities.addressType.Cc);
+                    mac.Clear();
+                    _logger.Log("Adding Cc addresses: " + txtBoxCC.Text);
+                    mac.Add(txtBoxCC.Text);
+                    MessageUtilities.addEmailToMailAddressCollection(mail, mac, MessageUtilities.addressType.Cc);
                 }
 
                 if (txtBoxBCC.Text.Trim() != "")
                 {
-                    MessageUtilities.parseEmails(txtBoxBCC.Text, mail, MessageUtilities.addressType.Bcc);
+                    mac.Clear();
+                    _logger.Log("Adding Bcc addresses: " + txtBoxBCC.Text);
+                    mac.Add(txtBoxBCC.Text);
+                    MessageUtilities.addEmailToMailAddressCollection(mail, mac, MessageUtilities.addressType.Bcc);
                 }
 
                 // set encoding for message
-                if (NetMailSample.Properties.Settings.Default.BodyEncoding != "")
+                if (Properties.Settings.Default.BodyEncoding != "")
                 {
-                    mail.BodyEncoding = MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.BodyEncoding);
+                    mail.BodyEncoding = MessageUtilities.GetEncodingValue(Properties.Settings.Default.BodyEncoding);
                 }
-                if (NetMailSample.Properties.Settings.Default.SubjectEncoding != "")
+                if (Properties.Settings.Default.SubjectEncoding != "")
                 {
-                    mail.SubjectEncoding = MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.SubjectEncoding);
+                    mail.SubjectEncoding = MessageUtilities.GetEncodingValue(Properties.Settings.Default.SubjectEncoding);
                 }
-                if (NetMailSample.Properties.Settings.Default.HeaderEncoding != "")
+                if (Properties.Settings.Default.HeaderEncoding != "")
                 {
-                    mail.HeadersEncoding = MessageUtilities.GetEncodingValue(NetMailSample.Properties.Settings.Default.HeaderEncoding);
+                    mail.HeadersEncoding = MessageUtilities.GetEncodingValue(Properties.Settings.Default.HeaderEncoding);
                 }
 
                 // set priority for the message
-                switch (NetMailSample.Properties.Settings.Default.MsgPriority)
+                switch (Properties.Settings.Default.MsgPriority)
                 {
                     case "High":
                         mail.Priority = MailPriority.High;
@@ -134,10 +144,10 @@ namespace NetMailSample
                 }
 
                 // add HTML AltView
-                if (NetMailSample.Properties.Settings.Default.AltViewHtml != "")
+                if (Properties.Settings.Default.AltViewHtml != "")
                 {
                     ContentType sHtmlContentType = new ContentType("text/html");
-                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewHtml, sHtmlContentType);
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Properties.Settings.Default.AltViewHtml, sHtmlContentType);
 
                     // add inline attachments / linked resource
                     if (inlineAttachmentsTable.Rows.Count > 0)
@@ -152,27 +162,27 @@ namespace NetMailSample
                     }
 
                     // set transfer encoding
-                    htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.htmlBodyTransferEncoding);
+                    htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(Properties.Settings.Default.htmlBodyTransferEncoding);
                     mail.AlternateViews.Add(htmlView);
                 }
                 
                 // add Plain Text AltView
-                if (NetMailSample.Properties.Settings.Default.AltViewPlain != "")
+                if (Properties.Settings.Default.AltViewPlain != "")
                 {
                     ContentType sPlainContentType = new ContentType("text/plain");
-                    AlternateView plainView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewPlain, sPlainContentType);
-                    plainView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.plainBodyTransferEncoding);
+                    AlternateView plainView = AlternateView.CreateAlternateViewFromString(Properties.Settings.Default.AltViewPlain, sPlainContentType);
+                    plainView.TransferEncoding = MessageUtilities.GetTransferEncoding(Properties.Settings.Default.plainBodyTransferEncoding);
                     mail.AlternateViews.Add(plainView);
                 }
 
                 // add vCal AltView
-                if (NetMailSample.Properties.Settings.Default.AltViewCal != "")
+                if (Properties.Settings.Default.AltViewCal != "")
                 {
                     ContentType ct = new ContentType("text/calendar");
                     ct.Parameters.Add("method", "REQUEST");
                     ct.Parameters.Add("name", "meeting.ics");
-                    AlternateView calView = AlternateView.CreateAlternateViewFromString(NetMailSample.Properties.Settings.Default.AltViewCal, ct);
-                    calView.TransferEncoding = MessageUtilities.GetTransferEncoding(NetMailSample.Properties.Settings.Default.vCalBodyTransferEncoding);
+                    AlternateView calView = AlternateView.CreateAlternateViewFromString(Properties.Settings.Default.AltViewCal, ct);
+                    calView.TransferEncoding = MessageUtilities.GetTransferEncoding(Properties.Settings.Default.vCalBodyTransferEncoding);
                     mail.AlternateViews.Add(calView);
                 }
 
@@ -196,7 +206,7 @@ namespace NetMailSample
                             data.ContentDisposition.Inline = true;
                             data.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
                             data.ContentId = rowAtt.Cells[3].Value.ToString();
-                            NetMailSample.Properties.Settings.Default.BodyHtml = true;
+                            Properties.Settings.Default.BodyHtml = true;
                         }
                         else
                         {
@@ -208,16 +218,16 @@ namespace NetMailSample
                 }
 
                 // add read receipt
-                if (NetMailSample.Properties.Settings.Default.ReadRcpt == true)
+                if (Properties.Settings.Default.ReadRcpt == true)
                 {
-                    mail.Headers.Add("Disposition-Notification-To", MessageUtilities.parseEmail(txtBoxEmailAddress.Text));
+                    mail.Headers.Add("Disposition-Notification-To", txtBoxEmailAddress.Text);
                 }
 
                 // set the content
                 mail.Subject = txtBoxSubject.Text;
                 msgSubject = txtBoxSubject.Text;
                 mail.Body = richTxtBody.Text;
-                mail.IsBodyHtml = NetMailSample.Properties.Settings.Default.BodyHtml;
+                mail.IsBodyHtml = Properties.Settings.Default.BodyHtml;
 
                 // smtp client setup
                 string sUser = txtBoxEmailAddress.Text.Trim();
@@ -267,21 +277,46 @@ namespace NetMailSample
             }
             catch (SmtpException se)
             {
-                _logger.Log("Error: " + se.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" 
-                    + se.StackTrace + "\r\n" + "\r\n" + "Status Code: " + se.StatusCode + "\r\n" 
-                    + "Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+                txtBoxErrorLog.Clear();
+                if (se.StatusCode == SmtpStatusCode.MailboxBusy || se.StatusCode == SmtpStatusCode.MailboxUnavailable)
+                {
+                    _logger.Log("Deliver failed - retrying in 5 seconds.");
+                    System.Threading.Thread.Sleep(5000);
+                    smtp.Send(mail);
+                }
+                else
+                {
+                    _logger.Log("Error: " + se.Message);
+                    _logger.Log("StackTrace: " + se.StackTrace);
+                    _logger.Log("Status Code: " + se.StatusCode);
+                    _logger.Log("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                // invalid smtp address used
+                txtBoxErrorLog.Clear();
+                _logger.Log("Error: " + ioe.Message);
+            }
+            catch (FormatException fe)
+            {
+                // invalid smtp address used
+                txtBoxErrorLog.Clear();
+                _logger.Log("Error: " + fe.Message);
             }
             catch (Exception ex)
             {
-                _logger.Log("Error:" + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                txtBoxErrorLog.Clear();
+                _logger.Log("Error:" + ex.Message);
+                _logger.Log("StackTrace: " + ex.StackTrace);
             }
             finally
             {
                 // cleanup resources
-                    mail.Dispose();
-                    mail = null;
-                    smtp.Dispose();
-                    smtp = null;
+                mail.Dispose();
+                mail = null;
+                smtp.Dispose();
+                smtp = null;
             }
         }
 
@@ -293,16 +328,15 @@ namespace NetMailSample
         private void btnSendEmail_Click(object sender, EventArgs e)
         {
             txtBoxErrorLog.Clear();
-            SendEmail();
             if (formValidated == true)
             {
-                _logger.Log("Message send = SUCCESS: " + msgSubject + "\r\n");
+                _logger.Log("Message send = SUCCESS: " + msgSubject);
             }
             else
             {
-                _logger.Log("Message send = FAIL: " + msgSubject + "\r\n");
+                _logger.Log("Message send = FAIL: " + msgSubject);
             }
-            
+            SendEmail();
         }
 
         /// <summary>
@@ -335,11 +369,13 @@ namespace NetMailSample
                 }
                 catch (IOException ioe)
                 {
-                    _logger.Log("Error: " + ioe.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ioe.StackTrace);
+                    _logger.Log("Error: " + ioe.Message);
+                    _logger.Log("StackTrace: " + ioe.StackTrace);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                    _logger.Log("Error: " + ex.Message);
+                    _logger.Log("StackTrace: " + ex.StackTrace);
                 }
             }
         }
@@ -353,7 +389,7 @@ namespace NetMailSample
         {
             try
             {
-                NetMailSample.Forms.frmAddHeaders aHdrForm = new Forms.frmAddHeaders();
+                Forms.frmAddHeaders aHdrForm = new Forms.frmAddHeaders();
                 aHdrForm.Owner = this;
                 aHdrForm.ShowDialog(this);
                 if (hdrName != null && hdrValue != null)
@@ -365,7 +401,8 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error: " + ex.Message);
+                _logger.Log("StackTrace: " + ex.StackTrace);
             }
         }
 
@@ -390,7 +427,8 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error: " + ex.Message);
+                _logger.Log("StackTrace: " + ex.StackTrace);
             }
         }
 
@@ -415,7 +453,8 @@ namespace NetMailSample
             }
             catch (Exception ex)
             {
-                _logger.Log("Error: " + ex.Message + "\r\n" + "\r\n" + "StackTrace: " + "\r\n" + ex.StackTrace);
+                _logger.Log("Error: " + ex.Message);
+                _logger.Log("StackTrace: " + ex.StackTrace);
             }   
         }
 
@@ -428,7 +467,7 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnStartSendLoop_Click(object sender, EventArgs e)
         {
-            Decimal msgCount = 0;
+            decimal msgCount = 0;
             continueTimerRun = true;
 
             btnStopSendLoop.Focus();
@@ -526,23 +565,23 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnAltView_Click(object sender, EventArgs e)
         {
-            NetMailSample.Forms.frmAlternateView aAltViewForm = new Forms.frmAlternateView(txtBoxSubject.Text);
+            Forms.frmAlternateView aAltViewForm = new Forms.frmAlternateView(txtBoxSubject.Text);
             aAltViewForm.Owner = this;
             aAltViewForm.ShowDialog(this);
-            if (NetMailSample.Properties.Settings.Default.AltViewCal != "")
+            if (Properties.Settings.Default.AltViewCal != "")
             {
                 richTxtBody.Text = "";
             }
             else
             {
-                if (NetMailSample.Properties.Settings.Default.AltViewHtml != "")
+                if (Properties.Settings.Default.AltViewHtml != "")
                 {
-                    richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewHtml;
+                    richTxtBody.Text = Properties.Settings.Default.AltViewHtml;
                     inlineAttachmentsTable = aAltViewForm.inlineTable;
                 }
                 else
                 {
-                    richTxtBody.Text = NetMailSample.Properties.Settings.Default.AltViewPlain;
+                    richTxtBody.Text = Properties.Settings.Default.AltViewPlain;
                 }
             }
             
@@ -555,7 +594,7 @@ namespace NetMailSample
         /// <param name="e"></param>
         private void btnMessageOptions_Click(object sender, EventArgs e)
         {
-            NetMailSample.Forms.frmMessageOptions mEncoding = new Forms.frmMessageOptions();
+            Forms.frmMessageOptions mEncoding = new Forms.frmMessageOptions();
             mEncoding.Owner = this;
             mEncoding.ShowDialog(this);
         }
@@ -595,19 +634,22 @@ namespace NetMailSample
                         cid = "";
                     }
 
-                    NetMailSample.Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(ctype, cid);
+                    Forms.frmEditContentType mEditContentType = new Forms.frmEditContentType(ctype, cid, dGridAttachments.Rows[cellRow].Cells[4].Value.ToString());
                     mEditContentType.Owner = this;
                     mEditContentType.ShowDialog(this);
-                    dGridAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newContentType;
-                    if (mEditContentType.isInline == true)
+                    if (mEditContentType.isCancelled == false)
                     {
-                        dGridAttachments.Rows[cellRow].Cells[3].Value = mEditContentType.newCid;
-                        dGridAttachments.Rows[cellRow].Cells[4].Value = "True";
-                    }
-                    else
-                    {
-                        dGridAttachments.Rows[cellRow].Cells[3].Value = mEditContentType.newCid;
-                        dGridAttachments.Rows[cellRow].Cells[4].Value = "False";
+                        dGridAttachments.Rows[cellRow].Cells[1].Value = mEditContentType.newContentType;
+                        if (mEditContentType.isInline == true)
+                        {
+                            dGridAttachments.Rows[cellRow].Cells[3].Value = mEditContentType.newCid;
+                            dGridAttachments.Rows[cellRow].Cells[4].Value = "True";
+                        }
+                        else
+                        {
+                            dGridAttachments.Rows[cellRow].Cells[3].Value = mEditContentType.newCid;
+                            dGridAttachments.Rows[cellRow].Cells[4].Value = "False";
+                        }
                     }
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Mime;
-using System.Text;
 using System.Windows.Forms;
 
 namespace NetMailSample.Forms
@@ -9,28 +8,38 @@ namespace NetMailSample.Forms
     {
         public string newContentType, newCid;
         public string origContentType, origCid;
-        public bool isInline;
+        public bool isInline, isCancelled;
 
         /// <summary>
         /// form constructor
         /// </summary>
         /// <param name="contentType">this is the original value of the attachment content type</param>
         /// <param name="altView">this determines if this form was opened from the main form or the altview</param>
-        public frmEditContentType(string contentType, string cid)
+        public frmEditContentType(string contentType, string cid, string isImageInline)
         {
             InitializeComponent();
             origContentType = contentType;
             origCid = cid;
+            if (isImageInline == "True")
+            {
+                cboInline.Checked = true;
+            }
+            else
+            {
+                cboInline.Checked = false;
+            }
+
+            txtCid.Text = cid;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            newContentType = NetMailSample.Common.FileUtilities.GetContentType(cboContentType.Text);
+            newContentType = Common.FileUtilities.GetContentType(cboContentType.Text);
             if (cboInline.Checked)
             {
                 isInline = true;
                 newCid = txtCid.Text;
-                NetMailSample.Properties.Settings.Default.BodyHtml = true;
+                Properties.Settings.Default.BodyHtml = true;
             }
             else
             {
@@ -46,8 +55,8 @@ namespace NetMailSample.Forms
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            newContentType = NetMailSample.Common.FileUtilities.GetContentType(origContentType);
-            newCid = origCid;
+            newContentType = Common.FileUtilities.GetContentType(origContentType);
+            isCancelled = true;
             this.Close();
         }
 

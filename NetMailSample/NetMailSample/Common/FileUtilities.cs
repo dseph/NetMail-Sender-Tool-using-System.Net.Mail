@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net.Mime;
-using System.Text;
 
 namespace NetMailSample.Common
 {   
@@ -134,8 +133,8 @@ namespace NetMailSample.Common
             }
 
             // check if .0 is at the end and remove it
-            if (Decimal.Remainder(ConvertedValue, 1) == 0)
-                ConvertedValue = Decimal.Truncate(ConvertedValue);
+            if (decimal.Remainder(ConvertedValue, 1) == 0)
+                ConvertedValue = decimal.Truncate(ConvertedValue);
             return ConvertedValue;
         }
 
@@ -147,7 +146,7 @@ namespace NetMailSample.Common
         /// <remarks></remarks>
         public static string ConvertFileSize(FileInfo myFile)
         {
-            Decimal val;
+            decimal val;
 
             if (myFile.Length < 1024)
             {
