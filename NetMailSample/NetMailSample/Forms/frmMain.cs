@@ -15,6 +15,7 @@ namespace NetMailSample
         DataTable inlineAttachmentsTable = new DataTable();
         bool continueTimerRun = false;
         bool formValidated = false;
+        bool noErrFound = true;
         ClassLogger _logger = null;
 
         public frmMain()
@@ -26,7 +27,7 @@ namespace NetMailSample
             _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
             
             // log the .net version
-            checkDotNetVersion();
+            CheckDotNetVersion();
             txtBoxErrorLog.Clear();
         }
 
@@ -56,7 +57,7 @@ namespace NetMailSample
         /// <summary>
         /// check/display the version of .NET installed on the machine
         /// </summary>
-        void checkDotNetVersion()
+        void CheckDotNetVersion()
         {
             try
             {
@@ -72,7 +73,7 @@ namespace NetMailSample
         }
 
         /// <summary>
-        /// This function takes the input from the form, creates a mail message and sends it to the smtp server
+        /// This method takes the input from the form, creates a mail message and sends it to the smtp server
         /// </summary>
         private void SendEmail()
         {
@@ -96,7 +97,7 @@ namespace NetMailSample
                 mailAddrCol.Clear();
                 _logger.Log("Adding To addresses: " + txtBoxTo.Text);
                 mailAddrCol.Add(txtBoxTo.Text);
-                MessageUtilities.addSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.To);
+                MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.To);
                 
                 // check for Cc and Bcc, which can be empty so we only need to add when the textbox contains a value
                 if (txtBoxCC.Text.Trim() != "")
@@ -104,7 +105,7 @@ namespace NetMailSample
                     mailAddrCol.Clear();
                     _logger.Log("Adding Cc addresses: " + txtBoxCC.Text);
                     mailAddrCol.Add(txtBoxCC.Text);
-                    MessageUtilities.addSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Cc);
+                    MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Cc);
                 }
 
                 if (txtBoxBCC.Text.Trim() != "")
@@ -112,7 +113,7 @@ namespace NetMailSample
                     mailAddrCol.Clear();
                     _logger.Log("Adding Bcc addresses: " + txtBoxBCC.Text);
                     mailAddrCol.Add(txtBoxBCC.Text);
-                    MessageUtilities.addSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Bcc);
+                    MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Bcc);
                 }
 
                 // set encoding for message
@@ -278,6 +279,7 @@ namespace NetMailSample
             catch (SmtpException se)
             {
                 txtBoxErrorLog.Clear();
+                noErrFound = false;
                 if (se.StatusCode == SmtpStatusCode.MailboxBusy || se.StatusCode == SmtpStatusCode.MailboxUnavailable)
                 {
                     _logger.Log("Delivery failed - retrying in 5 seconds.");
@@ -296,52 +298,62 @@ namespace NetMailSample
             {
                 // invalid smtp address used
                 txtBoxErrorLog.Clear();
+                noErrFound = false;
                 _logger.Log("Error: " + ioe.Message);
             }
             catch (FormatException fe)
             {
                 // invalid smtp address used
                 txtBoxErrorLog.Clear();
+                noErrFound = false;
                 _logger.Log("Error: " + fe.Message);
             }
             catch (Exception ex)
             {
                 txtBoxErrorLog.Clear();
+                noErrFound = false;
                 _logger.Log("Error:" + ex.Message);
                 _logger.Log("StackTrace: " + ex.StackTrace);
             }
             finally
             {
+                // log success
+                if (formValidated == true && noErrFound == true)
+                {
+                    _logger.Log("Message subject = " + msgSubject);
+                    _logger.Log("Message send = SUCCESS");
+                }
+                
                 // cleanup resources
                 mail.Dispose();
                 mail = null;
                 smtp.Dispose();
                 smtp = null;
+
+                // reset variables
+                formValidated = false;
+                noErrFound = true;
+                inlineAttachmentsTable.Clear();
+                hdrName = null;
+                hdrValue = null;
+                msgSubject = null;
             }
         }
 
         /// <summary>
-        /// This button calls the sendemail function
+        /// This button calls the SendEmail method
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnSendEmail_Click(object sender, EventArgs e)
         {
             txtBoxErrorLog.Clear();
-            if (formValidated == true)
-            {
-                _logger.Log("Message send = SUCCESS: " + msgSubject);
-            }
-            else
-            {
-                _logger.Log("Message send = FAIL: " + msgSubject);
-            }
             SendEmail();
         }
 
         /// <summary>
         /// This button will allow the user to add an attachment to the mail message list
-        /// but the send function handles actually adding the file to the mail message
+        /// but the send method handles actually adding the file to the mail message
         /// this just creates the file paths
         /// </summary>
         /// <param name="sender"></param>
@@ -353,14 +365,12 @@ namespace NetMailSample
             {
                 txtBoxErrorLog.Clear();
                 string file = openFileDialog1.FileName;
-                string size;
                 FileInfo f = new FileInfo(file);
                 
                 try
                 {
-                    string text = File.ReadAllText(file);
                     int n = dGridAttachments.Rows.Add();
-                    size = FileUtilities.SizeSuffix(f.Length);
+                    string size = FileUtilities.SizeSuffix(f.Length);
                     dGridAttachments.Rows[n].Cells[0].Value = file;
                     dGridAttachments.Rows[n].Cells[1].Value = MediaTypeNames.Application.Octet;
                     dGridAttachments.Rows[n].Cells[2].Value = size;
@@ -528,7 +538,7 @@ namespace NetMailSample
         }
 
         /// <summary>
-        /// used to validate the User, Password and To fields before sending
+        /// function used to validate the User, Password and To fields before sending
         /// </summary>
         /// <returns></returns>
         private bool ValidateForm()
@@ -709,17 +719,20 @@ namespace NetMailSample
             }
         }
 
+        // form close event
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // clean up resources on exit
             _logger.Dispose();
         }
 
+        // enable ssl checkbox when port radio is clicked
         private void rdoSendByPort_CheckedChanged(object sender, EventArgs e)
         {
             chkEnableSSL.Checked = true;
         }
 
+        // when the user changes the dropdown for server, automatically change the port number to a recommended value
         private void cboServer_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboServer.Text == "smtp.gmail.com" || cboServer.Text == "smtp.mail.yahoo.com" || cboServer.Text == "plus.smtp.mail.yahoo.com")

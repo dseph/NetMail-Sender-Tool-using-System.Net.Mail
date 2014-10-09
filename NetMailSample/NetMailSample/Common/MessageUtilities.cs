@@ -23,7 +23,7 @@ namespace NetMailSample.Common
         /// <param name="mail">This is the MailMessage object from the main form</param>
         /// <param name="mailAddrCol">This is the Collection of addresses that need to be added</param>
         /// <param name="mailAddressType">type of mail address to be added</param>
-        public static void addSmtpToMailAddressCollection(MailMessage mail, MailAddressCollection mailAddrCol, addressType mailAddressType)
+        public static void AddSmtpToMailAddressCollection(MailMessage mail, MailAddressCollection mailAddrCol, addressType mailAddressType)
         {
             foreach (MailAddress ma in mailAddrCol)
             {
@@ -43,8 +43,7 @@ namespace NetMailSample.Common
         }
 
         /// <summary>
-        /// this function will take a string value, 
-        /// then convert it to the corresponding Encoding type for the message
+        /// this function converts the Encoding type for the message
         /// </summary>
         /// <param name="encodingVal">string value to be converted</param>
         /// <returns></returns>

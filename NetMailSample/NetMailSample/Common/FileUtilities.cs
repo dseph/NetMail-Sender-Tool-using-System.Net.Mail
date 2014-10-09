@@ -8,9 +8,9 @@ namespace NetMailSample.Common
         static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB" };
         
         /// <summary>
-        /// this function 
+        /// this function takes a file size in bytes and converts it to the equivalent file size label
         /// </summary>
-        /// <param name="value">the length of the file being attached</param>
+        /// <param name="value">the size in bytes of the attached file being added</param>
         /// <returns></returns>
         public static string SizeSuffix(Int64 value)
         {
