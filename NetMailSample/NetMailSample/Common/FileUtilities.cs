@@ -12,10 +12,16 @@ namespace NetMailSample.Common
         /// </summary>
         /// <param name="value">the size in bytes of the attached file being added</param>
         /// <returns></returns>
-        public static string SizeSuffix(Int64 value)
+        public static string SizeSuffix(long value)
         {
-            if (value < 0) { return "-" + SizeSuffix(-value); }
-            if (value == 0) { return "0.0 bytes"; }
+            if (value < 0) 
+            { 
+                return "-" + SizeSuffix(-value); 
+            }
+            if (value == 0) 
+            { 
+                return "0.0 bytes"; 
+            }
 
             int mag = (int)Math.Log(value, 1024);
             decimal adjustedSize = (decimal)value / (1L << (mag * 10));

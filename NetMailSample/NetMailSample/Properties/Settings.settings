@@ -38,5 +38,8 @@
     <Setting Name="vCalBodyTransferEncoding" Type="System.String" Scope="User">
       <Value Profile="(Default)">QuotedPrintable</Value>
     </Setting>
+    <Setting Name="SendSyncTimeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

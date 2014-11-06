@@ -25,7 +25,7 @@ namespace NetMailSample
             // create the logger
             _logger = new ClassLogger("NetMailErrors.log");
             _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
-            
+
             // log the .net version
             CheckDotNetVersion();
             txtBoxErrorLog.Clear();
@@ -98,7 +98,7 @@ namespace NetMailSample
                 _logger.Log("Adding To addresses: " + txtBoxTo.Text);
                 mailAddrCol.Add(txtBoxTo.Text);
                 MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.To);
-                
+
                 // check for Cc and Bcc, which can be empty so we only need to add when the textbox contains a value
                 if (txtBoxCC.Text.Trim() != "")
                 {
@@ -166,7 +166,7 @@ namespace NetMailSample
                     htmlView.TransferEncoding = MessageUtilities.GetTransferEncoding(Properties.Settings.Default.htmlBodyTransferEncoding);
                     mail.AlternateViews.Add(htmlView);
                 }
-                
+
                 // add Plain Text AltView
                 if (Properties.Settings.Default.AltViewPlain != "")
                 {
@@ -195,7 +195,7 @@ namespace NetMailSample
                         mail.Headers.Add(rowHdr.Cells[0].Value.ToString(), rowHdr.Cells[1].Value.ToString());
                     }
                 }
-                
+
                 // add attachements
                 foreach (DataGridViewRow rowAtt in dGridAttachments.Rows)
                 {
@@ -230,25 +230,20 @@ namespace NetMailSample
                 mail.Body = richTxtBody.Text;
                 mail.IsBodyHtml = Properties.Settings.Default.BodyHtml;
 
-                // smtp client setup
+                // check for credentials
                 string sUser = txtBoxEmailAddress.Text.Trim();
                 string sPassword = mskPassword.Text.Trim();
                 string sDomain = txtBoxDomain.Text.Trim();
 
-                smtp.EnableSsl = chkEnableSSL.Checked;
-                smtp.Port = Int32.Parse(cboPort.Text.Trim());
-                smtp.Host = cboServer.Text;
-
-                // check for credentials
                 if (sUser.Length != 0)
                 {
                     if (sDomain.Length != 0)
                     {
-                        smtp.Credentials = new NetworkCredential(sUser, sPassword);
-                    }                    
+                        smtp.Credentials = new NetworkCredential(sUser, sPassword, sDomain);
+                    }
                     else
                     {
-                        smtp.Credentials = new NetworkCredential(sUser, sPassword, sDomain);
+                        smtp.Credentials = new NetworkCredential(sUser, sPassword);
                     }
                 }
 
@@ -272,6 +267,12 @@ namespace NetMailSample
                         smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
                     }
                 }
+
+                // smtp client setup
+                smtp.EnableSsl = chkEnableSSL.Checked;
+                smtp.Port = Int32.Parse(cboPort.Text.Trim());
+                smtp.Host = cboServer.Text;
+                smtp.Timeout = Properties.Settings.Default.SendSyncTimeout;
 
                 // send email
                 smtp.Send(mail);
@@ -323,7 +324,7 @@ namespace NetMailSample
                     _logger.Log("Message subject = " + msgSubject);
                     _logger.Log("Message send = SUCCESS");
                 }
-                
+
                 // cleanup resources
                 mail.Dispose();
                 mail = null;
@@ -366,7 +367,7 @@ namespace NetMailSample
                 txtBoxErrorLog.Clear();
                 string file = openFileDialog1.FileName;
                 FileInfo f = new FileInfo(file);
-                
+
                 try
                 {
                     int n = dGridAttachments.Rows.Add();
@@ -426,9 +427,9 @@ namespace NetMailSample
             try
             {
                 int cellRow = dGridAttachments.CurrentCellAddress.Y;
-                if (dGridAttachments.CurrentCell.ColumnIndex >= 0) 
-                { 
-                    dGridAttachments.Rows.RemoveAt(dGridAttachments.Rows[cellRow].Index); 
+                if (dGridAttachments.CurrentCell.ColumnIndex >= 0)
+                {
+                    dGridAttachments.Rows.RemoveAt(dGridAttachments.Rows[cellRow].Index);
                 }
             }
             catch (NullReferenceException)
@@ -452,9 +453,9 @@ namespace NetMailSample
             try
             {
                 int cellRow = dGridHeaders.CurrentCellAddress.Y;
-                if (dGridHeaders.CurrentCell.ColumnIndex >= 0) 
-                { 
-                    dGridHeaders.Rows.RemoveAt(dGridHeaders.Rows[cellRow].Index); 
+                if (dGridHeaders.CurrentCell.ColumnIndex >= 0)
+                {
+                    dGridHeaders.Rows.RemoveAt(dGridHeaders.Rows[cellRow].Index);
                 }
             }
             catch (NullReferenceException)
@@ -465,7 +466,7 @@ namespace NetMailSample
             {
                 _logger.Log("Error: " + ex.Message);
                 _logger.Log("StackTrace: " + ex.StackTrace);
-            }   
+            }
         }
 
         /// <summary>
@@ -496,7 +497,7 @@ namespace NetMailSample
                 }
                 _logger.Log(string.Format("Sending Message {0}...\r\n", msgCount));
                 SendEmail();
-                txtBoxErrorLog.Text = "Sending messages...";
+                txtBoxErrorLog.Text = "Sending message " + msgCount;
                 WaitLoop((int)numUpDnSeconds.Value);
             }
 
@@ -594,7 +595,7 @@ namespace NetMailSample
                     richTxtBody.Text = Properties.Settings.Default.AltViewPlain;
                 }
             }
-            
+
         }
 
         /// <summary>

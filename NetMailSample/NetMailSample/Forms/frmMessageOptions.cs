@@ -52,7 +52,7 @@ namespace NetMailSample.Forms
             Properties.Settings.Default.SubjectEncoding = cboSubjectEncoding.Text;
             Properties.Settings.Default.BodyHtml = chkBodyHtml.Checked;
             Properties.Settings.Default.ReadRcpt = chkReadRcpt.Checked;
-            Properties.Settings.Default.MsgPriority = cboMsgPriority.Text;
+            Properties.Settings.Default.MsgPriority = cboMsgPriority.Text;            
             this.Close();
         }
 

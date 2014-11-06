@@ -573,7 +573,7 @@
             this.groupBox4.Controls.Add(this.lblNumSeconds);
             this.groupBox4.Location = new System.Drawing.Point(12, 517);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(578, 43);
+            this.groupBox4.Size = new System.Drawing.Size(564, 43);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Sending Loop";
@@ -651,11 +651,11 @@
             // 
             // btnMessageOptions
             // 
-            this.btnMessageOptions.Location = new System.Drawing.Point(627, 530);
+            this.btnMessageOptions.Location = new System.Drawing.Point(666, 530);
             this.btnMessageOptions.Name = "btnMessageOptions";
-            this.btnMessageOptions.Size = new System.Drawing.Size(116, 23);
+            this.btnMessageOptions.Size = new System.Drawing.Size(77, 23);
             this.btnMessageOptions.TabIndex = 28;
-            this.btnMessageOptions.Text = "Message Options";
+            this.btnMessageOptions.Text = "Options";
             this.btnMessageOptions.UseVisualStyleBackColor = true;
             this.btnMessageOptions.Click += new System.EventHandler(this.btnMessageOptions_Click);
             // 
