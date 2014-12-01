@@ -1,25 +1,23 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System;
+using System.Text;
+using Microsoft.Win32;
 
 namespace NetMailSample.Common
 {
     class DotNetVersion
     {
         /// <summary>
-        /// find the installed .NET Framework versions by querying the registry (versions 4.5 and later)
-        /// Release key versions: (378389 = 4.5; 378675 = 4.5.x on Win8.1; 378758 = 4.5.x on Win8/Win7SP1/VistaSP2)
+        /// Find the installed .NET Framework versions by querying the registry (versions 4.5 and later)
+        /// Release key versions: (378389 = 4.5; 378675 = 4.5.x on Win8.1; 378758 = 4.5.x on Win8/Win7SP1/VistaSP2; 381024 = 4.5.x on Win10)
         /// </summary>
         public static string GetDotNetVerFromRegistry()
         {
             string dotNET45;
-
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
                RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"))
             {
                 try
-                { 
+                {
                     int releaseKey = (int)ndpKey.GetValue("Release");
                     {
                         switch (releaseKey)
@@ -33,15 +31,19 @@ namespace NetMailSample.Common
                             case 378758:
                                 dotNET45 = "The .NET Framework version = " + ndpKey.GetValue("Version").ToString();
                                 break;
+                            case 381024:
+                                dotNET45 = "The .NET Framework version = " + ndpKey.GetValue("Version").ToString();
+                                break;
                             default:
                                 dotNET45 = "The .NET Framework version 4.5 or higher is NOT installed.";
+                                GetPreV45FromRegistry();
                                 break;
                         }
                     }
                 }
                 catch (NullReferenceException)
                 {
-                    // added this small .NET V4 check for Win7
+                    // added this .NET V4 check for Win7
                     // there is no Release key so just pulling the Version key and displaying that number
                     RegistryKey ndpv4Key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
                         RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client\");
@@ -64,11 +66,9 @@ namespace NetMailSample.Common
         /// find the installed .NET Framework versions by querying the registry (versions 1-4)
         /// Note: currently not being used, more of a stub in case I need to include this later
         /// </summary>
-        public static void GetPreV45FromRegistry()
+        public static string GetPreV45FromRegistry()
         {
-            Stream myFile = File.Create("Output.txt");
-            TextWriterTraceListener myTextListener = new TextWriterTraceListener(myFile);
-            Trace.Listeners.Add(myTextListener);
+            StringBuilder preV45 = new StringBuilder();
 
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
                 RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\"))
@@ -81,13 +81,14 @@ namespace NetMailSample.Common
                         string name = (string)versionKey.GetValue("Version", "");
                         string sp = versionKey.GetValue("SP", "").ToString();
                         string install = versionKey.GetValue("Install", "").ToString();
+
                         if (install == "") //no install info, must be later
-                            Trace.WriteLine(versionKeyName + "  " + name);
+                            preV45.AppendLine((versionKeyName + "  " + name));
                         else
                         {
                             if (sp != "" && install == "1")
                             {
-                                Trace.WriteLine(versionKeyName + "  " + name + "  SP" + sp);
+                                preV45.AppendLine(versionKeyName + "  " + name + "  SP" + sp);
                             }
 
                         }
@@ -103,16 +104,16 @@ namespace NetMailSample.Common
                                 sp = subKey.GetValue("SP", "").ToString();
                             install = subKey.GetValue("Install", "").ToString();
                             if (install == "") //no install info, must be later
-                                Trace.WriteLine(versionKeyName + "  " + name);
+                                preV45.AppendLine(versionKeyName + "  " + name);
                             else
                             {
                                 if (sp != "" && install == "1")
                                 {
-                                    Trace.WriteLine("  " + subKeyName + "  " + name + "  SP" + sp);
+                                    preV45.AppendLine("  " + subKeyName + "  " + name + "  SP" + sp);
                                 }
                                 else if (install == "1")
                                 {
-                                    Trace.WriteLine("  " + subKeyName + "  " + name);
+                                    preV45.AppendLine("  " + subKeyName + "  " + name);
                                 }
                             }
                         }
@@ -120,7 +121,7 @@ namespace NetMailSample.Common
                 }
             }
 
-            Trace.Flush();
+            return preV45.ToString();
         }
     }
 }

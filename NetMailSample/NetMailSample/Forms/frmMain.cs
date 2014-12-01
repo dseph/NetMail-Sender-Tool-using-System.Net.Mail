@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Windows.Forms;
 using NetMailSample.Common;
+using System.Diagnostics;
 
 namespace NetMailSample
 {
@@ -64,6 +65,11 @@ namespace NetMailSample
                 // check for the installed .NET versions
                 _logger.Log("The .NET Runtime = " + DotNetVersion.GetRuntimeVersionFromEnvironment());
                 _logger.Log(DotNetVersion.GetDotNetVerFromRegistry());
+                if (DotNetVersion.GetDotNetVerFromRegistry() == "The .NET Framework version 4.5 or higher is NOT installed.")
+                {
+                    _logger.Log("Installed versions of the .NET Framework that are:\n");
+                    _logger.Log(Common.DotNetVersion.GetPreV45FromRegistry());
+                }
             }
             catch (Exception ex)
             {
@@ -83,7 +89,7 @@ namespace NetMailSample
                 return;
             }
 
-            // create mail and smtp object
+            // create mail, smtp and mailaddress objects
             MailMessage mail = new MailMessage();
             SmtpClient smtp = new SmtpClient();
             MailAddressCollection mailAddrCol = new MailAddressCollection();
@@ -748,6 +754,25 @@ namespace NetMailSample
             {
                 cboPort.Text = "25";
             }
+        }
+
+        private void btnOpenLogFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("Notepad.exe", AppDomain.CurrentDomain.BaseDirectory + "NetMailErrors.log");
+            }
+            catch (Exception ex)
+            {
+                txtBoxErrorLog.Text = "Unable to open log file: " + ex.Message;
+            }
+        }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            Forms.frmAbout frm = new Forms.frmAbout();
+            frm.ShowDialog(this);
+            frm.Dispose();
         }
     }
 }

@@ -58,6 +58,7 @@
             this.cboServer = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnOpenLogFile = new System.Windows.Forms.Button();
             this.txtBoxErrorLog = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnEditContentType = new System.Windows.Forms.Button();
@@ -84,6 +85,7 @@
             this.lblNumSeconds = new System.Windows.Forms.Label();
             this.btnAltView = new System.Windows.Forms.Button();
             this.btnMessageOptions = new System.Windows.Forms.Button();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.grpMailMessage.SuspendLayout();
             this.grpSmtpSettings.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -97,7 +99,7 @@
             // 
             // btnSendEmail
             // 
-            this.btnSendEmail.Location = new System.Drawing.Point(874, 530);
+            this.btnSendEmail.Location = new System.Drawing.Point(874, 531);
             this.btnSendEmail.Name = "btnSendEmail";
             this.btnSendEmail.Size = new System.Drawing.Size(88, 23);
             this.btnSendEmail.TabIndex = 20;
@@ -388,6 +390,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnOpenLogFile);
             this.groupBox1.Controls.Add(this.txtBoxErrorLog);
             this.groupBox1.Location = new System.Drawing.Point(548, 12);
             this.groupBox1.Name = "groupBox1";
@@ -396,6 +399,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Error Log";
             // 
+            // btnOpenLogFile
+            // 
+            this.btnOpenLogFile.Image = global::NetMailSample.Properties.Resources.OpenFileDialog_692;
+            this.btnOpenLogFile.Location = new System.Drawing.Point(362, 20);
+            this.btnOpenLogFile.Name = "btnOpenLogFile";
+            this.btnOpenLogFile.Size = new System.Drawing.Size(43, 23);
+            this.btnOpenLogFile.TabIndex = 1;
+            this.btnOpenLogFile.Tag = "";
+            this.btnOpenLogFile.UseVisualStyleBackColor = true;
+            this.btnOpenLogFile.Click += new System.EventHandler(this.btnOpenLogFile_Click);
+            // 
             // txtBoxErrorLog
             // 
             this.txtBoxErrorLog.BackColor = System.Drawing.SystemColors.Info;
@@ -403,7 +417,7 @@
             this.txtBoxErrorLog.Multiline = true;
             this.txtBoxErrorLog.Name = "txtBoxErrorLog";
             this.txtBoxErrorLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxErrorLog.Size = new System.Drawing.Size(398, 143);
+            this.txtBoxErrorLog.Size = new System.Drawing.Size(349, 143);
             this.txtBoxErrorLog.TabIndex = 0;
             // 
             // groupBox3
@@ -594,7 +608,7 @@
             this.btnStopSendLoop.Enabled = false;
             this.btnStopSendLoop.Location = new System.Drawing.Point(490, 14);
             this.btnStopSendLoop.Name = "btnStopSendLoop";
-            this.btnStopSendLoop.Size = new System.Drawing.Size(62, 23);
+            this.btnStopSendLoop.Size = new System.Drawing.Size(64, 23);
             this.btnStopSendLoop.TabIndex = 27;
             this.btnStopSendLoop.Text = "Stop";
             this.btnStopSendLoop.UseVisualStyleBackColor = true;
@@ -641,7 +655,7 @@
             // 
             // btnAltView
             // 
-            this.btnAltView.Location = new System.Drawing.Point(749, 530);
+            this.btnAltView.Location = new System.Drawing.Point(749, 531);
             this.btnAltView.Name = "btnAltView";
             this.btnAltView.Size = new System.Drawing.Size(119, 23);
             this.btnAltView.TabIndex = 19;
@@ -651,7 +665,7 @@
             // 
             // btnMessageOptions
             // 
-            this.btnMessageOptions.Location = new System.Drawing.Point(666, 530);
+            this.btnMessageOptions.Location = new System.Drawing.Point(666, 531);
             this.btnMessageOptions.Name = "btnMessageOptions";
             this.btnMessageOptions.Size = new System.Drawing.Size(77, 23);
             this.btnMessageOptions.TabIndex = 28;
@@ -659,11 +673,22 @@
             this.btnMessageOptions.UseVisualStyleBackColor = true;
             this.btnMessageOptions.Click += new System.EventHandler(this.btnMessageOptions_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Location = new System.Drawing.Point(593, 531);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(67, 23);
+            this.btnAbout.TabIndex = 29;
+            this.btnAbout.Text = "About";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(974, 564);
+            this.ClientSize = new System.Drawing.Size(974, 567);
+            this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.btnMessageOptions);
             this.Controls.Add(this.btnAltView);
             this.Controls.Add(this.groupBox4);
@@ -754,6 +779,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colFileSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn colContentId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colInline;
+        private System.Windows.Forms.Button btnOpenLogFile;
+        private System.Windows.Forms.Button btnAbout;
     }
 }
 

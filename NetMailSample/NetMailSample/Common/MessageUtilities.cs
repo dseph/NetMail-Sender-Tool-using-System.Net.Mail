@@ -18,7 +18,7 @@ namespace NetMailSample.Common
         };
 
         /// <summary>
-        /// Depending on the mail address type, add each mail address from the colleciton to the mail message
+        /// Depending on the mail address type, add each mail address from the collection to the mail message
         /// </summary>
         /// <param name="mail">This is the MailMessage object from the main form</param>
         /// <param name="mailAddrCol">This is the Collection of addresses that need to be added</param>

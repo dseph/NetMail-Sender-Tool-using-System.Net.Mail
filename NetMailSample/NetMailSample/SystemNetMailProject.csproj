@@ -73,6 +73,12 @@
   <ItemGroup>
     <Compile Include="Common\DotNetVersion.cs" />
     <Compile Include="Common\FileUtilities.cs" />
+    <Compile Include="Forms\frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmAddHeaders.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\MessageUtilities.cs" />
+    <EmbeddedResource Include="Forms\frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAddHeaders.resx">
       <DependentUpon>frmAddHeaders.cs</DependentUpon>
     </EmbeddedResource>
@@ -152,6 +161,7 @@
   <ItemGroup>
     <Content Include="Resources\AddMark_10580.png" />
     <Content Include="Resources\Clearallrequests_8816.png" />
+    <Content Include="Resources\OpenFileDialog_692.png" />
     <Content Include="Resources\WindowsForm_817.ico" />
     <Content Include="WindowsForm_817.ico" />
     <None Include="Resources\EditTitleString_357.png" />
