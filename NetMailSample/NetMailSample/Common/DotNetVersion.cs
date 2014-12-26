@@ -36,7 +36,6 @@ namespace NetMailSample.Common
                                 break;
                             default:
                                 dotNET45 = "The .NET Framework version 4.5 or higher is NOT installed.";
-                                GetPreV45FromRegistry();
                                 break;
                         }
                     }

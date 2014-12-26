@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace NetMailSample.Common
 {
@@ -59,8 +57,10 @@ namespace NetMailSample.Common
                     return Encoding.UTF32;
                 case "UTF7":
                     return Encoding.UTF7;
-                default:
+                case "ASCII":
                     return Encoding.ASCII;
+                default:
+                    return Encoding.Default;
             }
         }
 

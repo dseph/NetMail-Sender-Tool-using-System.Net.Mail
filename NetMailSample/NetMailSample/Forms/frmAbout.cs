@@ -11,6 +11,11 @@ namespace NetMailSample.Forms
             InitializeComponent();
         }
 
+        /// <summary>
+        /// populate the hyperlink for the website on load of the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmAbout_Load(object sender, EventArgs e)
         {
             linkLabel1.Text = "NetMail Sender Website";
@@ -18,6 +23,11 @@ namespace NetMailSample.Forms
             this.lblVersion.Text = Application.ProductVersion.ToString();
         }
 
+        /// <summary>
+        /// process the user clicking the hyperlink in the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(e.Link.LinkData.ToString());
