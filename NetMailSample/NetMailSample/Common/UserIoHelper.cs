@@ -9,35 +9,14 @@ namespace NetMailSample.Common
 {
     public class UserIoHelper
     {
-        public static bool PickSaveFileToFolder(string SuggestedName, ref string SelectedFile)
-        {
-            bool bRet = false;
-            SaveFileDialog fsd = new SaveFileDialog();
-
-            SelectedFile = SuggestedName;
-
-            fsd.FileName = SuggestedName;
-            fsd.Filter = "All files (*.*)|*.*";
-            fsd.FilterIndex = 1;
-            fsd.RestoreDirectory = false;
-            fsd.Title = "Save File To Folder";
-
-            if (fsd.ShowDialog() == DialogResult.OK)
-            {
-                bRet = true;
-                SelectedFile = fsd.FileName.Trim();
-            }
-            fsd = null;
-            return bRet;
-        }
-
-        public static bool PickSaveFileToFolder(string InitialDirectory, string SuggestedName, ref string SelectedFile)
-        {
-            bool bRet = false;
-            bRet = PickSaveFileToFolder(InitialDirectory, SuggestedName, ref SelectedFile, "All files (*.*)|*.*");
-            return bRet;
-        }
-
+        /// <summary>
+        /// this function is used to get the save settings file location
+        /// </summary>
+        /// <param name="InitialDirectory"></param>
+        /// <param name="SuggestedName"></param>
+        /// <param name="SelectedFile"></param>
+        /// <param name="FileFilter"></param>
+        /// <returns></returns>
         public static bool PickSaveFileToFolder(string InitialDirectory, string SuggestedName, ref string SelectedFile, string FileFilter)
         {
             bool bRet = false;
@@ -49,7 +28,7 @@ namespace NetMailSample.Common
             fsd.Filter = FileFilter; 
             fsd.FilterIndex = 1;
             fsd.RestoreDirectory = false;
-            fsd.Title = "Save File To Folder";
+            fsd.Title = "Save Settings To File";
 
             if (fsd.ShowDialog() == DialogResult.OK)
             {
@@ -60,14 +39,14 @@ namespace NetMailSample.Common
             return bRet;
         }
 
-        public static bool PickLoadFromFile(string InitialDirectory, string SuggestedName, ref string SelectedFile)
-        {
-            bool bRet = false;
-            bRet = PickLoadFromFile(InitialDirectory, SuggestedName, ref SelectedFile, "All files (*.*)|*.*");
-
-            return bRet;
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InitialDirectory"></param>
+        /// <param name="SuggestedName"></param>
+        /// <param name="SelectedFile"></param>
+        /// <param name="FileFilter"></param>
+        /// <returns></returns>
         public static bool PickLoadFromFile(string InitialDirectory, string SuggestedName, ref string SelectedFile, string FileFilter)
         {
             bool bRet = false;
