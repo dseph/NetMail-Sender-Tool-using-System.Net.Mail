@@ -60,6 +60,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
@@ -94,12 +95,6 @@
     <Compile Include="Forms\frmAlternateView.Designer.cs">
       <DependentUpon>frmAlternateView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmEditContentType.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmEditContentType.Designer.cs">
-      <DependentUpon>frmEditContentType.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmMessageOptions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,9 +119,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAlternateView.resx">
       <DependentUpon>frmAlternateView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmEditContentType.resx">
-      <DependentUpon>frmEditContentType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMessageOptions.resx">
       <DependentUpon>frmMessageOptions.cs</DependentUpon>
