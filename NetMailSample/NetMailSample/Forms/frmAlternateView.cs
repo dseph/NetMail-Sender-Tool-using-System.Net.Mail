@@ -286,7 +286,23 @@ namespace NetMailSample.Forms
             dGridInlineAttachments.CurrentCell = dGridInlineAttachments.Rows[n].Cells[1];
             dGridInlineAttachments.BeginEdit(true);
         }
-        
+
+        private void btnDeleteAttachment_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                int cellRow = dGridInlineAttachments.CurrentCellAddress.Y;
+                if (dGridInlineAttachments.CurrentCell.ColumnIndex >= 0)
+                {
+                    dGridInlineAttachments.Rows.RemoveAt(dGridInlineAttachments.Rows[cellRow].Index);
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
         private void deleteAttachmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int n = dGridInlineAttachments.CurrentCellAddress.Y;

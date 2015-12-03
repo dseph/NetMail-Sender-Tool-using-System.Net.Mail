@@ -67,6 +67,7 @@
             this.tabPlain = new System.Windows.Forms.TabPage();
             this.txtPlainAltViewBody = new System.Windows.Forms.TextBox();
             this.btnInsertHTML = new System.Windows.Forms.Button();
+            this.btnDeleteAttachment = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridInlineAttachments)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -162,6 +163,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnDeleteAttachment);
             this.groupBox2.Controls.Add(this.btnAddLR);
             this.groupBox2.Controls.Add(this.txtCid);
             this.groupBox2.Controls.Add(this.label4);
@@ -213,7 +215,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dGridInlineAttachments.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dGridInlineAttachments.Size = new System.Drawing.Size(396, 318);
+            this.dGridInlineAttachments.Size = new System.Drawing.Size(349, 318);
             this.dGridInlineAttachments.TabIndex = 0;
             this.dGridInlineAttachments.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dGridInlineAttachments_CellClick);
             this.dGridInlineAttachments.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dGridInlineAttachments_CellMouseDown);
@@ -454,6 +456,16 @@
             this.btnInsertHTML.UseVisualStyleBackColor = true;
             this.btnInsertHTML.Click += new System.EventHandler(this.btnInsertHTML_Click);
             // 
+            // btnDeleteAttachment
+            // 
+            this.btnDeleteAttachment.Image = global::NetMailSample.Properties.Resources.Clearallrequests_8816;
+            this.btnDeleteAttachment.Location = new System.Drawing.Point(364, 76);
+            this.btnDeleteAttachment.Name = "btnDeleteAttachment";
+            this.btnDeleteAttachment.Size = new System.Drawing.Size(41, 23);
+            this.btnDeleteAttachment.TabIndex = 10;
+            this.btnDeleteAttachment.UseVisualStyleBackColor = true;
+            this.btnDeleteAttachment.Click += new System.EventHandler(this.btnDeleteAttachment_Click_1);
+            // 
             // frmAlternateView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -525,5 +537,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colFilePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCid;
         private System.Windows.Forms.DataGridViewComboBoxColumn colContentType;
+        private System.Windows.Forms.Button btnDeleteAttachment;
     }
 }
