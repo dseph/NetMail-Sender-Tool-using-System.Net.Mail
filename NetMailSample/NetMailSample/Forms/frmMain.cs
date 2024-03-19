@@ -8,6 +8,10 @@ using System.Windows.Forms;
 using NetMailSample.Common;
 using System.Diagnostics;
 using System.Threading;
+using System.Runtime.Remoting.Messaging;
+
+using System.Text;
+using System.Runtime.InteropServices;
 
 namespace NetMailSample
 {
@@ -20,18 +24,33 @@ namespace NetMailSample
         bool formValidated = false;
         bool noErrFound = true;
         ClassLogger _logger = null;
+        string _logFilePath = string.Empty;
+        public StringBuilder _sbLogLine = new StringBuilder();
+
 
         public frmMain()
         {
             InitializeComponent();
 
-            // create the logger
-            _logger = new ClassLogger("NetMailErrors.log");
-            _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
+            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            _logFilePath = Path.Combine(userFolder, "NetMailErrors.log");
 
-            // log the .net version
-            CheckDotNetVersion();
+            // create the logger
+            _logger = new ClassLogger(_logFilePath);
+            
+            _logger.LogAdded += new ClassLogger.LoggerEventHandler(_logger_LogAdded);
+ 
             txtBoxErrorLog.Clear();
+
+            string sVerWarning  = string.Empty;
+            sVerWarning += "Note - Running under installed .Net version:  " + RuntimeInformation.FrameworkDescription + "\r\n";
+            sVerWarning += "Some SMTP serves require TLS 1.1 or 1.2 to be used.\r\n";
+            sVerWarning += ".Net 4.7.1+ should be used for servers needing TLS 1.1 support and .Net 4.8+ for TLS 1.3 support.\r\n";
+            sVerWarning += "Exchange Online requires TLS 1.1.\r\n\r\n";
+
+            txtBoxErrorLog.Text = sVerWarning;
+ 
+    
         }
 
         void _logger_LogAdded(object sender, LoggerEventArgs a)
@@ -60,31 +79,44 @@ namespace NetMailSample
         /// <summary>
         /// check/display the version of .NET installed on the machine
         /// </summary>
-        void CheckDotNetVersion()
-        {
-            try
-            {
-                // check for the installed .NET versions
-                _logger.Log("The .NET Runtime = " + DotNetVersion.GetRuntimeVersionFromEnvironment());
-                _logger.Log(DotNetVersion.GetDotNetVerFromRegistry());
-                if (DotNetVersion.GetDotNetVerFromRegistry() == "The .NET Framework version 4.5 or higher is NOT installed.")
-                {
-                    _logger.Log("Installed versions of the .NET Framework that are:\n");
-                    _logger.Log(DotNetVersion.GetPreV45FromRegistry());
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Log("Error:" + ex.Message);
-                _logger.Log("Stack Trace: " + ex.StackTrace);
-            }
-        }
+        //void CheckDotNetVersion()
+        //{
+        //    StringBuilder oSB = new StringBuilder();
+
+
+        //    string sVer = "Note - Running under installed .Net version:  " + RuntimeInformation.FrameworkDescription + "\r\n";
+        //    //sVer += "The current runtime version is " + DotNetVersion.GetRuntimeVersionFromEnvironment();
+           
+        
+        //    try
+        //    {
+        //        // check for the installed .NET versions
+        //        oSB.AppendLine("The .NET Runtime = " + DotNetVersion.GetRuntimeVersionFromEnvironment());
+        //        oSB.AppendLine(DotNetVersion.GetDotNetVerFromRegistry());
+        //        string sDotNetVersionCheck = DotNetVersion.GetDotNetVerFromRegistry(); 
+        //        if (sDotNetVersionCheck == "The .NET Framework version 4.5 or higher is NOT installed.")
+        //        {
+        //            oSB.AppendLine("Installed versions of the .NET Framework that are:\n");
+        //            oSB.AppendLine(DotNetVersion.GetPreV45FromRegistry());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        oSB.AppendLine("Error:" + ex.Message);
+        //        oSB.AppendLine("Stack Trace: " + ex.StackTrace);
+        //    }
+
+        //    _logger.Log(oSB.ToString());
+        //}
 
         /// <summary>
         /// This method takes the input from the form, creates a mail message and sends it to the smtp server
         /// </summary>
         private void SendEmail()
         {
+            _sbLogLine = new StringBuilder();
+            _sbLogLine.AppendLine("Preparing to send: " + DateTime.Now.ToString());
+
             // make sure we have values in user, password and To
             if (ValidateForm() == false)
             {
@@ -99,42 +131,39 @@ namespace NetMailSample
             try
             {
                 // set the From email address information
-                mail.From = new MailAddress(txtBoxEmailAddress.Text);
+                mail.From = new MailAddress(txtBoxFrom.Text.Trim());
 
                 // set the To email address information
                 mailAddrCol.Clear();
-                _logger.Log("Adding To addresses: " + txtBoxTo.Text);
-                mailAddrCol.Add(txtBoxTo.Text);
-                MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.To);
+                _sbLogLine.AppendLine("Adding From Address addresses: " + txtBoxFrom.Text.Trim());
+                mail.From = new MailAddress(txtBoxFrom.Text.Trim());
+                //mailAddrCol.Add(txtBoxTo.Text);
 
-                // check for Cc and Bcc, which can be empty so we only need to add when the textbox contains a value
-                if (txtBoxCC.Text.Trim() != "")
-                {
-                    mailAddrCol.Clear();
-                    _logger.Log("Adding Cc addresses: " + txtBoxCC.Text);
-                    mailAddrCol.Add(txtBoxCC.Text);
-                    MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Cc);
-                }
+                _sbLogLine.AppendLine("Adding To addresses: " + txtBoxTo.Text);
+                MessageUtilities.SetRecipientsFromString(ref mail, "To", txtBoxTo.Text.Trim());
+                _sbLogLine.AppendLine("Adding CC addresses: " + txtBoxCC.Text);
+                MessageUtilities.SetRecipientsFromString(ref mail, "CC", txtBoxCC.Text.Trim());
+                _sbLogLine.AppendLine("Adding BCC addresses: " + txtBoxBCC.Text);
+                MessageUtilities.SetRecipientsFromString(ref mail, "BCC", txtBoxBCC.Text.Trim());
 
-                if (txtBoxBCC.Text.Trim() != "")
-                {
-                    mailAddrCol.Clear();
-                    _logger.Log("Adding Bcc addresses: " + txtBoxBCC.Text);
-                    mailAddrCol.Add(txtBoxBCC.Text);
-                    MessageUtilities.AddSmtpToMailAddressCollection(mail, mailAddrCol, MessageUtilities.addressType.Bcc);
-                }
+
+ 
 
                 // set encoding for message
                 if (Properties.Settings.Default.BodyEncoding != "")
                 {
+                    _sbLogLine.AppendLine("Setting Body encoding: " + Properties.Settings.Default.BodyEncoding.ToString());
                     mail.BodyEncoding = MessageUtilities.GetEncodingValue(Properties.Settings.Default.BodyEncoding);
+                     
                 }
                 if (Properties.Settings.Default.SubjectEncoding != "")
                 {
+                    _sbLogLine.AppendLine("Setting Subject encoding: " + Properties.Settings.Default.SubjectEncoding.ToString());
                     mail.SubjectEncoding = MessageUtilities.GetEncodingValue(Properties.Settings.Default.SubjectEncoding);
                 }
                 if (Properties.Settings.Default.HeaderEncoding != "")
                 {
+                    _sbLogLine.AppendLine("Setting Header encoding: " + Properties.Settings.Default.HeaderEncoding.ToString());
                     mail.HeadersEncoding = MessageUtilities.GetEncodingValue(Properties.Settings.Default.HeaderEncoding);
                 }
 
@@ -151,10 +180,13 @@ namespace NetMailSample
                         mail.Priority = MailPriority.Normal;
                         break;
                 }
+                _sbLogLine.AppendLine("Setting Priority: " + mail.Priority.ToString());
 
                 // add HTML AltView
                 if (Properties.Settings.Default.AltViewHtml != "")
                 {
+                    _sbLogLine.AppendLine("Setting HTML Alternative view. ");
+
                     ContentType ctHtml = new ContentType("text/html");
                     htmlView = AlternateView.CreateAlternateViewFromString(Properties.Settings.Default.AltViewHtml, ctHtml);
                     
@@ -179,6 +211,9 @@ namespace NetMailSample
                 // add Plain Text AltView
                 if (Properties.Settings.Default.AltViewPlain != "")
                 {
+                    _sbLogLine.AppendLine("Setting Plain Alternative view. ");
+                    
+
                     ContentType ctPlain = new ContentType("text/plain");
                     plainView = AlternateView.CreateAlternateViewFromString(Properties.Settings.Default.AltViewPlain, ctPlain);
                     plainView.TransferEncoding = MessageUtilities.GetTransferEncoding(Properties.Settings.Default.plainBodyTransferEncoding);
@@ -188,6 +223,9 @@ namespace NetMailSample
                 // add vCal AltView
                 if (Properties.Settings.Default.AltViewCal != "")
                 {
+                    _sbLogLine.AppendLine("Setting VCAL Alternative view. ");
+                    _sbLogLine.AppendLine("Warning: Creating meeting requests, meeting updats and meeting cancelations is not supported with System.Web.Mail.  Consider using Graph or EWS.");
+
                     ContentType ctCal = new ContentType("text/calendar");
                     ctCal.Parameters.Add("method", "REQUEST");
                     ctCal.Parameters.Add("name", "meeting.ics");
@@ -199,12 +237,16 @@ namespace NetMailSample
                 // add custom headers
                 foreach (DataGridViewRow rowHdr in dGridHeaders.Rows)
                 {
+                    _sbLogLine.AppendLine("Adding specified headers");
+
                     if (rowHdr.Cells[0].Value != null)
                     {
+                        _sbLogLine.AppendLine("  " + rowHdr.Cells[0].Value.ToString() + " - " + rowHdr.Cells[1].Value.ToString());
                         mail.Headers.Add(rowHdr.Cells[0].Value.ToString(), rowHdr.Cells[1].Value.ToString());
                     }
                 }
 
+                _sbLogLine.AppendLine("Adding Attatchments - starting");
                 // add attachements
                 foreach (DataGridViewRow rowAtt in dGridAttachments.Rows)
                 {
@@ -223,36 +265,49 @@ namespace NetMailSample
                             data.ContentDisposition.Inline = false;
                             data.ContentDisposition.DispositionType = DispositionTypeNames.Attachment;
                         }
+                        _sbLogLine.AppendLine("Adding...");
+
                         mail.Attachments.Add(data);
                         //data.Dispose();
+                        _sbLogLine.AppendLine("Adding Attatchments - finished");
                     }
                 }
 
                 // add read receipt
                 if (Properties.Settings.Default.ReadRcpt == true)
                 {
-                    mail.Headers.Add("Disposition-Notification-To", txtBoxEmailAddress.Text);
+                    _sbLogLine.AppendLine("Set Read Receipt.");
+                    mail.Headers.Add("Disposition-Notification-To", txtBoxUserUpn.Text);
                 }
+
+                 
 
                 // set the content
                 mail.Subject = txtBoxSubject.Text;
+                _sbLogLine.AppendLine("Setting Subject:  " + txtBoxSubject.Text);
                 msgSubject = txtBoxSubject.Text;
+
+                _sbLogLine.AppendLine("Setting Body text. ");
                 mail.Body = richTxtBody.Text;
+
+                _sbLogLine.AppendLine("Setting IsBodyHtml to:  " + mail.IsBodyHtml.ToString());
                 mail.IsBodyHtml = Properties.Settings.Default.BodyHtml;
                 
                 // add delivery notifications
                 if (Properties.Settings.Default.DelNotifOnFailure == true)
                 {
+                    _sbLogLine.AppendLine("Setting DeliveryNotificationOptions to:  DeliveryNotificationOptions.OnFailure"  );
                     mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
                 }
 
                 if (Properties.Settings.Default.DelNotifOnSuccess == true)
                 {
+                    _sbLogLine.AppendLine("Setting DeliveryNotificationOptions to:  DeliveryNotificationOptions.OnSuccess");
                     mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess;
                 }
                 
                 // check for credentials
-                string sUser = txtBoxEmailAddress.Text.Trim();
+                string sUser = txtBoxUserUpn.Text.Trim();
                 string sPassword = mskPassword.Text.Trim();
                 string sDomain = txtBoxDomain.Text.Trim();
 
@@ -260,10 +315,12 @@ namespace NetMailSample
                 {
                     if (sDomain.Length != 0)
                     {
+                        _sbLogLine.AppendLine("User, Password and Domain is set. Likely NTLM is used.");
                         smtp.Credentials = new NetworkCredential(sUser, sPassword, sDomain);
                     }
                     else
                     {
+                        _sbLogLine.AppendLine("User and Password are set. Likely Basic/STMP auth is used.");
                         smtp.Credentials = new NetworkCredential(sUser, sPassword);
                     }
                 }
@@ -271,16 +328,19 @@ namespace NetMailSample
                 // send by pickup folder?
                 if (rdoSendByPickupFolder.Checked)
                 {
+                    _sbLogLine.AppendLine("Send by pickup folder is chosen.");
                     if (chkBoxSpecificPickupFolder.Checked)
                     {
-                        if (Directory.Exists(txtPickupFolder.Text))
+                        if (Directory.Exists(txtPickupFolder.Text.Trim()))
                         {
                             smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-                            smtp.PickupDirectoryLocation = txtPickupFolder.Text;
+                            smtp.PickupDirectoryLocation = txtPickupFolder.Text.Trim();
+                            _sbLogLine.AppendLine("Pickup folder:  " + txtPickupFolder.Text.Trim());
                         }
                         else
                         {
-                            throw new DirectoryNotFoundException(@"The specified directory """ + txtPickupFolder.Text + @""" does not exist.");
+                            _sbLogLine.AppendLine("Error: The specified pickup folder does not exist.");
+                            throw new DirectoryNotFoundException(@"The specified directory """ + txtPickupFolder.Text.Trim() + @""" does not exist.");
                         }
                     }
                     else
@@ -289,68 +349,110 @@ namespace NetMailSample
                     }
                 }
 
-                // smtp client setup
+                // smtp client setup 
+                smtp.UseDefaultCredentials = false;
+                _sbLogLine.AppendLine("UseDefaultCredentials:  " + smtp.UseDefaultCredentials.ToString());
+
                 smtp.EnableSsl = chkEnableSSL.Checked;
+                _sbLogLine.AppendLine("SSL Enabled:  " + chkEnableSSL.Checked.ToString());
+
                 smtp.Port = Int32.Parse(cboPort.Text.Trim());
+                _sbLogLine.AppendLine("Port:  " + smtp.Port.ToString());
+
                 smtp.Host = cboServer.Text;
-                smtp.Timeout = Properties.Settings.Default.SendSyncTimeout;
+                _sbLogLine.AppendLine("Host:  " + smtp.Host.ToString());
+
+                //smtp.Timeout = Properties.Settings.Default.SendSyncTimeout;
+                //_sbLogLine.AppendLine("Timeout:  " + smtp.Timeout);
+                _sbLogLine.AppendLine("Note: Timeout is not overridden.");
 
                 // send email
+                _sbLogLine.AppendLine("Sending: " + DateTime.Now.ToString());
+
                 smtp.Send(mail);
             }
             catch (SmtpException se)
             {
                 txtBoxErrorLog.Clear();
                 noErrFound = false;
+
+                _sbLogLine.AppendLine("Error occured at:  " + DateTime.Now.ToString());
+
+                _logger.Log("StatusCode:  " + se.StatusCode.ToString());
+
                 if (se.StatusCode == SmtpStatusCode.MailboxBusy || se.StatusCode == SmtpStatusCode.MailboxUnavailable)
                 {
-                    _logger.Log("Delivery failed - retrying in 5 seconds.");
-                    Thread.Sleep(5000);
-                    smtp.Send(mail);
+                    _sbLogLine.AppendLine("Error: " + se.Message);
+
+                    _sbLogLine.AppendLine("Error: " + se.Source);
+                    _sbLogLine.AppendLine("StackTrace: " + se.StackTrace);
+
+                    _sbLogLine.AppendLine("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+                    _sbLogLine.AppendLine("Inner Exception: " + se.InnerException);
+
+                    _sbLogLine.AppendLine("Suggestion: Retry");
+ 
+                     
                 }
                 else
                 {
-                    _logger.Log("Error: " + se.Message);
-                    _logger.Log("StackTrace: " + se.StackTrace);
-                    _logger.Log("Status Code: " + se.StatusCode);
-                    _logger.Log("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
-                    _logger.Log("Inner Exception: " + se.InnerException);
+                    _sbLogLine.AppendLine("Error: " + se.Message);
+
+                    _sbLogLine.AppendLine("Error: " + se.Source);
+                    _sbLogLine.AppendLine("StackTrace: " + se.StackTrace);
+
+                    _sbLogLine.AppendLine("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+                    _sbLogLine.AppendLine("Inner Exception: " + se.InnerException);
+
                 }
+                 
+
+               
             }
             catch (InvalidOperationException ioe)
             {
                 // invalid smtp address used
-                txtBoxErrorLog.Clear();
+                //txtBoxErrorLog.Clear();
                 noErrFound = false;
-                _logger.Log("Error: " + ioe.Message);
-                _logger.Log("StackTrace: " + ioe.StackTrace);
-                _logger.Log("Inner Exception: " + ioe.InnerException);
+
+                _sbLogLine.AppendLine("Error: " + ioe.Message);
+                _sbLogLine.AppendLine("Source: " + ioe.Source);
+                _sbLogLine.AppendLine("StackTrace: " + ioe.StackTrace);
+                _sbLogLine.AppendLine("Inner Exception: " + ioe.InnerException);
+                 
             }
             catch (FormatException fe)
             {
                 // invalid smtp address used
-                txtBoxErrorLog.Clear();
+                //txtBoxErrorLog.Clear();
                 noErrFound = false;
-                _logger.Log("Error: " + fe.Message);
-                _logger.Log("StackTrace: " + fe.StackTrace);
-                _logger.Log("Inner Exception: " + fe.InnerException);
+
+                _sbLogLine.AppendLine("Source: " + fe.Source);
+                _sbLogLine.AppendLine("Error: " + fe.Message);
+                _sbLogLine.AppendLine("StackTrace: " + fe.StackTrace);
+                _sbLogLine.AppendLine("Inner Exception: " + fe.InnerException);
             }
             catch (Exception ex)
             {
-                txtBoxErrorLog.Clear();
+                //txtBoxErrorLog.Clear();
                 noErrFound = false;
-                _logger.Log("Error: " + ex.Message);
-                _logger.Log("StackTrace: " + ex.StackTrace);
-                _logger.Log("Inner Exception: " + ex.InnerException);
+
+                _sbLogLine.AppendLine("Error: " + ex.Message);
+                _sbLogLine.AppendLine("Source: " + ex.Source);
+                _sbLogLine.AppendLine("StackTrace: " + ex.StackTrace);
+                _sbLogLine.AppendLine("Inner Exception: " + ex.InnerException);
             }
             finally
             {
                 // log success
                 if (formValidated == true && noErrFound == true)
                 {
-                    _logger.Log("Message subject = " + msgSubject);
-                    _logger.Log("Message send = SUCCESS");
+                    _sbLogLine.AppendLine("Message subject = " + msgSubject);
+                    _sbLogLine.AppendLine("Message send = SUCCESS");
                 }
+
+                _logger.Log(_sbLogLine.ToString());
+                txtBoxErrorLog.Text = _sbLogLine.ToString();
 
                 // cleanup resources
                 mail.Dispose();
@@ -365,6 +467,8 @@ namespace NetMailSample
                 hdrName = null;
                 hdrValue = null;
                 msgSubject = null;
+
+                //txtBoxErrorLog.Text = File.ReadAllText(_logFilePath);
             }
         }
 
@@ -595,7 +699,7 @@ namespace NetMailSample
         {
             bool bRet = true;
 
-            if (txtBoxEmailAddress.Text.Trim() == "")
+            if (txtBoxUserUpn.Text.Trim() == "")
             {
                 _logger.Log("User is required.");
                 bRet = false;
@@ -701,7 +805,7 @@ namespace NetMailSample
             {
                 cboPort.Text = "465";
             }
-            else if (cboServer.Text == "smtp.live.com")
+            else if (cboServer.Text == "smtp.live.com" || cboServer.Text == "smtp.office365.com")
             {
                 cboPort.Text = "587";
             }
@@ -821,7 +925,7 @@ namespace NetMailSample
         {
             try
             {
-                txtBoxEmailAddress.Text = FixSetting(oConnectionSetting.User);
+                txtBoxUserUpn.Text = FixSetting(oConnectionSetting.User);
                 txtBoxDomain.Text = FixSetting(oConnectionSetting.Domain);
                 txtBoxSubject.Text = FixSetting(oConnectionSetting.MessageSubject);
                 txtBoxTo.Text = FixSetting(oConnectionSetting.MessageTo);
@@ -861,7 +965,7 @@ namespace NetMailSample
         // specifiy the connection settings
         private void SetConnectionSettingsFromForm(ref ConnectionSettings oConnectionSetting)
         {
-            oConnectionSetting.User = this.txtBoxEmailAddress.Text;
+            oConnectionSetting.User = this.txtBoxUserUpn.Text;
             oConnectionSetting.Domain = this.txtBoxDomain.Text;
             oConnectionSetting.UseSSL = this.chkEnableSSL.Checked;
             oConnectionSetting.PasswordRequired = this.chkPasswordRequired.Checked;
@@ -903,6 +1007,34 @@ namespace NetMailSample
         private void editContentIDToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BeginEditDataGridView(3, 1);
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBoxEmailAddress_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void txtBoxFrom_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBoxFrom_Enter(object sender, EventArgs e)
+        {
+            if (txtBoxFrom.Text.Trim() == string.Empty)
+            {
+                txtBoxFrom.Text = txtBoxUserUpn.Text.Trim();
+            }
         }
 
         private void editInlineToolStripMenuItem_Click(object sender, EventArgs e)
@@ -959,5 +1091,6 @@ namespace NetMailSample
             }
 
         }
+
     }
 }

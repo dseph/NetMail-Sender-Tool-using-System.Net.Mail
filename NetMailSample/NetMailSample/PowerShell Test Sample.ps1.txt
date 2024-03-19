@@ -1,0 +1,38 @@
+﻿# This is a simple script to send an email using STMP relay and uses Smtpclient from System.Net.Mail
+# Note that this API does not support oAuth.
+# You can use this to also test sending email where you cannot use an executable.
+
+$EmailUser = "xxxx@xxxx.onmicrosoft.com"             # set to the sender's UPN
+$EmailPass = "xxxxx"                                 # set to the user's password
+
+ 
+$EmailFrom = "xxx@xxx.onmicrosoft.com"               # set to the sender's SMTP address
+$EmailTo = "xxxx@xxx.onmicrosoft.com"                # Set to the address to send to
+$Subject = "SMTP test"
+$Body = "Did this work?"
+
+$SMTPServer = "smtp.office365.com"           # set to the server's mail domain
+$Port = 587                                  # set to the server's SMTP port.
+
+# Note:
+#   Office  - smtp.office365.com     587
+#   gmail   -  smtp-relay.gmail.com  587 (TLS), 465 (SSL),  25 (TLS/SSL)
+#   Yahoo   -  smtp.mail.yahoo.com   587
+#   HotMail - smtp-mail.outlook.com  587  STARTTLS  - retested - it works as of 3/19/2024
+
+# --
+ 
+$Message = new-object Net.Mail.MailMessage;
+$Message.From = $EmailFrom  
+$Message.To.Add($EmailTo) 
+$Message.Subject = $Subject
+$Message.Body =  $Body
+
+#$attachment = New-Object Net.Mail.Attachment($attachmentpath);
+#$Message.Attachments.Add($attachment);
+ 
+$SMTPClient = New-Object Net.Mail.SmtpClient($SmtpServer, $Port)
+$SMTPClient.EnableSsl = $true
+$SMTPClient.UseDefaultCredentials = $false
+$SMTPClient.Credentials = New-Object System.Net.NetworkCredential($EmailUser, $EmailPass);
+$SMTPClient.Send($Message)

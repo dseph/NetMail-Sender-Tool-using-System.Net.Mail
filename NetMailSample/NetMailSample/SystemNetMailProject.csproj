@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetMailSample</RootNamespace>
     <AssemblyName>NetMailSample</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SccProjectName>SAK</SccProjectName>
@@ -157,11 +157,13 @@
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PowerShell Test Sample.ps1.txt" />
     <Content Include="Resources\AddMark_10580.png" />
     <Content Include="Resources\Clearallrequests_8816.png" />
     <Content Include="Resources\OpenFileDialog_692.png" />
     <Content Include="Resources\WindowsForm_817.ico" />
     <Content Include="WindowsForm_817.ico" />
+    <None Include="Readme.md" />
     <None Include="Resources\EditTitleString_357.png" />
     <None Include="Resources\OpenAttachment_13115.png" />
     <Content Include="Resources\SingleMessage_5727.ico" />

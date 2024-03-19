@@ -18,6 +18,7 @@ using System;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
+using System.Windows.Forms;
 
 namespace NetMailSample.Common
 {
@@ -30,6 +31,109 @@ namespace NetMailSample.Common
             Cc,
             Bcc
         };
+
+      
+        // This function will set a text list of addresses to a recipient collection on a message.
+        // MailMessage oMessage - the message to add the recipients to
+        // string sRecipientType - the type of recipient to add (To, CC, BCC)
+        // string sAddressString - the string which contains 1+ mail addresses. Addresses can be smtp or a mix of stmp and name.
+
+        public static bool SetRecipientsFromString(ref MailMessage oMessage, string sRecipientType, string sAddressString)
+        {
+            bool bRet = false;
+
+            char[] arrAddressDelimiter = { ';' };
+            string[] sAddresses = sAddressString.Split(arrAddressDelimiter);
+            string sSmtpAddress = string.Empty;
+            string sRecipientName = string.Empty;
+            string sWork = string.Empty;
+            char[] carrEndAddress = { '>', ')' };
+            char[] carrStartAddress = { '<', ')' };
+            char[] junk = { '<', '>', '(', ' ', ';' };
+            int iEndAddress = 0;
+            int iStartAddress = 0;
+            string sCurrentAddress = string.Empty;
+
+
+
+            try
+            {
+                foreach (string sAddress in sAddresses)
+                {
+
+                    sCurrentAddress = sAddress;
+
+                    iStartAddress = sAddress.IndexOfAny(carrStartAddress);
+                    iEndAddress = sAddress.IndexOfAny(carrEndAddress);
+
+                    sSmtpAddress = string.Empty;
+                    sRecipientName = string.Empty;
+                    if (sAddress.Contains(">") || sAddress.Contains(")"))
+                    {
+                        sWork = sAddress.Substring(iStartAddress, iEndAddress - iStartAddress);
+                        sSmtpAddress = sWork.Trim(junk);
+
+                        sWork = sWork.Substring(0, iStartAddress);
+                        sRecipientName = sWork.Trim(junk);
+                    }
+                    else
+                    {
+                        sWork = sAddress.Trim(junk);
+                        if (sWork.Length != 0)
+                            sSmtpAddress = sAddress.Trim(junk);
+
+                    }
+
+                    if (sRecipientName.Length != 0)
+                    {
+                        if (sSmtpAddress.Length != 0)
+                        {
+                            switch (sRecipientType)
+                            {
+                                case "To":
+                                    oMessage.To.Add(new MailAddress(sSmtpAddress, sRecipientName));
+                                    break;
+                                case "CC":
+                                    oMessage.CC.Add(new MailAddress(sSmtpAddress, sRecipientName));
+                                    break;
+                                case "BCC":
+                                    oMessage.Bcc.Add(new MailAddress(sSmtpAddress, sRecipientName));
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (sSmtpAddress.Length != 0)
+                        {
+                            switch (sRecipientType)
+                            {
+                                case "To":
+                                    oMessage.To.Add(new MailAddress(sSmtpAddress));
+                                    break;
+                                case "CC":
+                                    oMessage.CC.Add(new MailAddress(sSmtpAddress));
+                                    break;
+                                case "BCC":
+                                    oMessage.Bcc.Add(new MailAddress(sSmtpAddress));
+                                    break;
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + "\r\n\r\nAddress: " + sCurrentAddress, "Error Parsing Address");
+            }
+
+            bRet = true;
+
+            return bRet;
+
+        }
 
         /// <summary>
         /// Depending on the mail address type, add each mail address from the collection to the mail message
@@ -53,6 +157,8 @@ namespace NetMailSample.Common
                 {
                     mail.Bcc.Add(ma.Address);
                 }
+
+                
             }
         }
 
