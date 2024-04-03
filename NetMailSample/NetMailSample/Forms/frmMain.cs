@@ -371,6 +371,8 @@ namespace NetMailSample
 
                 smtp.Send(mail);
             }
+
+            
             catch (SmtpException se)
             {
                 txtBoxErrorLog.Clear();
@@ -380,57 +382,43 @@ namespace NetMailSample
 
                 _logger.Log("StatusCode:  " + se.StatusCode.ToString());
 
+ 
+                _sbLogLine.AppendLine("Error: " + se.Message);
+                _sbLogLine.AppendLine("Error: " + se.Source);
+                _sbLogLine.AppendLine("StackTrace: " + se.StackTrace);
+                _sbLogLine.AppendLine("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
+                _sbLogLine.AppendLine("Inner Exception: " + se.InnerException);
+
+
                 if (se.StatusCode == SmtpStatusCode.MailboxBusy || se.StatusCode == SmtpStatusCode.MailboxUnavailable)
                 {
-                    _sbLogLine.AppendLine("Error: " + se.Message);
-
-                    _sbLogLine.AppendLine("Error: " + se.Source);
-                    _sbLogLine.AppendLine("StackTrace: " + se.StackTrace);
-
-                    _sbLogLine.AppendLine("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
-                    _sbLogLine.AppendLine("Inner Exception: " + se.InnerException);
-
                     _sbLogLine.AppendLine("Suggestion: Retry");
- 
-                     
-                }
-                else
-                {
-                    _sbLogLine.AppendLine("Error: " + se.Message);
-
-                    _sbLogLine.AppendLine("Error: " + se.Source);
-                    _sbLogLine.AppendLine("StackTrace: " + se.StackTrace);
-
-                    _sbLogLine.AppendLine("Description:" + MessageUtilities.GetSmtpStatusCodeDescription(se.StatusCode.ToString()));
-                    _sbLogLine.AppendLine("Inner Exception: " + se.InnerException);
 
                 }
-                 
 
-               
             }
             catch (InvalidOperationException ioe)
             {
-                // invalid smtp address used
-                //txtBoxErrorLog.Clear();
+ 
                 noErrFound = false;
 
                 _sbLogLine.AppendLine("Error: " + ioe.Message);
                 _sbLogLine.AppendLine("Source: " + ioe.Source);
                 _sbLogLine.AppendLine("StackTrace: " + ioe.StackTrace);
                 _sbLogLine.AppendLine("Inner Exception: " + ioe.InnerException);
-                 
+                
             }
             catch (FormatException fe)
             {
-                // invalid smtp address used
-                //txtBoxErrorLog.Clear();
+      
                 noErrFound = false;
 
                 _sbLogLine.AppendLine("Source: " + fe.Source);
                 _sbLogLine.AppendLine("Error: " + fe.Message);
                 _sbLogLine.AppendLine("StackTrace: " + fe.StackTrace);
                 _sbLogLine.AppendLine("Inner Exception: " + fe.InnerException);
+
+               .
             }
             catch (Exception ex)
             {
@@ -1035,6 +1023,11 @@ namespace NetMailSample
             {
                 txtBoxFrom.Text = txtBoxUserUpn.Text.Trim();
             }
+        }
+
+        private void grpSmtpSettings_Enter(object sender, EventArgs e)
+        {
+
         }
 
         private void editInlineToolStripMenuItem_Click(object sender, EventArgs e)

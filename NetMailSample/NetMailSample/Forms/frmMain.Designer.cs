@@ -331,6 +331,7 @@
             this.grpSmtpSettings.TabIndex = 4;
             this.grpSmtpSettings.TabStop = false;
             this.grpSmtpSettings.Text = "SMTP Settings";
+            this.grpSmtpSettings.Enter += new System.EventHandler(this.grpSmtpSettings_Enter);
             // 
             // chkPasswordRequired
             // 
