@@ -43,10 +43,12 @@ namespace NetMailSample
             txtBoxErrorLog.Clear();
 
             string sVerWarning  = string.Empty;
-            sVerWarning += "Note - Running under installed .Net version:  " + RuntimeInformation.FrameworkDescription + "\r\n";
-            sVerWarning += "Some SMTP serves require TLS 1.1 or 1.2 to be used.\r\n";
-            sVerWarning += ".Net 4.7.1+ should be used for servers needing TLS 1.1 support and .Net 4.8+ for TLS 1.3 support.\r\n";
-            sVerWarning += "Exchange Online requires TLS 1.1.\r\n\r\n";
+            sVerWarning += "Note the following:\r\n";  
+            sVerWarning += "Running under installed .Net version:  " + RuntimeInformation.FrameworkDescription + "\r\n";
+            sVerWarning += "Some SMTP serves require TLS 1.1 or later to be used. Exchange Online requires TLS 1.2 or later.\\r\n";
+            sVerWarning += ".Net 4.7.1+ should be used for servers needing TLS 1.2 support and .Net 4.8+ for TLS 1.3 support.\r\n";
+            sVerWarning += "To use with Exchange Online you will need to have STMP Auth enabled.\r\n";
+            sVerWarning += "Exchange should not be used for bulk emailing.  Look at high capacity STMP services such as Azure Communication Services.\r\n";
 
             txtBoxErrorLog.Text = sVerWarning;
  
@@ -418,7 +420,7 @@ namespace NetMailSample
                 _sbLogLine.AppendLine("StackTrace: " + fe.StackTrace);
                 _sbLogLine.AppendLine("Inner Exception: " + fe.InnerException);
 
-               .
+              
             }
             catch (Exception ex)
             {
